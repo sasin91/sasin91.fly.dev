@@ -1,7 +1,12 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AppController;
+use App\Http\Controllers\ContactRequestController;
 use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,14 +21,15 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::get('/', [AppController::class, 'welcome'])->name('welcome');
+Route::get('/about', [AppController::class, 'about'])->name('about');
+Route::get('/contact', [AppController::class, 'contact'])->name('contact');
+Route::post('/contact-request', [ContactRequestController::class, 'store'])
+    ->middleware([
+        HandlePrecognitiveRequests::class,
+        ThrottleRequests::with(maxAttempts: 15, decayMinutes: 1)
+    ])
+    ->name('contact-request.store');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -35,4 +41,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
