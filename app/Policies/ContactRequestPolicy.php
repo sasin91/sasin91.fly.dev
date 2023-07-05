@@ -13,7 +13,9 @@ class ContactRequestPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        if ($user->canAccessFilament()) {
+            return true;
+        }
     }
 
     /**
@@ -21,7 +23,9 @@ class ContactRequestPolicy
      */
     public function view(User $user, ContactRequest $contactRequest): bool
     {
-        //
+        if ($user->canAccessFilament()) {
+            return true;
+        }
     }
 
     /**
@@ -37,7 +41,9 @@ class ContactRequestPolicy
      */
     public function update(User $user, ContactRequest $contactRequest): bool
     {
-        //
+        if ($user->canAccessFilament()) {
+            return true;
+        }
     }
 
     /**
@@ -45,7 +51,9 @@ class ContactRequestPolicy
      */
     public function delete(User $user, ContactRequest $contactRequest): bool
     {
-        //
+        if ($user->canAccessFilament()) {
+            return true;
+        }
     }
 
     /**
@@ -53,7 +61,9 @@ class ContactRequestPolicy
      */
     public function restore(User $user, ContactRequest $contactRequest): bool
     {
-        //
+        if ($user->canAccessFilament()) {
+            return true;
+        }
     }
 
     /**
@@ -61,6 +71,8 @@ class ContactRequestPolicy
      */
     public function forceDelete(User $user, ContactRequest $contactRequest): bool
     {
-        //
+        if ($user->canAccessFilament()) {
+            return true;
+        }
     }
 }
