@@ -8,9 +8,10 @@ export default {
         // Create a Cloudinary instance and set your cloud name.
         const cld = new Cloudinary({
             cloud: {
-                cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
-                apiKey: import.meta.env.VITE_CLOUDINARY_API_KEY,
-                apiSecret: import.meta.env.VITE_CLOUDINARY_API_SECRET,
+                cloudName: 'sasin91',
+                // cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
+                // apiKey: import.meta.env.VITE_CLOUDINARY_API_KEY,
+                // apiSecret: import.meta.env.VITE_CLOUDINARY_API_SECRET,
             },
         });
 
