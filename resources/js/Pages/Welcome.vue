@@ -82,7 +82,7 @@
                                 nyt.
                             </p>
                             <p class="text-lg leading-6 text-gray-600">
-                                Og anerkender vigten af at skrive ren og læsbar kode, som er nem at vedligeholde.
+                                Og anerkender vigtigheden af at skrive ren og læsbar kode, som er nem at vedligeholde.
                             </p>
                             <div class="flex mt-6 space-x-6 md:order-2">
                                 <a v-for="item in social" :key="item.name" :href="item.href"
@@ -605,7 +605,7 @@ const features: { name: string, description: string, icon: FunctionalComponent }
     },
     {
         name: 'App udvikling 📱',
-        description: 'Jeg har erfaring med at lave apps i React Native.',
+        description: 'Jeg har erfaring med at lave apps i React Native inkl. native modules i Java/Kotlin & Objc/Swift.',
         icon: CursorArrowRaysIcon
     },
     {
