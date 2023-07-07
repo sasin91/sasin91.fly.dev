@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gradient-to-br from-white via-cyan-100/5 to-magenta-100/20">
+    <div>
         <!-- Header -->
         <header class="absolute inset-x-0 top-0 z-50">
             <nav class="flex items-center justify-between p-6 mx-auto max-w-7xl lg:px-8" aria-label="Global">
@@ -23,8 +23,39 @@
                     </NavLink>
                 </div>
                 <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-                    <a :href="route('login')" class="text-sm font-semibold leading-6 text-gray-900">Log ind <span
-                            aria-hidden="true">&rarr;</span></a>
+                    <div v-if="page.props.auth.user" class="relative ml-3">
+                        <Dropdown align="right" width="48">
+                            <template #trigger>
+                                <span class="inline-flex rounded-md">
+                                    <button type="button"
+                                        class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 transition-all duration-300 ease-in-out text-cyan-500 group">
+                                        {{ $page.props.auth.user.name }}
+
+                                        <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+                                </span>
+                            </template>
+
+                            <template #content>
+                                <DropdownLink :href="route('dashboard')">Instrumentbræt
+                                    <span aria-hidden="true">&rarr;</span>
+                                </DropdownLink>
+                                <DropdownLink if="page.props.auth.user.can_access_filament"
+                                    :href="route('filament.pages.dashboard')">
+                                    Admin</DropdownLink>
+                                <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink>
+                                <DropdownLink :href="route('logout')" method="post" as="button">
+                                    Log Out
+                                </DropdownLink>
+                            </template>
+                        </Dropdown>
+                    </div>
+                    <NavLink v-else :href="route('login')">Log ind <span aria-hidden="true">&rarr;</span></NavLink>
                 </div>
             </nav>
             <Dialog as="div" class="lg:hidden" @close="mobileMenuOpen = false" :open="mobileMenuOpen">
@@ -48,9 +79,30 @@
                                     {{ item.name }}
                                 </ResponsiveNavLink>
                             </div>
-                            <div class="py-6">
-                                <ResponsiveNavLink href="route('login')">Log ind</ResponsiveNavLink>
+                            <div v-if="page.props.auth.user" class="py-6">
+                                <div class="px-4">
+                                    <div class="text-base font-medium text-gray-800 dark:text-gray-200">
+                                        {{ $page.props.auth.user.name }}
+                                    </div>
+                                    <div class="text-sm font-medium text-gray-500">{{ $page.props.auth.user.email }}
+                                    </div>
+                                </div>
+
+                                <div class="mt-3 space-y-1">
+                                    <ResponsiveNavLink :href="route('dashboard')">Instrumentbræt
+                                        <span aria-hidden="true">&rarr;</span>
+                                    </ResponsiveNavLink>
+                                    <ResponsiveNavLink if="page.props.auth.user.can_access_filament"
+                                        :href="route('filament.pages.dashboard')">
+                                        Admin</ResponsiveNavLink>
+                                    <ResponsiveNavLink :href="route('profile.edit')"> Profile </ResponsiveNavLink>
+                                    <ResponsiveNavLink :href="route('logout')" method="post" as="button">
+                                        Log Out
+                                    </ResponsiveNavLink>
+                                </div>
                             </div>
+
+                            <ResponsiveNavLink v-else :href="route('login')">Log ind</ResponsiveNavLink>
                         </div>
                     </div>
                 </DialogPanel>
@@ -436,6 +488,8 @@
   
 <script setup lang="ts">
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import Dropdown from '@/Components/Dropdown.vue';
+import DropdownLink from '@/Components/DropdownLink.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import NavLink from '@/Components/NavLink.vue';
