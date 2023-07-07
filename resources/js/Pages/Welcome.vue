@@ -18,8 +18,9 @@
                     </button>
                 </div>
                 <div class="hidden lg:flex lg:gap-x-12">
-                    <a v-for="item in navigation" :key="item.name" :href="item.href"
-                        class="text-sm font-semibold leading-6 text-gray-900">{{ item.name }}</a>
+                    <NavLink v-for="item in navigation" :key="item.name" :href="item.href">
+                        {{ item.name }}
+                    </NavLink>
                 </div>
                 <div class="hidden lg:flex lg:flex-1 lg:justify-end">
                     <a :href="route('login')" class="text-sm font-semibold leading-6 text-gray-900">Log ind <span
@@ -43,14 +44,12 @@
                     <div class="flow-root mt-6">
                         <div class="-my-6 divide-y divide-gray-500/10">
                             <div class="py-6 space-y-2">
-                                <a v-for="item in navigation" :key="item.name" :href="item.href"
-                                    class="block px-3 py-2 -mx-3 text-base font-semibold leading-7 text-gray-900 rounded-lg hover:bg-gray-50">{{
-                                        item.name }}</a>
+                                <ResponsiveNavLink v-for="item in navigation" :key="item.name" :href="item.href">
+                                    {{ item.name }}
+                                </ResponsiveNavLink>
                             </div>
                             <div class="py-6">
-                                <a :href="route('login')"
-                                    class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Log
-                                    ind</a>
+                                <ResponsiveNavLink href="route('login')">Log ind</ResponsiveNavLink>
                             </div>
                         </div>
                     </div>
@@ -439,6 +438,8 @@
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
+import NavLink from '@/Components/NavLink.vue';
+import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import TextInput from '@/Components/TextInput.vue';
 import type { PageProps } from '@/types/index';
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue';
