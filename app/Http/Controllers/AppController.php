@@ -8,8 +8,10 @@ class AppController
     {
         return inertia('Welcome', [
             'navigation' => [
-                // ['name' => 'Om', 'link' => route('about')],
-                // ['name' => 'Kontakt', 'link' => route('contact')],
+                // ['name' => 'About', 'href' => route('about')],
+                // ['name' => 'Contact', 'href' => route('contact')],
+                ['name' => 'Uses', 'href' => route('uses')],
+                ['name' => 'Projects', 'href' => route('projects')]
             ],
         ]);
     }

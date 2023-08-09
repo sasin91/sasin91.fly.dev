@@ -19,7 +19,7 @@
                 </div>
                 <div class="hidden lg:flex lg:gap-x-12">
                     <NavLink v-for="item in navigation" :key="item.name" :href="item.href">
-                        {{ item.name }}
+                        {{ $t(item.name) }}
                     </NavLink>
                 </div>
                 <div class="hidden lg:flex lg:flex-1 lg:justify-end">

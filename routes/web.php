@@ -24,6 +24,8 @@ use Inertia\Inertia;
 Route::get('/', [AppController::class, 'welcome'])->name('welcome');
 Route::get('/about', [AppController::class, 'about'])->name('about');
 Route::get('/contact', [AppController::class, 'contact'])->name('contact');
+Route::get('/uses', [AppController::class, 'uses'])->name('uses');
+Route::get('/projects', [AppController::class, 'projects'])->name('projects');
 Route::post('/contact-request', [ContactRequestController::class, 'store'])
     ->middleware([
         HandlePrecognitiveRequests::class,

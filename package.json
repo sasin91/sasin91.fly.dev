@@ -27,8 +27,11 @@
         "@cloudinary/vue": "^1.11.2",
         "@headlessui/vue": "^1.7.14",
         "@heroicons/vue": "^2.0.18",
+        "@intlify/unplugin-vue-i18n": "^0.12.2",
+        "@types/vue-i18n": "^7.0.0",
         "@vueuse/core": "^10.2.1",
         "cloudinary": "^1.37.3",
-        "laravel-precognition-vue-inertia": "^0.3.2"
+        "laravel-precognition-vue-inertia": "^0.3.2",
+        "vue-i18n": "^9.2.2"
     }
 }
