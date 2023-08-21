@@ -19,7 +19,7 @@
                 </div>
                 <div class="hidden lg:flex lg:gap-x-12">
                     <NavLink v-for="item in navigation" :key="item.name" :href="item.href">
-                        {{ $t(item.name) }}
+                        {{ t(item.name) }}
                     </NavLink>
                 </div>
                 <div class="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -510,10 +510,13 @@ import {
 import { usePage } from '@inertiajs/vue3';
 import { useForm } from 'laravel-precognition-vue-inertia';
 import { FunctionalComponent, defineComponent, h, ref } from 'vue';
+import { useI18n } from '@/Plugins/i18n';
 
 const { navigation } = defineProps<{
     navigation: { name: string, href: string }[],
 }>();
+
+const { t } = useI18n()
 
 const page = usePage<PageProps>();
 
@@ -590,87 +593,77 @@ const social = [
 
 const timeline: { name: string, href?: string, description: string, date: string, dateTime: string }[] = [
     {
-        name: 'Uddannet WebIntegrator 🎉',
-        description:
-            'Jeg bestod min uddannelse som WebIntegrator med et 12 tal. Jeg har lært at lave hjemmesider, webshops og meget mere.',
+        name: t('timeline.webintegrator.name'),
+        description: t('timeline.webintegrator.description'),
         date: 'Aug 2015',
         dateTime: '2015-08',
     },
     {
-        name: 'Webudvikler hos GHC Travel ✈️',
-        description:
-            'Efter nogle praktik forløb andre steder, fik jeg i 2017 mit første job som web udvikler hos GHC Travel. Jeg stod for at migrere og modernisere deres eksiesterende hjemmeside fra ren PHP til Laravel 6 & Vue 2. Jeg har senere hen holdt Laravel opdateret og flyttet frontend koden ud i separate Nuxt projekter med delt kode imellem.',
+        name: t('timeline.ghc.name'),
+        description: t('timeline.ghc.description'),
         date: 'Feb 2017',
         dateTime: '2017-02',
     },
     {
-        name: 'Udvikler hos Syncronet 📺',
+        name: t('timeline.syncronet.name'),
         href: 'https://zometv.com',
-        description:
-            'Efter COVID-19 ramte Danmark, blev jeg desværre nød til at skifte job. Jeg fik et job hos Syncronet, hvor jeg har været vidt omkring for at hjælpe med at udvikle deres video streaming platform. I store drag tog jeg af det meste.',
+        description: t('timeline.syncronet.description'),
         date: 'Feb 2020',
         dateTime: '2020-02',
     },
     {
-        name: 'Webudvikler hos JUICE 👊',
+        name: t('timeline.juice.name'),
         href: 'https://morejuice.io',
-        description:
-            'I 2023 fik jeg muligheden for at være med til noget nyt og spændende. Jeg fik et job hos JUICE, hvor jeg har været med til at udvikle en platform som vender job markedet på hovedet.',
+        description: t('timeline.juice.description'),
         date: 'Jan 2023',
         dateTime: '2023-01',
-    },
-    {
-        name: '🤝🫶',
-        description: 'Grundet manglende omsætning, står jeg desværre til August 2023 uden job, måske er det dig der skal ansætte mig? ;)',
-        date: 'Aug 2023',
-        dateTime: '2023-08',
     }
 ]
 
 const features: { name: string, description: string, icon: FunctionalComponent }[] = [
     {
-        name: 'Servers',
-        description: 'Jeg har erfaring med mange forskellige Linux distros, og kan sætte en server eller et cluster op fra bunden.',
+        name: t('features.servers.name'),
+        description: t('features.servers.description'),
         icon: CloudArrowUpIcon,
     },
     {
-        name: 'Sikkerhed 🛡️',
-        description: 'Jeg har bla. arbejdet med at sætte sikrede VPN netværk op og har erfaring med at lave sikre web applikationer.',
+        name: t('features.security.name'),
+        description: t('features.security.description'),
         icon: LockClosedIcon,
     },
     {
-        name: 'Backend API udvikling ⚙️',
-        description: 'Jeg har erfaring med at lave APIer i Laravel, og har bla. lavet et API til en video streaming platform samt en billet booking platform.',
+        name: t('features.backend_development.name'),
+        description: t('features.backend_development.description'),
         icon: CogIcon,
     },
     {
-        name: 'Automatiseret testing',
-        description: 'Jeg har erfaring med at lave automatiserede tests i Laravel og Symfony med PHPUnit, jeg gør brug af TDD så vidt og når det er muligt.',
+        name: t('features.automated_testing.name'),
+        description: t('features.automated_testing.description'),
         icon: ShieldCheckIcon,
     },
     {
-        name: 'Databaser 🍩',
-        description: 'Jeg har udbredt erfaring med MySQL, MariaDB & PostgreSQL. Jeg har erfaring med ren SQL, Eloquent og Doctrine.',
+        name: t('features.databases.name'),
+        description: t('features.databases.description'),
         icon: CircleStackIcon,
     },
     {
-        name: 'Frontend udvikling ✨',
-        description: 'Jeg har erfaring med at lave frontend i Vue, React og Laravel blade + Livewire.',
+        name: t('features.frontend_development.name'),
+        description: t('features.frontend_development.description'),
         icon: ArrowPathIcon,
     },
     {
-        name: 'App udvikling 📱',
-        description: 'Jeg har erfaring med at lave apps i React Native inkl. native modules i Java/Kotlin & Objc/Swift.',
+        name: t('features.app_development.name'),
+        description: t('features.app_development.description'),
         icon: CursorArrowRaysIcon
     },
     {
-        name: 'Version Control',
-        description: 'Jeg har erfaring med Git og har bla. brugt det til at holde styr på mine egne projekter samt projekter på arbejde.',
+        name: t('features.vcs.name'),
+        description: t('features.vcs.description'),
         icon: ClipboardDocumentCheckIcon,
     },
     {
-        name: 'Backups 💾',
-        description: 'Jeg har lært hvor vigtigt det er at have backups af ens data, og har erfaring med at lave backups af databaser og filer.',
+        name: t('features.backups.name'),
+        description: t('features.backups.description'),
         icon: DocumentDuplicateIcon,
     },
 ]
