@@ -83,14 +83,16 @@
                                 <DropdownLink v-if="page.props.auth.user.can_access_filament"
                                     :href="route('filament.pages.dashboard')">
                                     {{ t('navigation.authenticated.admin') }}</DropdownLink>
-                                <DropdownLink :href="route('profile.edit')"> {{ t('navigation.authenticated.profile') }} </DropdownLink>
+                                <DropdownLink :href="route('profile.edit')"> {{ t('navigation.authenticated.profile') }}
+                                </DropdownLink>
                                 <DropdownLink :href="route('logout')" method="post" as="button">
                                     {{ t('navigation.authenticated.log_out') }}
                                 </DropdownLink>
                             </template>
                         </Dropdown>
                     </div>
-                    <NavLink v-else :href="route('login')">{{ t('navigation.guest.log_in') }} <span aria-hidden="true">&rarr;</span></NavLink>
+                    <NavLink v-else :href="route('login')">{{ t('navigation.guest.log_in') }} <span
+                            aria-hidden="true">&rarr;</span></NavLink>
                 </div>
             </nav>
             <Dialog as="div" class="lg:hidden" @close="mobileMenuOpen = false" :open="mobileMenuOpen">
@@ -103,7 +105,7 @@
                             <ApplicationLogo class="w-auto h-8" />
                         </a>
                         <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = false">
-                            <span class="sr-only">{{  t('menus.main.close') }}</span>
+                            <span class="sr-only">{{ t('menus.main.close') }}</span>
                             <XMarkIcon class="w-6 h-6" aria-hidden="true" />
                         </button>
                     </div>
@@ -124,20 +126,23 @@
                                 </div>
 
                                 <div class="mt-3 space-y-1">
-                                    <ResponsiveNavLink :href="route('dashboard')">{{  t('navigation.authenticated.dashboard') }}
+                                    <ResponsiveNavLink :href="route('dashboard')">{{ t('navigation.authenticated.dashboard')
+                                    }}
                                         <span aria-hidden="true">&rarr;</span>
                                     </ResponsiveNavLink>
                                     <ResponsiveNavLink v-if="page.props.auth.user.can_access_filament"
                                         :href="route('filament.pages.dashboard')">
                                         {{ t('navigation.authenticated.admin') }}</ResponsiveNavLink>
-                                    <ResponsiveNavLink :href="route('profile.edit')"> {{ t('navigation.authenticated.profile') }} </ResponsiveNavLink>
+                                    <ResponsiveNavLink :href="route('profile.edit')"> {{
+                                        t('navigation.authenticated.profile') }} </ResponsiveNavLink>
                                     <ResponsiveNavLink :href="route('logout')" method="post" as="button">
                                         {{ t('navigation.authenticated.log_out') }}
                                     </ResponsiveNavLink>
                                 </div>
                             </div>
 
-                            <ResponsiveNavLink v-else :href="route('login')">{{ t('navigation.guest.log_in') }}</ResponsiveNavLink>
+                            <ResponsiveNavLink v-else :href="route('login')">{{ t('navigation.guest.log_in') }}
+                            </ResponsiveNavLink>
                         </div>
                     </div>
                 </DialogPanel>
@@ -209,7 +214,8 @@
             <div class="pb-8 mt-32 overflow-hidden sm:mt-40">
                 <div class="max-w-md px-6 mx-auto text-center sm:max-w-3xl lg:max-w-7xl lg:px-8">
                     <h2 class="text-lg font-semibold text-sky-400">{{ t('features.headline') }}</h2>
-                    <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ t('features.tagline') }}</p>
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ t('features.tagline') }}
+                    </p>
                     <div class="mt-20">
                         <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
                             <div v-for="feature in features" :key="feature.name" class="pt-6">
@@ -344,7 +350,8 @@
                             </div>
                             <div class="mt-10">
                                 <button type="submit" :disabled="contactForm.processing"
-                                    class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{{ t('contactForm.submit') }}</button>
+                                    class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{{
+                                        t('contactForm.submit') }}</button>
                             </div>
                             <!-- <p class="mt-4 text-sm leading-6 text-gray-500">By submitting this form, I agree to the <a
                                     href="#" class="font-semibold text-indigo-600">privacy&nbsp;policy</a>.</p> -->
@@ -481,7 +488,7 @@
                                                             {{ t('contactFormSuccessModal.thanks') }}
                                                         </p>
                                                         <p class="text-sm text-gray-500">
-                                                            {{  t('contactFormSuccessModal.i_be_back') }}
+                                                            {{ t('contactFormSuccessModal.i_be_back') }}
                                                         </p>
                                                     </div>
                                                 </div>
@@ -489,7 +496,8 @@
                                             <div class="mt-5 sm:mt-6">
                                                 <button type="button"
                                                     class="inline-flex justify-center w-full px-3 py-2 text-sm font-semibold text-white rounded-lg shadow-2xl from-purple-600 via-pink-600 to-blue-600 bg-gradient-to-r shadow-purple-400"
-                                                    @click="showContactFormSucessModal = false">{{ t('contactFormSuccessModal.close') }}</button>
+                                                    @click="showContactFormSucessModal = false">{{
+                                                        t('contactFormSuccessModal.close') }}</button>
                                             </div>
                                         </DialogPanel>
                                     </TransitionChild>
@@ -524,6 +532,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import TextInput from '@/Components/TextInput.vue';
+import { i18nCtx } from '@/Plugins/i18n';
 import type { PageProps } from '@/types/index';
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue';
 import { CircleStackIcon, ClipboardDocumentCheckIcon, CursorArrowRaysIcon, DocumentDuplicateIcon } from '@heroicons/vue/20/solid';
@@ -536,12 +545,10 @@ import {
     ShieldCheckIcon,
     XMarkIcon
 } from '@heroicons/vue/24/outline';
-import { usePage, router } from '@inertiajs/vue3';
+import { router, usePage } from '@inertiajs/vue3';
 import { useForm } from 'laravel-precognition-vue-inertia';
-import { defineComponent, h, ref } from 'vue';
-import { i18nCtx } from '@/Plugins/i18n';
+import { computed, defineComponent, h, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { computed } from 'vue';
 
 const { navigation } = defineProps<{
     navigation: { name: string, href: string }[],
