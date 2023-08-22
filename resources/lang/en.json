@@ -54,7 +54,8 @@
       "name": "Backups 💾",
       "description": "I have learned how important it is to have backups of one's data, and have experience in making backups of databases and files."
     },
-    "headline": "Get in the air safely and quickly"
+    "headline": "Get in the air safely and quickly",
+    "tagline": "With me on the team, you have a teammate who can lift a bit of everything"
   },
   "menus": {
     "main": {
@@ -92,7 +93,8 @@
     "email": "E-mail address",
     "phone": "Telephone number.",
     "message": "Message",
-    "submit": "let's talk"
+    "submit": "let's talk",
+    "headline": "Do I sound exciting?"
   },
   "contactFormSuccessModal": {
     "headline": "Your inquiry has been received.",

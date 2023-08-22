@@ -157,9 +157,9 @@
                             class="max-w-2xl text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:col-span-2 xl:col-auto">
                             {{ page.props.app.name }}</h1>
                         <div class="max-w-xl mt-6 lg:mt-0 xl:col-end-1 xl:row-start-1">
-                            <i18n path="hero.headline" tag="p" class="text-lg leading-8 text-gray-600">
+                            <i18n-t keypath="hero.headline" tag="p" class="text-lg leading-8 text-gray-600">
                                 <br />
-                            </i18n>
+                            </i18n-t>
                             <p class="text-lg leading-6 text-gray-600">
                                 {{ t('hero.headline1') }}
                             </p>
@@ -541,7 +541,6 @@ import { useForm } from 'laravel-precognition-vue-inertia';
 import { FunctionalComponent, defineComponent, h, ref } from 'vue';
 import { i18nCtx } from '@/Plugins/i18n';
 import { useI18n } from 'vue-i18n';
-import i18n from "vue-i18n/src/components/interpolation"; 
 
 const { navigation } = defineProps<{
     navigation: { name: string, href: string }[],
