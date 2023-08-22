@@ -38,15 +38,18 @@ class HandleInertiaRequests extends Middleware
             'app' => [
                 'name' => config('app.name'),
                 'domain' => parse_url(config('app.url'), PHP_URL_HOST),
+                'locale' => app()->getLocale()
             ],
             'auth' => [
-                'user' => $this->when($request->user(), fn ($_, User $user) => [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'email_verified_at' => $user->email_verified_at,
-                    'can_access_filament' => $user->canAccessFilament()
-                ])
+                'user' => fn () => $request->user()
+                    ? [
+                        'id' => $request->user()->id,
+                        'name' => $request->user()->name,
+                        'email' => $request->user()->email,
+                        'email_verified_at' => $request->user()->email_verified_at,
+                        'can_access_filament' => $request->user()->canAccessFilament()
+                    ]
+                    : null
             ],
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [

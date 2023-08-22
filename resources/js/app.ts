@@ -20,7 +20,11 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue, Ziggy)
             .use(Cloudinary)
-            .use(i18n)
+            .use(i18n(
+                props.initialPage.props.app.locale
+                    ? String(props.initialPage.props.app.locale)
+                    : 'da'
+            ))
             .mount(el);
     },
     progress: {

@@ -21,6 +21,7 @@ use Inertia\Inertia;
 |
 */
 
+Route::post('/locale', [AppController::class, 'updateLocale'])->name('locale.change');
 Route::get('/', [AppController::class, 'welcome'])->name('welcome');
 Route::get('/about', [AppController::class, 'about'])->name('about');
 Route::get('/contact', [AppController::class, 'contact'])->name('contact');

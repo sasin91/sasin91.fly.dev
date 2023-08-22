@@ -13,23 +13,58 @@
                     <button type="button"
                         class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
                         @click="mobileMenuOpen = true">
-                        <span class="sr-only">Åbn hovedmenu</span>
+                        <span class="sr-only">{{ t('menus.main.open') }}</span>
                         <Bars3Icon class="w-6 h-6" aria-hidden="true" />
                     </button>
                 </div>
                 <div class="hidden lg:flex lg:gap-x-12">
                     <NavLink v-for="item in navigation" :key="item.name" :href="item.href">
-                        {{ t(item.name) }}
+                        {{ t(`navigation.global.${item.name}`) }}
                     </NavLink>
                 </div>
                 <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+                    <Dropdown align="right" width="48">
+                        <template #trigger>
+                            <span class="inline-flex rounded-md">
+                                <button type="button"
+                                    class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 transition-all duration-300 ease-in-out text-cyan-500 group">
+                                    {{ locale }}
+
+                                    <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                        fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </span>
+                        </template>
+
+                        <template #content>
+                            <template v-for="lang in availableLocales">
+                                <button v-if="lang === locale" disabled key="current-lang"
+                                    class="block w-full px-4 py-2 text-sm leading-5 text-left">
+                                    <span class="text-cyan-200">
+                                        {{ lang }}
+                                    </span>
+                                </button>
+                                <button v-else :key="lang" @click="changeLocale(lang)"
+                                    class="block w-full px-4 py-2 text-sm leading-5 text-left transition-all duration-300 ease-in-out group">
+                                    <span
+                                        class="text-cyan-500 group-hover:text-indigo-600 bg-left-bottom bg-gradient-to-r from-indigo-200 via-violet-400 to-cyan-200 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
+                                        {{ lang }}
+                                    </span>
+                                </button>
+                            </template>
+                        </template>
+                    </Dropdown>
                     <div v-if="page.props.auth.user" class="relative ml-3">
                         <Dropdown align="right" width="48">
                             <template #trigger>
                                 <span class="inline-flex rounded-md">
                                     <button type="button"
                                         class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 transition-all duration-300 ease-in-out text-cyan-500 group">
-                                        {{ $page.props.auth.user.name }}
+                                        {{ page.props.auth.user.name }}
 
                                         <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 20 20" fill="currentColor">
@@ -42,20 +77,20 @@
                             </template>
 
                             <template #content>
-                                <DropdownLink :href="route('dashboard')">Instrumentbræt
+                                <DropdownLink :href="route('dashboard')">{{ t('navigation.authenticated.dashboard') }}
                                     <span aria-hidden="true">&rarr;</span>
                                 </DropdownLink>
-                                <DropdownLink if="page.props.auth.user.can_access_filament"
+                                <DropdownLink v-if="page.props.auth.user.can_access_filament"
                                     :href="route('filament.pages.dashboard')">
-                                    Admin</DropdownLink>
-                                <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink>
+                                    {{ t('navigation.authenticated.admin') }}</DropdownLink>
+                                <DropdownLink :href="route('profile.edit')"> {{ t('navigation.authenticated.profile') }} </DropdownLink>
                                 <DropdownLink :href="route('logout')" method="post" as="button">
-                                    Log Out
+                                    {{ t('navigation.authenticated.log_out') }}
                                 </DropdownLink>
                             </template>
                         </Dropdown>
                     </div>
-                    <NavLink v-else :href="route('login')">Log ind <span aria-hidden="true">&rarr;</span></NavLink>
+                    <NavLink v-else :href="route('login')">{{ t('navigation.guest.log_in') }} <span aria-hidden="true">&rarr;</span></NavLink>
                 </div>
             </nav>
             <Dialog as="div" class="lg:hidden" @close="mobileMenuOpen = false" :open="mobileMenuOpen">
@@ -68,7 +103,7 @@
                             <ApplicationLogo class="w-auto h-8" />
                         </a>
                         <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = false">
-                            <span class="sr-only">Luk menu</span>
+                            <span class="sr-only">{{  t('menus.main.close') }}</span>
                             <XMarkIcon class="w-6 h-6" aria-hidden="true" />
                         </button>
                     </div>
@@ -76,33 +111,33 @@
                         <div class="-my-6 divide-y divide-gray-500/10">
                             <div class="py-6 space-y-2">
                                 <ResponsiveNavLink v-for="item in navigation" :key="item.name" :href="item.href">
-                                    {{ item.name }}
+                                    {{ t(`navigation.global.${item.name}`) }}
                                 </ResponsiveNavLink>
                             </div>
                             <div v-if="page.props.auth.user" class="py-6">
                                 <div class="px-4">
                                     <div class="text-base font-medium text-gray-800 dark:text-gray-200">
-                                        {{ $page.props.auth.user.name }}
+                                        {{ page.props.auth.user.name }}
                                     </div>
-                                    <div class="text-sm font-medium text-gray-500">{{ $page.props.auth.user.email }}
+                                    <div class="text-sm font-medium text-gray-500">{{ page.props.auth.user.email }}
                                     </div>
                                 </div>
 
                                 <div class="mt-3 space-y-1">
-                                    <ResponsiveNavLink :href="route('dashboard')">Instrumentbræt
+                                    <ResponsiveNavLink :href="route('dashboard')">{{  t('navigation.authenticated.dashboard') }}
                                         <span aria-hidden="true">&rarr;</span>
                                     </ResponsiveNavLink>
-                                    <ResponsiveNavLink if="page.props.auth.user.can_access_filament"
+                                    <ResponsiveNavLink v-if="page.props.auth.user.can_access_filament"
                                         :href="route('filament.pages.dashboard')">
-                                        Admin</ResponsiveNavLink>
-                                    <ResponsiveNavLink :href="route('profile.edit')"> Profile </ResponsiveNavLink>
+                                        {{ t('navigation.authenticated.admin') }}</ResponsiveNavLink>
+                                    <ResponsiveNavLink :href="route('profile.edit')"> {{ t('navigation.authenticated.profile') }} </ResponsiveNavLink>
                                     <ResponsiveNavLink :href="route('logout')" method="post" as="button">
-                                        Log Out
+                                        {{ t('navigation.authenticated.log_out') }}
                                     </ResponsiveNavLink>
                                 </div>
                             </div>
 
-                            <ResponsiveNavLink v-else :href="route('login')">Log ind</ResponsiveNavLink>
+                            <ResponsiveNavLink v-else :href="route('login')">{{ t('navigation.guest.log_in') }}</ResponsiveNavLink>
                         </div>
                     </div>
                 </DialogPanel>
@@ -507,16 +542,28 @@ import {
     ShieldCheckIcon,
     XMarkIcon
 } from '@heroicons/vue/24/outline';
-import { usePage } from '@inertiajs/vue3';
+import { usePage, router } from '@inertiajs/vue3';
 import { useForm } from 'laravel-precognition-vue-inertia';
 import { FunctionalComponent, defineComponent, h, ref } from 'vue';
-import { useI18n } from '@/Plugins/i18n';
+import { i18nCtx } from '@/Plugins/i18n';
+import { useI18n } from 'vue-i18n';
 
 const { navigation } = defineProps<{
     navigation: { name: string, href: string }[],
 }>();
 
-const { t } = useI18n()
+const { t, locale, availableLocales } = useI18n(i18nCtx);
+
+function changeLocale(lang: "da" | "en") {
+    locale.value = lang;
+
+    // router.visit(`/${lang}/${route().current()}`);
+    router.post(
+        route('locale.change'),
+        { locale: lang },
+        { preserveScroll: true }
+    );
+}
 
 const page = usePage<PageProps>();
 

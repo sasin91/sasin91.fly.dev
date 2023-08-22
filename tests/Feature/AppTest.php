@@ -5,6 +5,7 @@ use App\Models\ContactRequest;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
+use function PHPUnit\Framework\assertEquals;
 
 it('has welcome page', function () {
     $response = get(route('welcome'));
@@ -26,4 +27,15 @@ it('can submit a contact form', function () {
     $response->assertRedirect(route('welcome'));
 
     assertDatabaseHas(ContactRequest::class, $params);
+});
+
+it('can change the locale', function () {
+    $response = post(route('locale.change'), [
+        'locale' => 'en'
+    ]);
+
+    $response->assertSuccessful();
+
+    assertEquals('en', app()->getLocale());
+    assertEquals('en', request()->getLocale());
 });

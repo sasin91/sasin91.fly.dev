@@ -1,4 +1,4 @@
-import { createI18n, useI18n as forwardUseI18n } from 'vue-i18n'
+import { createI18n } from 'vue-i18n'
 
 import en from '../../lang/en.json';
 import da from '../../lang/da.json';
@@ -16,24 +16,11 @@ export type NumberSchema = {
     }
 }
 
-const ctx = {
-    legacy: false,
-    locale: 'da',
+export const i18nCtx = {
     fallbackLocale: 'en',
     messages: {
-        'en': en,
-        'da': da
-    },
-    datetimeFormats: {
-        'da': {
-            short: {
-                hour: 'numeric',
-                minute: 'numeric',
-                second: 'numeric',
-                timeZoneName: 'short',
-                timezone: 'Europe/Copenhagen'
-            }
-        }
+        da,
+        en
     },
     numberFormats: {
         'da': {
@@ -42,10 +29,11 @@ const ctx = {
                 currencyDisplay: 'symbol',
                 currency: 'DKK'
             }
-        }
+        },
     }
 };
 
-export const useI18n = () => forwardUseI18n(ctx);
-
-export default createI18n(ctx);
+export default (locale?: string) => createI18n({
+    ...i18nCtx,
+    locale: locale || 'da'
+});

@@ -54,5 +54,29 @@
       "name": "Backups 💾",
       "description": "I have learned how important it is to have backups of one's data, and have experience in making backups of databases and files."
     }
+  },
+  "menus": {
+    "main": {
+      "open": "Open main menu",
+      "close": "Close menu"
+    }
+  },
+  "navigation": {
+    "global": {
+      "home": "Home",
+      "about": "About",
+      "contact": "Contakt",
+      "uses": "Uses",
+      "projects": "Projects"
+    },
+    "authenticated": {
+      "dashboard": "Dashboard",
+      "profile": "Profile",
+      "admin": "Admin",
+      "log_out": "log out"
+    },
+    "guest": {
+      "log_in": "Log in"
+    }
   }
 }

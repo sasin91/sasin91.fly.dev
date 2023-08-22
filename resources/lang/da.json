@@ -1,9 +1,4 @@
 {
-  "Home": "Hjem",
-  "About": "Om",
-  "Contact": "Kontakt",
-  "Uses": "Udstyr",
-  "Projects": "Projekter",
   "timeline": {
     "webintegrator": {
       "name": "Uddannet WebIntegrator 🎉",
@@ -58,6 +53,30 @@
     "backups": {
       "name": "Backups 💾",
       "description": "Jeg har lært hvor vigtigt det er at have backups af ens data, og har erfaring med at lave backups af databaser og filer."
+    }
+  },
+  "menus": {
+    "main": {
+      "open": "Åbn hovedmenu",
+      "close": "Luk menu"
+    }
+  },
+  "navigation": {
+    "global": {
+      "home": "Hjem",
+      "about": "Om",
+      "contact": "Kontakt",
+      "uses": "Udstyr",
+      "projects": "Projekter"
+    },
+    "authenticated": {
+      "dashboard": "Instrumentbræt",
+      "profile": "Profil",
+      "admin": "Admin",
+      "log_out": "Log ud"
+    },
+    "guest": {
+      "log_in": "Log ind"
     }
   }
 }
