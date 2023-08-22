@@ -53,7 +53,14 @@
     "backups": {
       "name": "Backups 💾",
       "description": "Jeg har lært hvor vigtigt det er at have backups af ens data, og har erfaring med at lave backups af databaser og filer."
-    }
+    },
+    "headline": "Kom sikkert og hurtigt i luften",
+    "tagline": "Med mig på holdet, har i en medspiller som kan løfte lidt af det hele"
+  },
+  "hero": {
+    "headline": "👋 Jeg er Jonas, en webudvikler fra Slagelse. {0} Jeg har arbejdet med PHP og Laravel siden 2015, {0} og har siden da været med til at udvikle et billet agentur, en video streaming platform og {0} en rekruteringsplatform.",
+    "headline1": "Jeg trives med nye og spændende ideér og udfordringer, og er altid klar på at lære noget nyt.",
+    "headline2": "Og anerkender vigtigheden af at skrive ren og læsbar kode, som er nem at vedligeholde."
   },
   "menus": {
     "main": {
@@ -78,5 +85,21 @@
     "guest": {
       "log_in": "Log ind"
     }
+  },
+  "contactForm": {
+    "headline": "Lyder jeg spændende?",
+    "tagline": "Så lad os snakke sammen 🤗",
+    "companyName": "Firma navn",
+    "contactPerson": "Kontakt person",
+    "email": "E-mail addresse",
+    "phone": "Telefon Nr.",
+    "message": "Besked",
+    "submit": "Lad os snakke"
+  },
+  "contactFormSuccessModal": {
+    "headline": "Din forespørgsel er modtaget.",
+    "thanks": "Tuside tak for beskeden.",
+    "i_be_back": "Jeg vender tilbage hurtigst.",
+    "close": "Luk vinduet"
   }
 }

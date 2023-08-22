@@ -53,7 +53,8 @@
     "backups": {
       "name": "Backups 💾",
       "description": "I have learned how important it is to have backups of one's data, and have experience in making backups of databases and files."
-    }
+    },
+    "headline": "Get in the air safely and quickly"
   },
   "menus": {
     "main": {
@@ -78,5 +79,24 @@
     "guest": {
       "log_in": "Log in"
     }
+  },
+  "hero": {
+    "headline": "👋 I'm Jonas, a web developer from Slagelse. \n{0} I have been working with PHP and Laravel since 2015, {0} and since then have helped develop a ticket agency, a video streaming platform and {0} a recruiting platform.",
+    "headline1": "I thrive on new and exciting ideas and challenges, and am always ready to learn something new.",
+    "headline2": "And recognizes the importance of writing clean and readable code that is easy to maintain."
+  },
+  "contactForm": {
+    "tagline": "So let's talk together 🤗",
+    "companyName": "Company name",
+    "contactPerson": "Contact person",
+    "email": "E-mail address",
+    "phone": "Telephone number.",
+    "message": "Message",
+    "submit": "let's talk"
+  },
+  "contactFormSuccessModal": {
+    "headline": "Your inquiry has been received.",
+    "i_be_back": "I will return as soon as possible.",
+    "close": "close the window"
   }
 }

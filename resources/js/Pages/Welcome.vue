@@ -157,18 +157,14 @@
                             class="max-w-2xl text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:col-span-2 xl:col-auto">
                             {{ page.props.app.name }}</h1>
                         <div class="max-w-xl mt-6 lg:mt-0 xl:col-end-1 xl:row-start-1">
-                            <p class="text-lg leading-8 text-gray-600">
-                                👋 Jeg er Jonas, en webudvikler fra Slagelse. <br />
-                                Jeg har arbejdet med PHP og Laravel siden 2015,
-                                og har siden da været med til at udvikle et billet agentur, en video streaming platform og
-                                en rekruteringsplatform.
+                            <i18n path="hero.headline" tag="p" class="text-lg leading-8 text-gray-600">
+                                <br />
+                            </i18n>
+                            <p class="text-lg leading-6 text-gray-600">
+                                {{ t('hero.headline1') }}
                             </p>
                             <p class="text-lg leading-6 text-gray-600">
-                                Jeg trives med nye og spændende ideér og udfordringer, og er altid klar på at lære noget
-                                nyt.
-                            </p>
-                            <p class="text-lg leading-6 text-gray-600">
-                                Og anerkender vigtigheden af at skrive ren og læsbar kode, som er nem at vedligeholde.
+                                {{ t('hero.headline2') }}
                             </p>
                             <div class="flex mt-6 space-x-6 md:order-2">
                                 <a v-for="item in social" :key="item.name" :href="item.href"
@@ -212,9 +208,8 @@
             <!-- Features section -->
             <div class="pb-8 mt-32 overflow-hidden sm:mt-40">
                 <div class="max-w-md px-6 mx-auto text-center sm:max-w-3xl lg:max-w-7xl lg:px-8">
-                    <h2 class="text-lg font-semibold text-sky-400">Kom sikkert og hurtigt i luften</h2>
-                    <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Med mig på holdet, har i en
-                        medspiller som kan løfte lidt af det hele</p>
+                    <h2 class="text-lg font-semibold text-sky-400">{{ t('features.headline') }}</h2>
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ t('features.tagline') }}</p>
                     <div class="mt-20">
                         <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
                             <div v-for="feature in features" :key="feature.name" class="pt-6">
@@ -298,14 +293,14 @@
                     <rect width="100%" height="100%" stroke-width="0" fill="url(#83fd4e5a-9d52-42fc-97b6-718e5d7ee527)" />
                 </svg>
                 <div class="max-w-xl mx-auto lg:max-w-4xl">
-                    <h2 class="text-4xl font-bold tracking-tight text-gray-900">Lyder jeg spændende?</h2>
-                    <p class="mt-2 text-lg leading-8 text-gray-600">Så lad os snakke sammen 🤗</p>
+                    <h2 class="text-4xl font-bold tracking-tight text-gray-900">{{ t('contactForm.headline') }}</h2>
+                    <p class="mt-2 text-lg leading-8 text-gray-600">{{ t('contactForm.tagline') }}</p>
                     <div class="flex flex-col gap-16 mt-16 sm:gap-y-20 lg:flex-row">
                         <form @submit.prevent="submitContactForm" :action="route('contact-request.store')" method="POST"
                             class="lg:flex-auto">
                             <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                                 <div>
-                                    <InputLabel for="companyName" value="Firma navn" />
+                                    <InputLabel for="companyName" :value="t('contactForm.companyName')" />
 
                                     <TextInput id="companyName" type="text" class="block w-full mt-1"
                                         v-model="contactForm.companyName" @change="contactForm.validate('companyName')"
@@ -314,7 +309,7 @@
                                     <InputError class="mt-2" :message="contactForm.errors.companyName" />
                                 </div>
                                 <div>
-                                    <InputLabel for="contactPerson" value="Kontakt person" />
+                                    <InputLabel for="contactPerson" :value="t('contactForm.contactPerson')" />
 
                                     <TextInput id="contactPerson" type="text" class="block w-full mt-1"
                                         v-model="contactForm.contactPerson" @change="contactForm.validate('contactPerson')"
@@ -323,7 +318,7 @@
                                     <InputError class="mt-2" :message="contactForm.errors.contactPerson" />
                                 </div>
                                 <div>
-                                    <InputLabel for="email" value="E-mail addresse" />
+                                    <InputLabel for="email" :value="t('contactForm.email')" />
 
                                     <TextInput id="email" type="email" class="block w-full mt-1" v-model="contactForm.email"
                                         @change="contactForm.validate('email')" required autocomplete="email" />
@@ -331,7 +326,7 @@
                                     <InputError class="mt-2" :message="contactForm.errors.email" />
                                 </div>
                                 <div>
-                                    <InputLabel for="phone" value="Telefon Nr." />
+                                    <InputLabel for="phone" :value="t('contactForm.phone')" />
 
                                     <TextInput id="phone" type="tel" class="block w-full mt-1" v-model="contactForm.phone"
                                         @change="contactForm.validate('phone')" required autocomplete="tel" />
@@ -339,7 +334,7 @@
                                     <InputError class="mt-2" :message="contactForm.errors.email" />
                                 </div>
                                 <div class="sm:col-span-2">
-                                    <InputLabel for="message" value="Besked" />
+                                    <InputLabel for="message" :value="t('contactForm.message')" />
 
                                     <div class="mt-2.5">
                                         <textarea v-model="contactForm.message" id="message" name="message" rows="4"
@@ -349,8 +344,7 @@
                             </div>
                             <div class="mt-10">
                                 <button type="submit" :disabled="contactForm.processing"
-                                    class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Lad
-                                    os snakke</button>
+                                    class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{{ t('contactForm.submit') }}</button>
                             </div>
                             <!-- <p class="mt-4 text-sm leading-6 text-gray-500">By submitting this form, I agree to the <a
                                     href="#" class="font-semibold text-indigo-600">privacy&nbsp;policy</a>.</p> -->
@@ -480,14 +474,14 @@
                                                 <div class="mt-3 text-center sm:mt-5">
                                                     <DialogTitle as="h3"
                                                         class="text-base font-semibold leading-6 text-transparent from-purple-600 via-pink-600 to-blue-600 bg-gradient-to-r bg-clip-text">
-                                                        <span>Din forespørgsel er modtaget.</span>
+                                                        <span>{{ t('contactFormSuccessModal.headline') }}</span>
                                                     </DialogTitle>
                                                     <div class="mt-2">
                                                         <p class="text-sm text-gray-500">
-                                                            Tuside tak for beskeden.
+                                                            {{ t('contactFormSuccessModal.thanks') }}
                                                         </p>
                                                         <p class="text-sm text-gray-500">
-                                                            Jeg vender tilbage hurtigst.
+                                                            {{  t('contactFormSuccessModal.i_be_back') }}
                                                         </p>
                                                     </div>
                                                 </div>
@@ -495,7 +489,7 @@
                                             <div class="mt-5 sm:mt-6">
                                                 <button type="button"
                                                     class="inline-flex justify-center w-full px-3 py-2 text-sm font-semibold text-white rounded-lg shadow-2xl from-purple-600 via-pink-600 to-blue-600 bg-gradient-to-r shadow-purple-400"
-                                                    @click="showContactFormSucessModal = false">Luk vinduet</button>
+                                                    @click="showContactFormSucessModal = false">{{ t('contactFormSuccessModal.close') }}</button>
                                             </div>
                                         </DialogPanel>
                                     </TransitionChild>
@@ -547,6 +541,7 @@ import { useForm } from 'laravel-precognition-vue-inertia';
 import { FunctionalComponent, defineComponent, h, ref } from 'vue';
 import { i18nCtx } from '@/Plugins/i18n';
 import { useI18n } from 'vue-i18n';
+import i18n from "vue-i18n/src/components/interpolation"; 
 
 const { navigation } = defineProps<{
     navigation: { name: string, href: string }[],
