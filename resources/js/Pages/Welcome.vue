@@ -538,9 +538,10 @@ import {
 } from '@heroicons/vue/24/outline';
 import { usePage, router } from '@inertiajs/vue3';
 import { useForm } from 'laravel-precognition-vue-inertia';
-import { FunctionalComponent, defineComponent, h, ref } from 'vue';
+import { defineComponent, h, ref } from 'vue';
 import { i18nCtx } from '@/Plugins/i18n';
 import { useI18n } from 'vue-i18n';
+import { computed } from 'vue';
 
 const { navigation } = defineProps<{
     navigation: { name: string, href: string }[],
@@ -632,7 +633,7 @@ const social = [
     },
 ];
 
-const timeline: { name: string, href?: string, description: string, date: string, dateTime: string }[] = [
+const timeline = computed(() => [
     {
         name: t('timeline.webintegrator.name'),
         description: t('timeline.webintegrator.description'),
@@ -659,9 +660,9 @@ const timeline: { name: string, href?: string, description: string, date: string
         date: 'Jan 2023',
         dateTime: '2023-01',
     }
-]
+]);
 
-const features: { name: string, description: string, icon: FunctionalComponent }[] = [
+const features = computed(() => [
     {
         name: t('features.servers.name'),
         description: t('features.servers.description'),
@@ -707,7 +708,7 @@ const features: { name: string, description: string, icon: FunctionalComponent }
         description: t('features.backups.description'),
         icon: DocumentDuplicateIcon,
     },
-]
+]);
 
 const contactForm = useForm('post', route('contact-request.store'), {
     companyName: '',
