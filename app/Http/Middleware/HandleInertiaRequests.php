@@ -38,7 +38,7 @@ class HandleInertiaRequests extends Middleware
             'app' => [
                 'name' => config('app.name'),
                 'domain' => parse_url(config('app.url'), PHP_URL_HOST),
-                'locale' => app()->getLocale()
+                'locale' => session('locale')
             ],
             'auth' => [
                 'user' => fn () => $request->user()

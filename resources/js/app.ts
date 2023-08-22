@@ -14,6 +14,8 @@ createInertiaApp({
     title: (title) => title ? `${title} :: ${appName}` : appName,
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob<DefineComponent>('./Pages/**/*.vue')),
     setup({ el, App, props, plugin }) {
+        const lang = props.initialPage.props.app.locale || navigator.language.split('-', 2)[0];
+
         createApp({
             render: () => h(App, props),
         })
@@ -21,9 +23,9 @@ createInertiaApp({
             .use(ZiggyVue, Ziggy)
             .use(Cloudinary)
             .use(i18n(
-                props.initialPage.props.app.locale
-                    ? String(props.initialPage.props.app.locale)
-                    : 'da'
+                ['en', 'da'].includes(lang) 
+                    ? lang 
+                    : 'en'
             ))
             .mount(el);
     },
