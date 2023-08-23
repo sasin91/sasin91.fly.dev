@@ -8,14 +8,7 @@ class AppController
 {
     public function welcome()
     {
-        return inertia('Welcome', [
-            'navigation' => [
-                // ['name' => 'About', 'href' => route('about')],
-                // ['name' => 'Contact', 'href' => route('contact')],
-                ['name' => 'uses', 'href' => route('uses')],
-                ['name' => 'projects', 'href' => route('projects')]
-            ],
-        ]);
+        return inertia('Welcome');
     }
 
     public function updateLocale(Request $request)
