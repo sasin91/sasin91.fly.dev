@@ -3,11 +3,14 @@
 namespace App\Livewire\Welcome;
 
 use App\Models\ContactRequest;
+use DanHarrin\LivewireRateLimiting\WithRateLimiting;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 
 class CreateContactRequest extends Component
 {
+    use WithRateLimiting;
+
     #[Rule(['required', 'string', 'max:255'])]
     public string $companyName;
     #[Rule(['required', 'string', 'max:255'])]
@@ -21,6 +24,8 @@ class CreateContactRequest extends Component
 
     public function submit()
     {
+        $this->rateLimit(5);
+
         $this->authorize('create', ContactRequest::class);
 
         $validated = $this->validate();
