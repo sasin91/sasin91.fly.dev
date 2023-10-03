@@ -19,7 +19,7 @@ new class extends Component {
     <nav class="flex items-center justify-between p-6 mx-auto max-w-7xl lg:px-8"
          aria-label="Global">
         <div class="flex lg:flex-1">
-            <a href="{{ route('welcome') }}" class="-m-1.5 p-1.5">
+            <a href="{{ route('welcome') }}" class="-m-1.5 p-1.5" wire:navigate>
                 <span class="sr-only">{{ config('app.name') }}</span>
                 <x-application-logo class="w-auto h-8"/>
             </a>
@@ -27,45 +27,57 @@ new class extends Component {
         <div class="flex lg:hidden">
             <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
                     @click="mobileMenuOpen = true">
-                <span class="sr-only">{{ __('menus')['main']['open'] }}</span>
-                <Bars3Icon class="w-6 h-6" aria-hidden="true"/>
+                <span class="sr-only">{{ t('menus.main.open') }}</span>
+                <x-heroicon-m-bars-3 class="w-6 h-6" aria-hidden="true" />
             </button>
         </div>
         <div class="hidden lg:flex lg:gap-x-12">
             <x-nav-link href="{{ route('uses') }}" :active="request()->routeIs('uses')" wire:navigate>
-                {{ __('navigation')['global']['uses'] }}
+                {{ t('navigation.global.uses') }}
             </x-nav-link>
             <x-nav-link href="{{ route('projects') }}" :active="request()->routeIs('projects')" wire:navigate>
-                {{ __('navigation')['global']['projects'] }}
+                {{ t('navigation.global.projects') }}
             </x-nav-link>
         </div>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-            <form method="post" action="{{ route('locale.change') }}">
-                <label for="locale" class="block text-sm font-medium leading-6 text-gray-900">
-                    <select onchange="this.form.submit()"
-                            id="locale"
-                            name="locale"
-                            class="mt-2 border-none bg-transparent py-1.5 pl-3 pr-10 block w-full border-l-4 border-transparent text-left text-base font-medium text-gray-600 transition-all duration-300 ease-in-out group sm:text-sm sm:leading-6">
-                        @foreach(config('app.available_locales') as $locale)
-                            <option
-                                class="text-cyan-500 group-hover:text-indigo-600 bg-left-bottom bg-gradient-to-r from-indigo-200 via-violet-400 to-cyan-200 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out"
-                                @selected(config('app.locale') == $locale)
-                                value="{{ $locale }}"
-                            >
-                                {{ $locale }}
-                            </option>
-                        @endforeach
-                    </select>
-                </label>
-                @csrf
-            </form>
+            <livewire:locale-changer />
             @auth()
-                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                    {{ __('navigation')['guest']['dashboard'] }} <span aria-hidden="true">&rarr;</span>
-                </x-nav-link>
+                <!-- Settings Dropdown -->
+                <div class="hidden sm:flex sm:items-center sm:ml-6">
+                    <x-dropdown align="right" width="48">
+                        <x-slot name="trigger">
+                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                                <div x-data="{ name: '{{ auth()->user()->name }}' }" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
+
+                                <div class="ml-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </button>
+                        </x-slot>
+
+                        <x-slot name="content">
+                            <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
+                                {{ t('navigation.authenticated.dashboard') }}
+                            </x-nav-link>
+
+                            <x-dropdown-link :href="route('profile')" wire:navigate>
+                                {{ __('Profile') }}
+                            </x-dropdown-link>
+
+                            <!-- Authentication -->
+                            <button wire:click="logout" class="w-full text-left">
+                                <x-dropdown-link>
+                                    {{ __('Log Out') }}
+                                </x-dropdown-link>
+                            </button>
+                        </x-slot>
+                    </x-dropdown>
+                </div>
             @else
                 <x-nav-link :href="route('login')" :active="request()->routeIs('login')" wire:navigate>
-                    {{ __('navigation')['guest']['log_in'] }} <span aria-hidden="true">&rarr;</span>
+                    {{ t('navigation.guest.log_in') }} <span aria-hidden="true">&rarr;</span>
                 </x-nav-link>
             @endauth
         </div>
@@ -74,41 +86,43 @@ new class extends Component {
     <div :class="{'block': mobileMenuOpen, 'hidden': ! mobileMenuOpen}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link href="{{ route('uses') }}" :active="request()->routeIs('uses')" wire:navigate>
-                {{ __('navigation')['global']['uses'] }}
+                {{ t('navigation.global.uses') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('projects') }}" :active="request()->routeIs('projects')"
                                    wire:navigate>
-                {{ __('navigation')['global']['projects'] }}
+                {{ t('navigation.global.projects') }}
             </x-responsive-nav-link>
 
-            <form method="post" action="{{ route('locale.change') }}">
-                <label for="locale" class="block text-sm font-medium leading-6 text-gray-900">
-                    <select onchange="this.form.submit()"
-                            id="locale"
-                            name="locale"
-                            class="mt-2 border-none bg-transparent py-1.5 pl-3 pr-10 block w-full border-l-4 border-transparent text-left text-base font-medium text-gray-600 transition-all duration-300 ease-in-out group sm:text-sm sm:leading-6">
-                        @foreach(config('app.available_locales') as $locale)
-                            <option
-                                class="text-cyan-500 group-hover:text-indigo-600 bg-left-bottom bg-gradient-to-r from-indigo-200 via-violet-400 to-cyan-200 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out"
-                                @selected(config('app.locale') == $locale)
-                                value="{{ $locale }}"
-                            >
-                                {{ $locale }}
-                            </option>
-                        @endforeach
-                    </select>
-                </label>
-                @csrf
-            </form>
+            <livewire:locale-changer />
 
             @auth()
-                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
-                                       wire:navigate>
-                    {{ __('navigation')['guest']['dashboard'] }} <span aria-hidden="true">&rarr;</span>
-                </x-responsive-nav-link>
+                <!-- Responsive Settings Options -->
+                <div class="pt-4 pb-1 border-t border-gray-200">
+                    <div class="px-4">
+                        <div class="font-medium text-base text-gray-800" x-data="{ name: '{{ auth()->user()->name }}' }" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
+                        <div class="font-medium text-sm text-gray-500">{{ auth()->user()->email }}</div>
+                    </div>
+
+                    <div class="mt-3 space-y-1">
+                        <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
+                            {{ t('navigation.authenticated.dashboard') }}
+                        </x-responsive-nav-link>
+
+                        <x-responsive-nav-link :href="route('profile')" wire:navigate>
+                            {{ __('Profile') }}
+                        </x-responsive-nav-link>
+
+                        <!-- Authentication -->
+                        <button wire:click="logout" class="w-full text-left">
+                            <x-responsive-nav-link>
+                                {{ __('Log Out') }}
+                            </x-responsive-nav-link>
+                        </button>
+                    </div>
+                </div>
             @else
                 <x-responsive-nav-link :href="route('login')" :active="request()->routeIs('login')" wire:navigate>
-                    {{ __('navigation')['guest']['log_in'] }} <span aria-hidden="true">&rarr;</span>
+                    {{ t('navigation.guest.log_in') }} <span aria-hidden="true">&rarr;</span>
                 </x-responsive-nav-link>
             @endauth
         </div>

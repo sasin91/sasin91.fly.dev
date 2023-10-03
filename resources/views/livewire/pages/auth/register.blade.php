@@ -33,7 +33,7 @@ new #[Layout('layouts.guest')] class extends Component
     }
 }; ?>
 
-<div>
+<div class="px-6 py-32 mx-auto max-w-7xl sm:py-40 lg:px-8">
     <form wire:submit="register">
         <!-- Name -->
         <div>

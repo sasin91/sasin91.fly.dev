@@ -15,10 +15,10 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased bg-gradient-to-br from-white via-cyan-100/5 to-magenta-100/20">
-<livewire:layout.navigation />
+<body class="font-sans antialiased bg-gradient-to-b from-indigo-100/20 via-violet-100/40 to-cyan-100/20">
+<livewire:layout.navigation/>
 
-<main class="isolate">
+<main class="isolate pt-14">
     {{ $slot }}
 </main>
 

@@ -31,7 +31,7 @@ it('can submit a contact form', function () {
 
 it('can change the locale', function () {
     $response = post(route('locale.change'), [
-        'locale' => 'en'
+        'locale' => 'en',
     ]);
 
     $response->assertSuccessful();

@@ -1,14 +1,9 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AppController;
-use App\Http\Controllers\ContactRequestController;
 use Illuminate\Foundation\Application;
-use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use Livewire\Volt\Volt;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,27 +16,21 @@ use Inertia\Inertia;
 |
 */
 
-Route::any('/locale', [AppController::class, 'updateLocale'])->name('locale.change');
-Route::get('/', [AppController::class, 'welcome'])->name('welcome');
-Route::get('/about', [AppController::class, 'about'])->name('about');
-Route::get('/contact', [AppController::class, 'contact'])->name('contact');
-Route::get('/uses', [AppController::class, 'uses'])->name('uses');
-Route::get('/projects', [AppController::class, 'projects'])->name('projects');
-Route::post('/contact-request', [ContactRequestController::class, 'store'])
-    ->middleware([
-        HandlePrecognitiveRequests::class,
-        ThrottleRequests::with(maxAttempts: 15, decayMinutes: 1)
-    ])
-    ->name('contact-request.store');
+Volt::route('/', 'welcome')
+    ->name('welcome');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::view('/uses', 'uses')
+    ->name('uses');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+Route::view('/projects', 'projects')
+    ->name('projects');
 
-require __DIR__ . '/auth.php';
+Route::view('/dashboard', 'dashboard')
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+Route::view('profile', 'profile')
+    ->middleware(['auth'])
+    ->name('profile');
+
+require __DIR__.'/auth.php';

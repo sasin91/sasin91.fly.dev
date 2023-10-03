@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\ContactRequest;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class ContactRequestPolicy
 {
@@ -13,7 +12,7 @@ class ContactRequestPolicy
      */
     public function viewAny(User $user): bool
     {
-        if ($user->canAccessPanel()) {
+        if ($user->isAdmin) {
             return true;
         }
     }
@@ -23,7 +22,7 @@ class ContactRequestPolicy
      */
     public function view(User $user, ContactRequest $contactRequest): bool
     {
-        if ($user->canAccessPanel()) {
+        if ($user->isAdmin) {
             return true;
         }
     }
@@ -41,7 +40,7 @@ class ContactRequestPolicy
      */
     public function update(User $user, ContactRequest $contactRequest): bool
     {
-        if ($user->canAccessPanel()) {
+        if ($user->isAdmin) {
             return true;
         }
     }
@@ -51,7 +50,7 @@ class ContactRequestPolicy
      */
     public function delete(User $user, ContactRequest $contactRequest): bool
     {
-        if ($user->canAccessPanel()) {
+        if ($user->isAdmin) {
             return true;
         }
     }
@@ -61,7 +60,7 @@ class ContactRequestPolicy
      */
     public function restore(User $user, ContactRequest $contactRequest): bool
     {
-        if ($user->canAccessPanel()) {
+        if ($user->isAdmin) {
             return true;
         }
     }
@@ -71,7 +70,7 @@ class ContactRequestPolicy
      */
     public function forceDelete(User $user, ContactRequest $contactRequest): bool
     {
-        if ($user->canAccessPanel()) {
+        if ($user->isAdmin) {
             return true;
         }
     }
