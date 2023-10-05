@@ -5,9 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ContactRequestResource\Pages;
 use App\Models\ContactRequest;
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 
@@ -29,7 +28,7 @@ class ContactRequestResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
+    public static function table(Tables\Table $table): Tables\Table
     {
         return $table
             ->columns([
