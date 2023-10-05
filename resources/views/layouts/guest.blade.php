@@ -15,7 +15,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased bg-gradient-to-b from-indigo-100/20 via-violet-100/40 to-cyan-100/20">
+<body class="font-sans antialiased bg-gradient-to-b from-indigo-100/10 via-violet-100/20 to-cyan-100/10">
 <livewire:layout.navigation/>
 
 <main class="isolate pt-14">

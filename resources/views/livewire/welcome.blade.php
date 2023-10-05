@@ -188,7 +188,7 @@ new #[Layout('layouts.guest')] class extends Component {
     </section>
 
     <!-- Timeline section -->
-    <section class="px-6 mx-auto -mt-8 max-w-7xl lg:px-8">
+    <section class="relative pt-14 px-6 lg:px-8">
         <div class="grid max-w-2xl grid-cols-1 gap-8 mx-auto overflow-hidden lg:mx-0 lg:max-w-none lg:grid-cols-4">
             @foreach($timeline as $item)
                 <a class="transition-all duration-300 ease-in-out group" target="_blank"
