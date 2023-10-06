@@ -19,9 +19,6 @@ use Livewire\Volt\Volt;
 Volt::route('/', 'welcome')
     ->name('welcome');
 
-Route::view('/uses', 'uses')
-    ->name('uses');
-
 Route::view('/projects', 'projects')
     ->name('projects');
 

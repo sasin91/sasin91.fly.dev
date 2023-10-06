@@ -32,8 +32,8 @@ new class extends Component {
             </button>
         </div>
         <div class="hidden lg:flex lg:gap-x-12">
-            <x-nav-link href="{{ route('uses') }}" :active="request()->routeIs('uses')" wire:navigate>
-                {{ t('navigation.global.uses') }}
+            <x-nav-link href="{{ url('blog') }}" :active="request()->is('blog')">
+                {{ t('navigation.global.blog') }}
             </x-nav-link>
             <x-nav-link href="{{ route('projects') }}" :active="request()->routeIs('projects')" wire:navigate>
                 {{ t('navigation.global.projects') }}
@@ -85,8 +85,8 @@ new class extends Component {
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': mobileMenuOpen, 'hidden': ! mobileMenuOpen}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link href="{{ route('uses') }}" :active="request()->routeIs('uses')" wire:navigate>
-                {{ t('navigation.global.uses') }}
+            <x-responsive-nav-link href="{{ url('blog') }}" :active="request()->is('blog')">
+                {{ t('navigation.global.blog') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('projects') }}" :active="request()->routeIs('projects')"
                                    wire:navigate>
