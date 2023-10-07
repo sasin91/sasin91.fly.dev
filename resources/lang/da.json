@@ -101,5 +101,7 @@
     "thanks": "Tuside tak for beskeden.",
     "i_be_back": "Jeg vender tilbage hurtigst.",
     "close": "Luk vinduet"
-  }
+  },
+
+  "by {authorName}, {authorRole}": "af {authorName}, {authorRole}"
 }

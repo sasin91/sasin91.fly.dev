@@ -24,7 +24,7 @@ render(function (View $view) {
                 'title' => Str::of($path)->replace('/', ' ')->headline(),
                 'date' => [
                     'time' => $splFileInfo->getCTime(),
-                    'label' => Date::parse($splFileInfo->getCTime())->toDateTimeLocalString()
+                    'label' => Date::parse($splFileInfo->getCTime())->diffForHumans()
                 ],
                 'author' => [
                     'image' => 'https://gravatar.com/avatar/d5570db0d14ecdc8b629e6d03507d577',
@@ -41,19 +41,19 @@ render(function (View $view) {
 ?>
 
 <x-guest-layout>
-    <section>
+    <section class="container mx-auto">
         <div
             class="absolute inset-y-0 right-1/2 -z-10 -mr-96 w-[200%] origin-top-right skew-x-[-30deg] bg-white shadow-xl shadow-cyan-500/10 ring-1 ring-indigo-50 sm:-mr-80 lg:-mr-96"
             aria-hidden="true"></div>
         <div class="mt-24 sm:mt-32 lg:mt-40 px-6 lg:px-8 mx-auto max-w-2xl lg:max-w-none">
             <div class="space-y-24 lg:space-y-32">
                 @foreach($articles as $article)
-                    <article>
-                        <x-border class="pt-16">
+                    <a href="{{ $article['href'] }}" wire:navigate.hover class="group">
+                        <article class="pt-16 relative before:absolute after:absolute before:left-0 before:top-0 before:h-px before:w-6 after:left-8 after:right-0 after:top-0 after:h-px bg-left-bottom bg-gradient-to-r from-indigo-200 via-violet-400 to-cyan-200 bg-no-repeat bg-[length:100%_2px]">
                             <div class="relative lg:-mx-4 lg:flex lg:justify-end">
                                 <div class="pt-10 lg:w-2/3 lg:flex-none lg:px-4 lg:pt-0">
                                     <h2 class="font-display text-2xl font-semibold text-neutral-950">
-                                        <a href="{{ $article['href'] }}" wire:navigate.hover>{{ $article['title'] }}</a>
+                                        {{ $article['title'] }}
                                     </h2>
                                     <dl class="lg:absolute lg:left-0 lg:top-0 lg:w-1/3 lg:px-4">
                                         <dt class="sr-only">{{ __('Published') }}</dt>
@@ -66,9 +66,9 @@ render(function (View $view) {
                                         <dd class="mt-6 flex gap-x-4">
                                             <div class="flex-none overflow-hidden rounded-xl bg-neutral-100">
                                                 <Image
-                                                    alt="{{ __('Avatar of {authorName}', ['authorName' => $article['author']['name']]) }}"
+                                                    alt="{{ __('Avatar of :authorName', ['authorName' => $article['author']['name']]) }}"
                                                     src="{{ $article['author']['image'] }}"
-                                                    class="h-12 w-12 object-cover grayscale"
+                                                    class="h-12 w-12 object-cover grayscale group-hover:grayscale-0"
                                                 />
                                             </div>
                                             <div class="text-sm text-neutral-950">
@@ -79,22 +79,14 @@ render(function (View $view) {
                                             </div>
                                         </dd>
                                     </dl>
-                                    <p class="mt-6 max-w-2xl text-base text-neutral-600">
+                                    <p class="mt-6 mb-8 max-w-2xl text-base text-neutral-600">
                                         {{ $article['description'] }}
                                     </p>
-                                    <a
-                                        wire:navigate.hover
-                                        role="button"
-                                        href="{{ $article['href'] }}"
-                                        aria-label="{{ __('Read more: {articleTitle}', ['articleTitle' => $article['title']]) }}"
-                                        class="mt-8"
-                                    >
-                                        {{ __('Read more') }}
-                                    </a>
+
                                 </div>
                             </div>
-                        </x-border>
-                    </article>
+                        </article>
+                    </a>
                 @endforeach
             </div>
         </div>
