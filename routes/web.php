@@ -19,9 +19,6 @@ use Livewire\Volt\Volt;
 Volt::route('/', 'welcome')
     ->name('welcome');
 
-Route::view('/projects', 'projects')
-    ->name('projects');
-
 Route::view('/dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');

@@ -1,3 +1,9 @@
+@props(['bg'])
+
+@php
+    $classes = ($bg ?? 'font-sans antialiased bg-gradient-to-b from-indigo-100/10 via-violet-100/20 to-cyan-100/10');
+@endphp
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -15,7 +21,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased bg-gradient-to-b from-indigo-100/10 via-violet-100/20 to-cyan-100/10">
+<body {{ $attributes->merge(['class' => $classes]) }}>
 <livewire:layout.navigation/>
 
 <main class="isolate pt-14">

@@ -32,10 +32,10 @@ new class extends Component {
             </button>
         </div>
         <div class="hidden lg:flex lg:gap-x-12">
-            <x-nav-link href="{{ url('blog') }}" :active="request()->is('blog')">
+            <x-nav-link href="{{ url('blog') }}" :active="request()->is('blog')" wire:navigate.hover>
                 {{ t('navigation.global.blog') }}
             </x-nav-link>
-            <x-nav-link href="{{ route('projects') }}" :active="request()->routeIs('projects')" wire:navigate>
+            <x-nav-link href="{{ url('projects') }}" :active="request()->is('projects')" wire:navigate.hover>
                 {{ t('navigation.global.projects') }}
             </x-nav-link>
         </div>
@@ -85,11 +85,11 @@ new class extends Component {
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': mobileMenuOpen, 'hidden': ! mobileMenuOpen}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link href="{{ url('blog') }}" :active="request()->is('blog')">
+            <x-responsive-nav-link href="{{ url('blog') }}" :active="request()->is('blog')" wire:navigate>
                 {{ t('navigation.global.blog') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('projects') }}" :active="request()->routeIs('projects')"
-                                   wire:navigate>
+
+            <x-responsive-nav-link href="{{ url('projects') }}" :active="request()->is('projects')" wire:navigate>
                 {{ t('navigation.global.projects') }}
             </x-responsive-nav-link>
 
