@@ -77,7 +77,7 @@
             // console.log(cb, fps, fps/100, fpsInterval);
             const now = Date.now();
 
-            if ((now - lastRenderTime) <= fpsInterval) {
+            if ((now - lastRenderTime) >= fpsInterval) {
                 const tiles = (gridMultiplier * canvasMultiplier);
                 const x = ((canvasMultiplier * canvasOffset.x));
                 const y = ((canvasMultiplier * canvasOffset.y));
@@ -97,8 +97,6 @@
                     player.x,
                     player.y
                 );
-
-                console.log({lastRenderTime, cb, now});
 
                 lastRenderTime = now;
             }
