@@ -1,13 +1,6 @@
 <x-projects-layout>
-    <article class="container mx-auto">
-        <div class="mx-auto max-w-2xl lg:mx-0">
-            <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('My projects') }}</h2>
-            <p class="mt-6 text-lg leading-8 text-gray-600">{{ __('Sometimes a interesting & usually wacky idea crosses my mind, i may make a project out of it') }}</p>
-        </div>
-
-        <div id="game-container">
-            <canvas id="game"></canvas>
-        </div>
+    <article id="game-container" class="h-screen w-full">
+        <canvas id="game"></canvas>
     </article>
 
     <script defer type="application/javascript">
@@ -20,8 +13,9 @@
         const gameContainer = document.getElementById('game-container');
 
         const gridMultiplier = 16;
+        let fps = ((canvas.clientWidth * canvas.clientHeight) / gridMultiplier);
         let canvasMultiplier = 3;
-        let canvasOffset = {
+        const canvasOffset = {
             x: 0,
             y: 0
         };
@@ -31,8 +25,16 @@
             x: (canvasMultiplier * 10),
             y: (canvasMultiplier * 24)
         };
+        const playerImage = new Image();
+        playerImage.src = player.imgSrc;
 
-        window.addEventListener('resize', function () {
+        const grassSprite = new Image();
+        grassSprite.src = '{{ Storage::url('game/sprites/tilesets/grass.png') }}';
+
+        let lastRenderTime = Date.now();
+        let fpsInterval = (1000 / fps);
+
+        function scaleCanvas() {
             canvas.width = gameContainer.clientWidth * devicePixelRatio;
             canvas.height = gameContainer.clientHeight * devicePixelRatio;
 
@@ -41,8 +43,7 @@
 
             context.imageSmoothingEnabled = false;
 
-            switch(true)
-            {
+            switch (true) {
                 case gameContainer.clientWidth < 754:
                     canvasMultiplier = 4;
                     canvasOffset.x = 9;
@@ -65,23 +66,52 @@
                 devicePixelRatio * canvasMultiplier,
                 devicePixelRatio * canvasMultiplier
             );
-        });
+        }
+
+        function draw(cb) {
+            // cb: 3757
+            // fps: 2812.5
+            // fps/100: 28.125
+            // fps/10: 281.25
+            // fpsInterval: 0.35555555555555557
+            // console.log(cb, fps, fps/100, fpsInterval);
+            const now = Date.now();
+
+            if ((now - lastRenderTime) <= fpsInterval) {
+                const tiles = (gridMultiplier * canvasMultiplier);
+                const x = ((canvasMultiplier * canvasOffset.x));
+                const y = ((canvasMultiplier * canvasOffset.y));
+
+                for (let i = 0; i < tiles; i++) {
+                    context.drawImage(
+                        grassSprite,
+                        x ,
+                        y ,
+                        tiles * i,
+                        tiles * i
+                    );
+                }
+
+                context.drawImage(
+                    playerImage,
+                    player.x,
+                    player.y
+                );
+
+                console.log({lastRenderTime, cb, now});
+
+                lastRenderTime = now;
+            }
+
+            requestAnimationFrame(draw);
+        }
+
+        window.addEventListener('resize', scaleCanvas);
 
         document.addEventListener('DOMContentLoaded', function () {
-           const grassSprite = new Image();
-           grassSprite.src = '{{ Storage::url('game/sprites/grass.png') }}';
+            scaleCanvas();
 
-           const gameLoop = () => {
-               context.clearRect(0, 0, canvas.width, canvas.height);
-
-               for (let i = 0; i < (gridMultiplier * canvasMultiplier); i++) {
-                   context.drawImage(
-                       grassSprite,
-                       (canvasMultiplier * canvasOffset.x) - player.x,
-                       (canvasMultiplier * canvasOffset.y) - player.y
-                   );
-               }
-           }
+            draw();
         });
     </script>
 </x-projects-layout>
