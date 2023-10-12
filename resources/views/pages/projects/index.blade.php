@@ -54,7 +54,7 @@ render(function (View $view) {
             @foreach($projects as $project)
                 <a href="{{ $project['href'] }}" wire:navigate>
                     <img class="aspect-[3/2] w-full rounded-2xl object-cover"
-                         src="{{ Storage::url('game/tyler-van-der-hoeven-_ok8uVzL2gI-unsplash.jpg') }}"
+                         src="{{ Storage::url('projects/tyler-van-der-hoeven-_ok8uVzL2gI-unsplash.jpg') }}"
                          alt="">
                     <h3 class="mt-6 text-lg font-semibold leading-8 tracking-tight text-gray-900">{{ $project['title'] }}</h3>
                     <picture class="text-base leading-7 text-gray-600">✨</picture>
