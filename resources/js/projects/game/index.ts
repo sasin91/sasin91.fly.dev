@@ -1,31 +1,49 @@
-
-import * as THREE from 'three';
-
+import type {MeshSphere} from './types';
 import Stats from 'three/addons/libs/stats.module.js';
-
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-
 import {Octree} from 'three/addons/math/Octree.js';
 import {OctreeHelper} from 'three/addons/helpers/OctreeHelper.js';
-
 import {Capsule} from 'three/addons/math/Capsule.js';
-
 import {GUI} from 'three/addons/libs/lil-gui.module.min.js';
+import {useWebGLRenderer} from "./renderer";
+import {
+    Clock,
+    Color,
+    CubeCamera,
+    DirectionalLight,
+    Fog,
+    HemisphereLight,
+    IcosahedronGeometry,
+    Mesh,
+    MeshBasicMaterial,
+    MeshLambertMaterial,
+    Object3D,
+    PerspectiveCamera,
+    Scene,
+    Sphere,
+    Vector3,
+    WebGLCubeRenderTarget
+} from "three";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import {DRACOLoader} from "three/examples/jsm/loaders/DRACOLoader";
+import {CCDIKHelper, CCDIKSolver} from "three/examples/jsm/animation/CCDIKSolver";
+import {TransformControls} from "three/examples/jsm/controls/TransformControls";
+import * as draco3d from 'draco3d';
 
-const clock = new THREE.Clock();
+const clock = new Clock();
 
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x88ccee);
-scene.fog = new THREE.Fog(0x88ccee, 0, 50);
+const scene = new Scene();
+scene.background = new Color(0x88ccee);
+scene.fog = new Fog(0x88ccee, 0, 50);
 
-const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
+const camera = new PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.rotation.order = 'YXZ';
 
-const fillLight1 = new THREE.HemisphereLight(0x8dc1de, 0x00668d, 1.5);
+const fillLight1 = new HemisphereLight(0x8dc1de, 0x00668d, 1.5);
 fillLight1.position.set(2, 1, 1);
 scene.add(fillLight1);
 
-const directionalLight = new THREE.DirectionalLight(0xffffff, 2.5);
+const directionalLight = new DirectionalLight(0xffffff, 2.5);
 directionalLight.position.set(-5, 25, -1);
 directionalLight.castShadow = true;
 directionalLight.shadow.camera.near = 0.01;
@@ -42,18 +60,86 @@ scene.add(directionalLight);
 
 const container = document.getElementById('container');
 
-const renderer = new THREE.WebGLRenderer({antialias: true});
-renderer.setPixelRatio(window.devicePixelRatio);
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.VSMShadowMap;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
+const renderer = useWebGLRenderer();
 container!.appendChild(renderer.domElement);
 
 const stats = new Stats();
 stats.dom.style.position = 'absolute';
 stats.dom.style.top = '0px';
 container!.appendChild(stats.dom);
+
+const orbitControls = new OrbitControls( camera, renderer.domElement );
+orbitControls.minDistance = 0.2;
+orbitControls.maxDistance = 1.5;
+orbitControls.enableDamping = true;
+
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath('/storage/projects/game/draco/');
+const loader = new GLTFLoader();
+loader.setPath('/storage/projects/game/models/gltf/');
+loader.setDRACOLoader( dracoLoader );
+
+const OOI = {
+    head: new Object3D(),
+    lowerarm_l: new Object3D(),
+    Upperarm_l: new Object3D(),
+    hand_l: new Object3D(),
+    target_hand_l: new Object3D(),
+    sphere: new Object3D(),
+    kira: new Object3D()
+};
+
+const iks = [
+    {
+        target: 22, // "target_hand_l"
+        effector: 6, // "hand_l"
+        links: [
+            {
+                index: 5, // "lowerarm_l"
+                rotationMin: new Vector3( 1.2, - 1.8, - .4 ),
+                rotationMax: new Vector3( 1.7, - 1.1, .3 )
+            },
+            {
+                index: 4, // "Upperarm_l"
+                rotationMin: new Vector3( 0.1, - 0.7, - 1.8 ),
+                rotationMax: new Vector3( 1.1, 0, - 1.4 )
+            },
+        ],
+    }
+];
+
+const gui = new GUI();
+const conf = {
+    followSphere: false,
+    turnHead: true,
+    ik_solver: true,
+};
+gui.add( conf, 'followSphere' ).name( 'follow sphere' );
+gui.add( conf, 'turnHead' ).name( 'turn head' );
+gui.add( conf, 'ik_solver' ).name( 'IK auto update' );
+gui.open();
+
+let IKSolver;
+
+const kira = await loader.loadAsync('kira.glb');
+
+orbitControls.target.copy( OOI.sphere.position ); // orbit controls lookAt the sphere
+OOI.hand_l.attach( OOI.sphere );
+const cubeRenderTarget = new WebGLCubeRenderTarget( 1024 );
+const mirrorSphereCamera = new CubeCamera( 0.05, 50, cubeRenderTarget );
+scene.add( mirrorSphereCamera );
+const mirrorSphereMaterial = new MeshBasicMaterial( { envMap: cubeRenderTarget.texture } );
+OOI.sphere.material = mirrorSphereMaterial;
+
+const transformControls = new TransformControls( camera, renderer.domElement );
+transformControls.size = 0.75;
+transformControls.showX = false;
+transformControls.space = 'world';
+transformControls.attach( OOI.target_hand_l );
+scene.add( transformControls );
+
+transformControls.addEventListener( 'mouseDown', () => orbitControls.enabled = false );
+transformControls.addEventListener( 'mouseUp', () => orbitControls.enabled = true );
 
 const GRAVITY = 30;
 
@@ -62,19 +148,15 @@ const SPHERE_RADIUS = 0.2;
 
 const STEPS_PER_FRAME = 5;
 
-const sphereGeometry = new THREE.IcosahedronGeometry(SPHERE_RADIUS, 5);
-const sphereMaterial = new THREE.MeshLambertMaterial({color: 0xdede8d});
+const sphereGeometry = new IcosahedronGeometry(SPHERE_RADIUS, 5);
+const sphereMaterial = new MeshLambertMaterial({color: 0xdede8d});
 
-const spheres: {
-    mesh: THREE.Mesh<THREE.IcosahedronGeometry, THREE.MeshLambertMaterial, THREE.Object3DEventMap>,
-    collider: THREE.Sphere,
-    velocity: THREE.Vector3
-}[] = [];
+const spheres: MeshSphere[] = [];
 let sphereIdx = 0;
 
 for (let i = 0; i < NUM_SPHERES; i++) {
 
-    const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    const sphere = new Mesh(sphereGeometry, sphereMaterial);
     sphere.castShadow = true;
     sphere.receiveShadow = true;
 
@@ -82,27 +164,28 @@ for (let i = 0; i < NUM_SPHERES; i++) {
 
     spheres.push({
         mesh: sphere,
-        collider: new THREE.Sphere(new THREE.Vector3(0, -100, 0), SPHERE_RADIUS),
-        velocity: new THREE.Vector3()
+        collider: new Sphere(new Vector3(0, -100, 0), SPHERE_RADIUS),
+        velocity: new Vector3()
     });
 
 }
 
 const worldOctree = new Octree();
 
-const playerCollider = new Capsule(new THREE.Vector3(0, 0.35, 0), new THREE.Vector3(0, 1, 0), 0.35);
+const playerCollider = new Capsule(new Vector3(0, 0.35, 0), new Vector3(0, 1, 0), 0.35);
 
-const playerVelocity = new THREE.Vector3();
-const playerDirection = new THREE.Vector3();
+const v0 = new Vector3();
+const playerVelocity = new Vector3();
+const playerDirection = new Vector3();
 
 let playerOnFloor = false;
 let mouseTime = 0;
 
 const keyStates: Record<string, boolean> = {};
 
-const vector1 = new THREE.Vector3();
-const vector2 = new THREE.Vector3();
-const vector3 = new THREE.Vector3();
+const vector1 = new Vector3();
+const vector2 = new Vector3();
+const vector3 = new Vector3();
 
 document.addEventListener('keydown', (event) => {
 
@@ -384,42 +467,47 @@ function controls(deltaTime: number) {
 
 }
 
-const loader = new GLTFLoader().setPath('/storage/projects/game/models/gltf/');
-
 loader.load('collision-world.glb', (gltf) => {
 
     scene.add(gltf.scene);
 
     worldOctree.fromGraphNode(gltf.scene);
 
-    // @ts-ignore
-    gltf.scene.traverse((child: typeof spheres[number]['mesh']) => {
+    gltf.scene.traverse(object3d => {
+        if (object3d.isMesh) {
+            object3d.castShadow = true;
+            object3d.receiveShadow = true;
 
-        if (child.isMesh) {
-
-            child.castShadow = true;
-            child.receiveShadow = true;
-
-            if (child.material.map) {
-
-                child.material.map.anisotropy = 4;
-
+            if (object3d.material.map) {
+                object3d.material.map.anisotropy = 4;
             }
-
         }
 
+        switch (object3d.name) {
+            case 'Kira_Shirt_left':
+                OOI['kira'] = object3d;
+                OOI.kira.add( OOI.kira.skeleton.bones[ 0 ] );
+                IKSolver = new CCDIKSolver( OOI.kira, iks );
+                const ccdikhelper = new CCDIKHelper( OOI.kira, iks, 0.01 );
+                scene.add( ccdikhelper );
+                break;
+
+            case 'boule':
+                OOI['sphere'] = object3d;
+                break;
+
+            default:
+                OOI[object3d.name] = object3d;
+        }
     });
 
     const helper = new OctreeHelper(worldOctree);
     helper.visible = false;
     scene.add(helper);
 
-    const gui = new GUI({width: 200});
     gui.add({debug: false}, 'debug')
         .onChange(function (value) {
-
             helper.visible = value;
-
         });
 
     animate();
@@ -459,6 +547,41 @@ function animate() {
         teleportPlayerIfOob();
 
     }
+
+    if ( OOI.sphere && mirrorSphereCamera ) {
+
+        OOI.sphere.visible = false;
+        OOI.sphere.getWorldPosition( mirrorSphereCamera.position );
+        mirrorSphereCamera.update( renderer, scene );
+        OOI.sphere.visible = true;
+
+    }
+
+    if ( OOI.sphere && conf.followSphere ) {
+
+        // orbitControls follows the sphere
+        OOI.sphere.getWorldPosition( v0 );
+        orbitControls.target.lerp( v0, 0.1 );
+
+    }
+
+    if ( OOI.head && OOI.sphere && conf.turnHead ) {
+
+        // turn head
+        OOI.sphere.getWorldPosition( v0 );
+        OOI.head.lookAt( v0 );
+        OOI.head.rotation.set( OOI.head.rotation.x, OOI.head.rotation.y + Math.PI, OOI.head.rotation.z );
+
+    }
+
+    IKSolver.update();
+
+    scene.traverse( function ( object ) {
+        if ( object.isSkinnedMesh ) object.computeBoundingSphere();
+    } );
+
+    orbitControls.update();
+    renderer.render( scene, camera );
 
     renderer.render(scene, camera);
 
