@@ -2,9 +2,10 @@ import {FileLoader} from "three";
 
 export const useShaders = async () => {
     const fileLoader = new FileLoader();
+    fileLoader.setPath('/storage/projects/game/');
     const textDecoder = new TextDecoder();
-    let skyVertexShader = await fileLoader.loadAsync('./shaders/sky.vert');
-    let skyFragmentShader = await fileLoader.loadAsync('./shaders/sky.frag');
+    let skyVertexShader = await fileLoader.loadAsync('shaders/sky.vert');
+    let skyFragmentShader = await fileLoader.loadAsync('shaders/sky.frag');
     if (skyVertexShader instanceof ArrayBuffer) {
         skyVertexShader = textDecoder.decode(skyVertexShader);
     }

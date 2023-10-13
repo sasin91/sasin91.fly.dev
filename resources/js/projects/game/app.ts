@@ -119,7 +119,7 @@ export const useApp = (width: number, height: number) => {
     ShaderChunk.emissivemap_fragment += '\ndiffuseColor.a = 0.0;';
 
     const renderer = new WebGLRenderer({
-        antialias: false,
+        antialias: false
     });
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = PCFSoftShadowMap;
@@ -229,13 +229,23 @@ export const useApp = (width: number, height: number) => {
         sun.updateMatrixWorld();
         sun.target.updateMatrixWorld();
 
+        renderer.render(scene, camera);
+
         requestAnimationFrame((deltaTime) => {
             render(deltaTime);
         });
     };
 
     const mount = (domElement: HTMLElement) => {
-        domElement.appendChild(renderer.domElement);
+        const canvas = renderer.domElement;
+
+        const gl = canvas.getContext("webgl2")!;
+
+        // enable necessary extensions
+        gl.getExtension("EXT_color_buffer_float");
+        gl.getExtension("EXT_float_blend");
+
+        domElement.appendChild(canvas);
 
         render(0);
     };

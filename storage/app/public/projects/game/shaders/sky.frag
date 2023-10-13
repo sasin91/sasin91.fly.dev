@@ -7,7 +7,7 @@ varying vec3 vWorldPosition;
 void main() {
     vec3 viewDirection = normalize(vWorldPosition - cameraPosition);
     vec3 sunDirection = normalize(vec3(0.0, 0.25, 1.0));
-    vec3 sky = sRGBToLinear(textureCube(background, viewDirection)).xyz;
+    vec3 sky = textureCube(background, viewDirection).xyz;
 
     float c1 = cos(time * 0.02);
     float s1 = sin(time * 0.02);
@@ -21,7 +21,7 @@ void main() {
     c2, 0.0, s2,
     0.0, 1.0, 0.0,
     -s2, 0.0, c2);
-    vec3 stars = sRGBToLinear(textureCube(stars, r1 * r2 * viewDirection)).xyz;
+    vec3 stars = textureCube(stars, r1 * r2 * viewDirection).xyz;
 
     sky = pow(sky, vec3(1.5, 1.5, 1.2));
 
