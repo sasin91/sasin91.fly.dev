@@ -1,9 +1,6 @@
-import {CubeTextureLoader} from "three";
+import loader from "./loaders/cubeTextureLoader";
 
 export const useBackgroundTextures = () => {
-    const loader = new CubeTextureLoader();
-    loader.setPath('/storage/projects/game/');
-
     const background = loader.load([
         'sky/Cold_Sunset__Cam_2_Left+X.png',
         'sky/Cold_Sunset__Cam_3_Right-X.png',

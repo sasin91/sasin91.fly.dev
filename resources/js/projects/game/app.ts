@@ -2,13 +2,16 @@ import {
     AmbientLight,
     AudioListener,
     BackSide,
+    Clock,
     Color,
     DirectionalLight,
     FloatType,
     FogExp2,
     HemisphereLight,
+    IcosahedronGeometry,
     IUniform,
     Mesh,
+    MeshLambertMaterial,
     NearestFilter,
     OrthographicCamera,
     PCFSoftShadowMap,
@@ -17,6 +20,7 @@ import {
     Scene,
     ShaderChunk,
     ShaderMaterial,
+    Sphere,
     SphereGeometry,
     Texture,
     Vector2,
@@ -34,12 +38,20 @@ import {FXAAShader} from "three/addons/shaders/FXAAShader.js";
 import {GammaCorrectionShader} from "three/addons/shaders/GammaCorrectionShader.js";
 import {useShaders} from "./shaders";
 import Buffers from "./buffers";
+import {level1} from "./levels/level1";
+import Entity from "./entity";
+import {Octree} from 'three/addons/math/Octree.js';
+import {updateCollisions} from "./collision";
 
 export const useApp = (width: number, height: number) => {
+    const events: KeyboardEvent | MouseEvent[] = [];
+
     const fov = 60;
     const aspect = width / height;
     const near = 0.1;
     const far = 1000.0;
+
+    const clock = new Clock();
 
     const camera = new PerspectiveCamera(fov, aspect, near, far);
     camera.position.set(20, 5, 15);
@@ -178,6 +190,41 @@ export const useApp = (width: number, height: number) => {
     composer.addPass(gammaPass);
     composer.addPass(fxaaPass);
 
+    const player = new Entity(camera);
+
+    const GRAVITY = 30;
+
+    const NUM_SPHERES = 100;
+    const SPHERE_RADIUS = 0.2;
+
+    const STEPS_PER_FRAME = 5;
+
+    const worldOctree = new Octree();
+    const sphereGeometry = new IcosahedronGeometry(SPHERE_RADIUS, 5);
+    const sphereMaterial = new MeshLambertMaterial({color: 0xdede8d});
+
+    const spheres = [];
+    let sphereIdx = 0;
+
+    for (let i = 0; i < NUM_SPHERES; i++) {
+
+        const sphere = new Mesh(sphereGeometry, sphereMaterial);
+        sphere.castShadow = true;
+        sphere.receiveShadow = true;
+
+        scene.add(sphere);
+
+        spheres.push({
+            mesh: sphere,
+            collider: new Sphere(new Vector3(0, -100, 0), SPHERE_RADIUS),
+            velocity: new Vector3()
+        });
+
+    }
+
+    let deltaTime = 0;
+    let mouseTime = 0;
+
     const drawBackgroundTextures = async ({background, stars}: { background: Texture, stars: Texture }) => {
         const {skyVertexShader, skyFragmentShader} = await useShaders();
 
@@ -210,7 +257,7 @@ export const useApp = (width: number, height: number) => {
         fxaaPass.material.uniforms['resolution'].value.y = 1 / (height * pixelRatio);
     };
 
-    const render = (deltaTime: number) => {
+    const render = () => {
         csm.update();
 
         opaquePass.render(renderer, buffers.write, buffers.read, deltaTime, false);
@@ -229,10 +276,33 @@ export const useApp = (width: number, height: number) => {
         sun.updateMatrixWorld();
         sun.target.updateMatrixWorld();
 
+
+        level1(deltaTime, csm, scene);
+
         renderer.render(scene, camera);
 
-        requestAnimationFrame((deltaTime) => {
-            render(deltaTime);
+        requestAnimationFrame(() => {
+            deltaTime = Math.min(0.05, clock.getDelta()) / STEPS_PER_FRAME;
+
+            // we look for collisions in substeps to mitigate the risk of
+            // an object traversing another too quickly for detection.
+
+            for (let i = 0; i < STEPS_PER_FRAME; i++) {
+                // queue events up and run on player here?
+                player.update(
+                    deltaTime,
+                    GRAVITY,
+                    worldOctree
+                );
+
+                updateCollisions(
+                    spheres,
+                    deltaTime,
+                    worldOctree,
+                    GRAVITY
+                );
+            }
+            render();
         });
     };
 
@@ -247,8 +317,40 @@ export const useApp = (width: number, height: number) => {
 
         domElement.appendChild(canvas);
 
-        render(0);
+        render();
     };
 
-    return {renderer, drawBackgroundTextures, onWindowResize, mount};
+    const onKeyboardEvent = (evt: KeyboardEvent) => {
+        player.controls(evt.code, deltaTime);
+    }
+
+    const onMouseMove = (evt: MouseEvent) => {
+        player.onMouseMove(evt);
+    }
+
+    const onMouseDown = (time: number) => {
+        mouseTime = time;
+    }
+
+    const onMouseUp = (locked: boolean) => {
+        const sphere = spheres[sphereIdx];
+
+        player.onMouseUp(
+            sphere,
+            mouseTime
+        );
+
+        sphereIdx = (sphereIdx + 1) % spheres.length;
+    }
+
+    return {
+        renderer,
+        drawBackgroundTextures,
+        onWindowResize,
+        mount,
+        onKeyboardEvent,
+        onMouseMove,
+        onMouseDown,
+        onMouseUp
+    };
 }
