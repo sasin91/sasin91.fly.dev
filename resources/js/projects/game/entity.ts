@@ -2,17 +2,19 @@ import {Camera, Mesh, Vector3} from "three";
 import {Capsule} from 'three/addons/math/Capsule.js';
 import {Octree} from 'three/addons/math/Octree.js';
 
-function forwardMomentum(direction: Vector3) {
+function forwardMomentum(direction: Vector3, camera: Camera) {
+    camera.getWorldDirection(direction);
     direction.y = 0;
     direction.normalize();
 
     return direction;
 }
 
-function sideMomentum(direction: Vector3, upwardsDirection: Vector3) {
+function sideMomentum(direction: Vector3, camera: Camera) {
+    camera.getWorldDirection(direction);
     direction.y = 0;
     direction.normalize();
-    direction.cross(upwardsDirection);
+    direction.cross(camera.up);
 
     return direction;
 
@@ -45,19 +47,19 @@ class Entity {
 
         switch (key) {
             case 'KeyW':
-                this.velocity.add(forwardMomentum(this.worldDirection).multiplyScalar(speedDelta));
+                this.velocity.add(forwardMomentum(this.worldDirection, this.camera).multiplyScalar(speedDelta));
                 break;
 
             case 'KeyA':
-                this.velocity.add(sideMomentum(this.worldDirection, this.camera.up).multiplyScalar(-speedDelta));
+                this.velocity.add(sideMomentum(this.worldDirection, this.camera).multiplyScalar(-speedDelta));
                 break;
 
             case 'KeyS':
-                this.velocity.add(forwardMomentum(this.worldDirection).multiplyScalar(-speedDelta));
+                this.velocity.add(forwardMomentum(this.worldDirection, this.camera).multiplyScalar(-speedDelta));
                 break;
 
             case 'KeyD':
-                this.velocity.add(sideMomentum(this.worldDirection, this.camera.up).multiplyScalar(speedDelta));
+                this.velocity.add(sideMomentum(this.worldDirection, this.camera).multiplyScalar(speedDelta));
                 break;
 
             case 'Space':

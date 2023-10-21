@@ -26,11 +26,13 @@ container!.addEventListener('mousedown', () => {
 });
 
 document.addEventListener('mouseup', () => {
-    app.onMouseUp(
-        document.pointerLockElement === null
-    );
+    app.onMouseUp();
 });
 
 document.body.addEventListener('mousemove', (event) => {
+    if (document.pointerLockElement === null) {
+        return;
+    }
+
     app.onMouseMove(event);
 });
