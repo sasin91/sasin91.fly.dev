@@ -26,7 +26,9 @@ import {OctreeHelper} from 'three/addons/helpers/OctreeHelper.js';
 import GLTFLoader from "./loaders/GLTFLoader";
 import {updateCollisions} from "./collision";
 
-export const useApp = (width: number, height: number) => {
+export type Emit = (event: { name: string, payload: any }) => void;
+
+export const useApp = (width: number, height: number, emit: Emit) => {
     const scene = new Scene();
 
     const fov = 60;
@@ -43,7 +45,7 @@ export const useApp = (width: number, height: number) => {
     camera.position.set(20, 5, 15);
     scene.add(camera);
 
-    const player = new Entity(camera);
+    const player = new Entity(camera, emit);
 
     const GRAVITY = 30;
 

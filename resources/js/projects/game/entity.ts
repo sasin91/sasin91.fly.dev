@@ -1,6 +1,7 @@
 import {Camera, Mesh, Vector3} from "three";
 import {Capsule} from 'three/addons/math/Capsule.js';
 import {Octree} from 'three/addons/math/Octree.js';
+import {Emit} from "./app";
 
 function forwardMomentum(direction: Vector3, camera: Camera) {
     camera.getWorldDirection(direction);
@@ -31,9 +32,11 @@ class Entity {
     isOnFloor = false;
 
     camera: Camera;
+    emit: Emit;
 
-    constructor(camera: Camera) {
+    constructor(camera: Camera, emit: Emit) {
         this.camera = camera;
+        this.emit = emit;
     }
 
     get worldDirection() {
@@ -45,21 +48,41 @@ class Entity {
         // gives a bit of air control
         const speedDelta = deltaTime * (this.isOnFloor ? 25 : 8);
 
+        // type Name = Pick<Extract<Parameters<Emit>, 'event'>, 'name'>;
+        type Name = string;
+        const handler = (payload: Vector3, name: Name) => {
+            this.velocity.add(payload);
+
+            this.emit({name: `player:${name}`, payload});
+        }
+
         switch (key) {
             case 'KeyW':
-                this.velocity.add(forwardMomentum(this.worldDirection, this.camera).multiplyScalar(speedDelta));
+                handler(
+                    forwardMomentum(this.worldDirection, this.camera).multiplyScalar(speedDelta),
+                    'forward'
+                );
                 break;
 
             case 'KeyA':
-                this.velocity.add(sideMomentum(this.worldDirection, this.camera).multiplyScalar(-speedDelta));
+                handler(
+                    sideMomentum(this.worldDirection, this.camera).multiplyScalar(-speedDelta),
+                    'left'
+                );
                 break;
 
             case 'KeyS':
-                this.velocity.add(forwardMomentum(this.worldDirection, this.camera).multiplyScalar(-speedDelta));
+                handler(
+                    forwardMomentum(this.worldDirection, this.camera).multiplyScalar(-speedDelta),
+                    'back'
+                );
                 break;
 
             case 'KeyD':
-                this.velocity.add(sideMomentum(this.worldDirection, this.camera).multiplyScalar(speedDelta));
+                handler(
+                    sideMomentum(this.worldDirection, this.camera).multiplyScalar(speedDelta),
+                    'right'
+                );
                 break;
 
             case 'Space':
