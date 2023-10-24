@@ -1,5 +1,18 @@
+<?php
+
+use App\Events\PlayerSpawned;
+use Illuminate\View\View;
+use function Laravel\Folio\render;
+
+render(function (View $view, string $name) {
+    broadcast(new PlayerSpawned($name))->toOthers();
+
+    return $view->with('name', $name);
+});
+?>
+
 @push('scripts')
-    @vite('resources/js/projects/game/index.ts')
+    @vite('resources/js/projects/game.js')
 
     <script defer>
         document.addEventListener('DOMContentLoaded', function () {
@@ -52,7 +65,8 @@
                                 class="bg-[url({{ Storage::url('/projects/game/ui/safety_check_FILL0_wght700_GRAD0_opsz48.svg') }})] bg-contain h-8 w-8 ml-0.5 invert drop-shadow"></div>
                         </div>
                         <div class="h-full flex flex-col justify-center items-center ml-2">
-                            <div class="text-white text-shadow min-h-[30px] h-4">FPS game</div>
+                            <div
+                                class="text-white text-shadow min-h-[30px] h-4">👋 {{ $name }}</div>
                             <div
                                 class="bg-[url({{ Storage::url('/projects/game/ui/paintball.png') }})] bg-no-repeat bg-contain w-28 h-10">
                             </div>
@@ -85,7 +99,8 @@
                              src="{{ Storage::url('/projects/game/ui/double_arrow_FILL0_wght700_GRAD0_opsz48.svg') }}"></img>
                         <div class="pt-2 pr-3 text-base text-white text-shadow-md">Kill'm all</div>
                     </div>
-                    <div class="w-full h-full flex flex-row justify-center min-w-[400px] bg-gradient-to-r from-blue-300 via-transparent to-blue-900 items-center">
+                    <div
+                        class="w-full h-full flex flex-row justify-center min-w-[400px] bg-gradient-to-r from-blue-300 via-transparent to-blue-900 items-center">
                         <img class="invert drop-shadow h-8"
                              src="{{ Storage::url('/projects/game/ui/token_FILL0_wght700_GRAD0_opsz48.svg') }}"></img>
                         <div class="text-base ml-2 mr-2 text-gray-100 text-shadow">Jump around and stuff</div>
