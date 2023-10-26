@@ -16,7 +16,6 @@ class Visitors extends Component
     #[Computed]
     public function visitors()
     {
-        $count = 0;
         $keys = [];
 
         if ($this->route === '*') {
@@ -27,10 +26,12 @@ class Visitors extends Component
             do {
                 list($cursor, $values) = Redis::scan($cursor, $pattern, $batchSize);
 
-                $keys += array_map(
-                    fn($key) => str_replace('laravel_database_', '', $key),
-                    $values
-                );
+                if ($values) {
+                    $keys += array_map(
+                        fn($key) => str_replace('laravel_database_', '', $key),
+                        $values
+                    );
+                }
             } while ($cursor !== 0);
         } else {
             $keys = ["visitors:{$this->route}"];

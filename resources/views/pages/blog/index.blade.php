@@ -48,8 +48,9 @@ render(function (View $view) {
         <div class="mt-24 sm:mt-32 lg:mt-40 px-6 lg:px-8 mx-auto max-w-2xl lg:max-w-none">
             <div class="space-y-24 lg:space-y-32">
                 @foreach($articles as $article)
-                    <a href="{{ $article['href'] }}" wire:navigate.hover class="group">
-                        <article class="pt-16 relative before:absolute after:absolute before:left-0 before:top-0 before:h-px before:w-6 after:left-8 after:right-0 after:top-0 after:h-px bg-left-bottom bg-gradient-to-r from-indigo-200 via-violet-400 to-cyan-200 bg-no-repeat bg-[length:100%_2px]">
+                    <a href="{{ $article['href'] }}" wire:navigate class="group">
+                        <article
+                            class="pt-16 relative before:absolute after:absolute before:left-0 before:top-0 before:h-px before:w-6 after:left-8 after:right-0 after:top-0 after:h-px bg-left-bottom bg-gradient-to-r from-indigo-200 via-violet-400 to-cyan-200 bg-no-repeat bg-[length:100%_2px]">
                             <div class="relative lg:-mx-4 lg:flex lg:justify-end">
                                 <div class="pt-10 lg:w-2/3 lg:flex-none lg:px-4 lg:pt-0">
                                     <h2 class="font-display text-2xl font-semibold text-neutral-950">

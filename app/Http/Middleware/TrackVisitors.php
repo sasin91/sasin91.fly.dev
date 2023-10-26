@@ -29,11 +29,11 @@ class TrackVisitors
             $response->withCookie(cookie()->forever('visitor', $visitor));
         }
 
-        $duration = 300; // This represents 5 minutes
+        $durationInSeconds = 5 * 60;
 
         Redis::setex(
             "visitors:{$route}",
-            $duration,
+            $durationInSeconds,
             $visitor
         );
 

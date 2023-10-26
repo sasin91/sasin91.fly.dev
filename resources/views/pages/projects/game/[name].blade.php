@@ -2,6 +2,7 @@
 
 use App\Events\PlayerSpawned;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\{Redis, Route};
 use function Laravel\Folio\render;
 
 render(function (View $view, string $name) {
@@ -65,8 +66,10 @@ render(function (View $view, string $name) {
                                 class="bg-[url({{ Storage::url('/projects/game/ui/safety_check_FILL0_wght700_GRAD0_opsz48.svg') }})] bg-contain h-8 w-8 ml-0.5 invert drop-shadow"></div>
                         </div>
                         <div class="h-full flex flex-col justify-center items-center ml-2">
+                            @volt('game')
                             <div
                                 class="text-white text-shadow min-h-[30px] h-4">👋 {{ $name }}</div>
+                            @endvolt
                             <div
                                 class="bg-[url({{ Storage::url('/projects/game/ui/paintball.png') }})] bg-no-repeat bg-contain w-28 h-10">
                             </div>
@@ -109,7 +112,6 @@ render(function (View $view, string $name) {
             </div>
         </div>
     </div>
-
     <x-slot:footer>
         <!-- empty -->
     </x-slot:footer>

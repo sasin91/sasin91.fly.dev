@@ -32,16 +32,15 @@ new class extends Component {
             </button>
         </div>
         <div class="hidden lg:flex lg:gap-x-12">
-            <x-nav-link href="{{ url('blog') }}" :active="request()->is('blog')" wire:navigate.hover>
+            <x-nav-link href="{{ url('blog') }}" :active="request()->is('blog')" wire:navigate>
                 {{ t('navigation.global.blog') }}
             </x-nav-link>
-            <x-nav-link href="{{ url('projects') }}" :active="request()->is('projects')" wire:navigate.hover>
+            <x-nav-link href="{{ url('projects') }}" :active="request()->is('projects')" wire:navigate>
                 {{ t('navigation.global.projects') }}
             </x-nav-link>
         </div>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
             <livewire:locale-changer/>
-            <livewire:visitors/>
             @auth()
                 <!-- Settings Dropdown -->
                 <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -87,6 +86,7 @@ new class extends Component {
                     {{ t('navigation.guest.log_in') }} <span aria-hidden="true">&rarr;</span>
                 </x-nav-link>
             @endauth
+            <livewire:visitors/>
         </div>
     </nav>
     <!-- Responsive Navigation Menu -->
@@ -100,6 +100,7 @@ new class extends Component {
                 {{ t('navigation.global.projects') }}
             </x-responsive-nav-link>
 
+            <livewire:visitors/>
             <livewire:locale-changer/>
 
             @auth()
