@@ -6,7 +6,9 @@ use Illuminate\Support\Facades\Redis;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use function array_map;
-use function array_unique;
+use function blank;
+use function collect;
+use function count;
 use function str_replace;
 
 class Visitors extends Component
@@ -18,30 +20,30 @@ class Visitors extends Component
     {
         $keys = [];
 
+        $cursor = null;
+        $pattern = "visitors:*";
+        $batchSize = 1000;
+
+        do {
+            list($cursor, $values) = Redis::scan($cursor, $pattern, $batchSize);
+
+            if (blank($values)) {
+                break;
+            }
+
+            $keys += array_map(
+                fn($key) => str_replace('laravel_database_', '', $key),
+                $values
+            );
+        } while ($cursor !== 0);
+
         if ($this->route === '*') {
-            $cursor = null;
-            $pattern = "visitors:*";
-            $batchSize = 1000;
-
-            do {
-                list($cursor, $values) = Redis::scan($cursor, $pattern, $batchSize);
-
-                if ($values) {
-                    $keys += array_map(
-                        fn($key) => str_replace('laravel_database_', '', $key),
-                        $values
-                    );
-                }
-            } while ($cursor !== 0);
-        } else {
-            $keys = ["visitors:{$this->route}"];
+            return count($keys);
         }
 
-        $visitorUuids = Redis::mget(
-            array_unique($keys)
-        );
-
-        return count($visitorUuids);
+        return collect(Redis::mget($keys))
+            ->filter(fn(string $route) => $route === $this->route)
+            ->count();
     }
 
     public function render()

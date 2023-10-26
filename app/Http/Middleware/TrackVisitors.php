@@ -32,9 +32,9 @@ class TrackVisitors
         $durationInSeconds = 5 * 60;
 
         Redis::setex(
-            "visitors:{$route}",
+            "visitors:{$visitor}",
             $durationInSeconds,
-            $visitor
+            $route
         );
 
         return $response;
