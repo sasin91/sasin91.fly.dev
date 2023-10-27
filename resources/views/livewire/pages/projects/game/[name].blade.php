@@ -1,14 +1,32 @@
 <?php
 
 use App\Events\PlayerSpawned;
+use App\Livewire\Visitors;
+use App\Models\User;
 use Illuminate\View\View;
-use Illuminate\Support\Facades\{Redis, Route};
-use function Laravel\Folio\render;
+use Illuminate\Http\{Request, Response};
+use function Livewire\Volt\computed;
+use function Laravel\Folio\{render, middleware};
 
-render(function (View $view, string $name) {
-    broadcast(new PlayerSpawned($name))->toOthers();
+middleware(function (Request $request, Closure $next) {
+    $gamerTag = $request->string('name');
 
-    return $view->with('name', $name);
+    if ($gamerTag->is($request->user()?->gamer_tag) === false) {
+        abort_if(
+            User::query()->where('gamer_tag', $gamerTag)->exists(),
+            Response::HTTP_UNAUTHORIZED,
+            __('Another user has that gamer tag. If that is you, log in.')
+        );
+    }
+
+    return $next($request);
+});
+
+$visitors = computed(function () {
+    $visitors = new Visitors();
+    $visitors->route = '*';
+
+    return \Illuminate\Support\Facades\Redis::mget($visitors->keys());
 });
 ?>
 
@@ -67,8 +85,12 @@ render(function (View $view, string $name) {
                         </div>
                         <div class="h-full flex flex-col justify-center items-center ml-2">
                             @volt('game')
-                            <div
-                                class="text-white text-shadow min-h-[30px] h-4">👋 {{ $name }}</div>
+                            <div>
+                                <div
+                                    class="text-white text-shadow min-h-[30px] h-4">
+                                    👋 {{ request('name') }}</div>
+                                <pre>@json($this->visitors)</pre>
+                            </div>
                             @endvolt
                             <div
                                 class="bg-[url({{ Storage::url('/projects/game/ui/paintball.png') }})] bg-no-repeat bg-contain w-28 h-10">

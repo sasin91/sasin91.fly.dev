@@ -10,11 +10,8 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('players', function (Blueprint $table) {
-            $table->uuid('id');
-            $table->string('name');
-            $table->string('password')->nullable();
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('gamer_tag')->nullable();
         });
     }
 
@@ -23,6 +20,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('players');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('gamer_tag');
+        });
     }
 };

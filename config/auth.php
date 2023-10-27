@@ -39,10 +39,6 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
-        ],
-        'players' => [
-            'driver' => 'session',
-            'provider' => 'players'
         ]
     ],
 
@@ -68,11 +64,6 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-
-        'players' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Player::class
-        ]
 
         // 'users' => [
         //     'driver' => 'database',

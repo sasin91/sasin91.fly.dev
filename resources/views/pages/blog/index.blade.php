@@ -17,7 +17,7 @@ render(function (View $view) {
 
     $articles = collect($views)->map(
         static function (SplFileInfo $splFileInfo) {
-            $path = str_replace('.blade.php', '', $splFileInfo->getRelativePathname());
+            $path = preg_replace('/\[[^\]]*\]|\.blade\.php/', '', $splFileInfo->getRelativePathname());
 
             return [
                 'href' => url("/blog/$path"),

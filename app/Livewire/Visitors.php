@@ -18,6 +18,20 @@ class Visitors extends Component
     #[Computed]
     public function visitors()
     {
+        $keys = $this->keys();
+
+        if ($this->route === '*') {
+            return count($keys);
+        }
+
+        return collect(Redis::mget($keys))
+            ->filter(fn(string $route) => $route === $this->route)
+            ->count();
+    }
+
+    #[Computed]
+    public function keys()
+    {
         $keys = [];
 
         $cursor = null;
@@ -37,13 +51,7 @@ class Visitors extends Component
             );
         } while ($cursor !== 0);
 
-        if ($this->route === '*') {
-            return count($keys);
-        }
-
-        return collect(Redis::mget($keys))
-            ->filter(fn(string $route) => $route === $this->route)
-            ->count();
+        return $keys;
     }
 
     public function render()

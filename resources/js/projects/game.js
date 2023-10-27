@@ -123,6 +123,7 @@ let mouseTime = 0;
 
 
 Echo.channel('game').listen('PlayerSpawned', ({name}) => {
+    // replace with <x-visitors /> ?
     alert('TODO: Add player to map, Alpine store?');
     console.log('maybe use redis to track online users');
     console.log({name});
