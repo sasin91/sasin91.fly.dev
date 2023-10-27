@@ -9,9 +9,19 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 use function cookie;
+use function trim;
 
 class TrackVisitors
 {
+    /**
+     * The URIs that should not be tracked.
+     *
+     * @var array<int, string>
+     */
+    protected $except = [
+        'livewire/*'
+    ];
+
     /**
      * Handle an incoming request.
      *
@@ -20,6 +30,10 @@ class TrackVisitors
     public function handle(Request $request, Closure $next): Response
     {
         $response = $next($request);
+
+        if ($this->inExceptArray($request)) {
+            return $response;
+        }
 
         $route = Route::currentRouteName() ?? '*';
         $visitor = $request->cookie('visitor');
@@ -38,5 +52,20 @@ class TrackVisitors
         );
 
         return $response;
+    }
+
+    protected function inExceptArray($request)
+    {
+        foreach ($this->except as $except) {
+            if ($except !== '/') {
+                $except = trim($except, '/');
+            }
+
+            if ($request->fullUrlIs($except) || $request->is($except)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
