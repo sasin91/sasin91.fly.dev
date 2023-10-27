@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use function is_subclass_of;
 
 class ValidGamerTag implements ValidationRule
 {
@@ -38,7 +37,7 @@ class ValidGamerTag implements ValidationRule
                     'max:42',
                     'alpha_num',
                     Rule::unique($this->model, $this->attribute)->when(
-                        is_subclass_of($this->model, Model::class),
+                        $this->model instanceof Model,
                         fn($rule) => $rule->ignoreModel($this->model)
                     )
                 ]

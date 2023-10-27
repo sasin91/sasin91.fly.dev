@@ -1,28 +1,3 @@
-<?php
-
-use App\Models\User;
-use App\Rules\ValidGamerTag;
-use Illuminate\Validation\Rule;
-use function Livewire\Volt\{rules, state, layout};
-
-$user = auth()->user();
-
-layout('guest');
-
-state([
-    'gamer_tag' => (string)$user?->gamer_tag
-]);
-
-rules([
-    'gamer_tag' => [new ValidGamerTag()]
-]);
-
-$submit = function () {
-    $this->validate();
-
-    $this->redirect("/projects/game/{$this->gamer_tag}");
-}
-?>
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
         <x-application-logo class="mx-auto h-10 w-auto"/>
@@ -56,13 +31,13 @@ $submit = function () {
                 >
                     Go!
                     <span wire:loading class="spinner">
-                        <!-- icon from https://heroicons.com/ -->
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                        </svg>
-                    </span>
+                            <!-- icon from https://heroicons.com/ -->
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                            </svg>
+                        </span>
                 </button>
             </div>
         </form>

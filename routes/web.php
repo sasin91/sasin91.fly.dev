@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\AppController;
+use App\Http\Middleware\VerifyGamerTag;
+use App\Livewire\Projects\Game;
+use App\Livewire\Projects\GameLogin;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -18,14 +21,15 @@ use Livewire\Volt\Volt;
 Volt::route('/', 'welcome')
     ->name('welcome');
 
-Route::view('/projects', 'livewire.pages.projects.index')
+Route::view('/projects', 'projects')
     ->name('projects.index');
 
-Volt::route('/projects/game', 'pages.projects.game.index')
-    ->name('projects.game.index');
+Route::get('/projects/game', GameLogin::class)
+    ->name(GameLogin::ROUTE);
 
-Volt::route('/projects/game/{gamer_tag}', 'pages.projects.game.[name]')
-    ->name('projects.game.name');
+Route::get('/projects/game/{gamer_tag}', Game::class)
+    ->middleware(VerifyGamerTag::class)
+    ->name(Game::ROUTE);
 
 Route::view('/dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
