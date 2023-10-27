@@ -86,7 +86,6 @@ new class extends Component {
                     {{ t('navigation.guest.log_in') }} <span aria-hidden="true">&rarr;</span>
                 </x-nav-link>
             @endauth
-            <livewire:visitors/>
         </div>
     </nav>
     <!-- Responsive Navigation Menu -->
@@ -100,7 +99,6 @@ new class extends Component {
                 {{ t('navigation.global.projects') }}
             </x-responsive-nav-link>
 
-            <livewire:visitors/>
             <livewire:locale-changer/>
 
             @auth()
