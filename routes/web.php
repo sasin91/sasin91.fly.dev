@@ -24,11 +24,12 @@ Volt::route('/', 'welcome')
 Route::view('/projects', 'projects')
     ->name('projects.index');
 
-Route::get('/projects/game', GameLogin::class)
+Route::get('/projects/game/login', GameLogin::class)
+    ->middleware('guest:player')
     ->name(GameLogin::ROUTE);
 
-Route::get('/projects/game/{gamer_tag}', Game::class)
-    ->middleware(VerifyGamerTag::class)
+Route::get('/projects/game', Game::class)
+    ->middleware('auth:player')
     ->name(Game::ROUTE);
 
 Route::view('/dashboard', 'dashboard')

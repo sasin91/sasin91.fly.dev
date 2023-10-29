@@ -103,9 +103,10 @@
     },
     "projects": {
         "game": {
-            "index": {
+            "login": {
                 "headline": "👋 Identify yourself",
-                "name": "Gamer tag 👊"
+                "name": "Gamer tag 👊",
+                "password": "Password"
             }
         }
     }

@@ -105,9 +105,10 @@
     "by {authorName}, {authorRole}": "af {authorName}, {authorRole}",
     "projects": {
         "game": {
-            "index": {
+            "login": {
                 "headline": "👋 Hvem der?",
-                "name": "Gamer tag 👊"
+                "name": "Gamer tag 👊",
+                "password": "Kodeord"
             }
         }
     }
