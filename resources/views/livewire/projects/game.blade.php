@@ -1,4 +1,4 @@
-<div class="w-full h-full relative" id="container" data-players="@json($this->players)">
+<div class="w-full h-full relative" id="container" data-players="{{ json_encode($this->players) }}">
     <div class="w-full h-full absolute top-0 left-0" id="game-ui">
         <div class="absolute left-24 bottom-12 bg-[rgba(1.0, 1.0, 1.0, 0.0)] w-96 h-32 py-3 rounded-xl">
             <div class="flex flex-col justify-end w-full h-full border-4 rounded-md shadow-lg left-ui-area" id="left-ui-area">
@@ -39,6 +39,7 @@
                                 👋 {{ $this->player->name }}
                             </div>
                             <livewire:pinger :pingable="$this->player" />
+                            <pre id="outlet"></pre>
                         </div>
                         <div class="bg-[url({{ Storage::url('/projects/game/ui/paintball.png') }})] bg-no-repeat bg-contain w-28 h-10">
                         </div>

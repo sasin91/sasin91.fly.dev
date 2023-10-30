@@ -14,10 +14,11 @@ class Game extends Component
 {
     const ROUTE = 'projects.game.play';
 
-    #[Computed]
-    public function player(): Player|Authenticatable
+    public Player $player;
+
+    public function mount()
     {
-        return Auth::guard('player')->user();
+        $this->player = Auth::guard('player')->user();
     }
 
     #[Computed]

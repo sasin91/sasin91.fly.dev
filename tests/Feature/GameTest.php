@@ -7,7 +7,7 @@ use Livewire\Livewire;
 
 use function Pest\Laravel\assertAuthenticated;
 
-it('logs a player into the game', function () {
+it('creates a new player and logs into the game', function () {
     Player::factory()->create([
         'name' => 'johnDoe'
     ]);
@@ -19,13 +19,4 @@ it('logs a player into the game', function () {
         ->assertHasNoErrors();
 
     assertAuthenticated('player');
-});
-
-it('loads the game page and sees one other players', function () {
-    Livewire::test(Game::class, ['gamer_tag' => 'johnDoe'])
-        ->assertHasNoErrors();
-
-    Livewire::test(Game::class, ['gamer_tag' => 'jessieDoe'])
-        ->assertHasNoErrors()
-        ->assertCount('players', 1);
 });

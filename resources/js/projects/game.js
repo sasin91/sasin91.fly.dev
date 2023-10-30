@@ -78,6 +78,11 @@ stats.domElement.style.position = 'absolute';
 stats.domElement.style.top = '0px';
 container.appendChild(stats.domElement);
 
+const players = container.dataset.players;
+console.log({ players });
+
+document.getElementById('outlet').innerHTML = players;
+
 const GRAVITY = 30;
 
 const NUM_SPHERES = 100;
@@ -155,8 +160,6 @@ gltfLoader.load('maps/collision-world.glb', (gltf) => {
             helper.visible = value;
 
         });
-
-    const worldDirection = camera.getWorldDirection(playerDirection);
 
     animate();
 });
