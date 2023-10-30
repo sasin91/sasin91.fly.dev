@@ -25,7 +25,7 @@ class Pinger extends Component
      */
     public function ping(int $clientTime)
     {
-        $this->latency = $clientTime - (time() * 1000);
+        $this->latency = abs($clientTime - round((time() * 1000), 4));
 
         $this->pingable->ping($this->latency);
     }

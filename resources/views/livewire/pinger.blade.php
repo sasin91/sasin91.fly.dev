@@ -1,8 +1,12 @@
 @push('scripts')
 <script defer type="application/javascript">
-    setInterval(() => {
-        @this.ping(new Date().getTime());
-    }, 2_500);
+    document.addEventListener('livewire:initialized', function() {
+        @this.ping(Date.now());
+
+        setInterval(() => {
+            @this.ping(Date.now());
+        }, 5_000);
+    });
 </script>
 @endpush
 
