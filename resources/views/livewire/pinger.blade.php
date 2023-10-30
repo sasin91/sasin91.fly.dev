@@ -5,7 +5,7 @@
 
         setInterval(() => {
             @this.ping(Date.now());
-        }, 5_000);
+        }, 25_000);
     });
 </script>
 @endpush

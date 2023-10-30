@@ -23,8 +23,7 @@ class Game extends Component
     #[Computed]
     public function players()
     {
-        return Player::with('latestLogin')
-        ->online()
+        return Player::online()
             ->whereKeyNot($this->player)
             ->get();
     }

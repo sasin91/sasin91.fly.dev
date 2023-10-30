@@ -1,19 +1,19 @@
-<div class="w-full h-full relative" id="container">
+<div class="w-full h-full relative" id="container" data-players="@json($this->players)">
     <div class="w-full h-full absolute top-0 left-0" id="game-ui">
         <div class="absolute left-24 bottom-12 bg-[rgba(1.0, 1.0, 1.0, 0.0)] w-96 h-32 py-3 rounded-xl">
             <div class="flex flex-col justify-end w-full h-full border-4 rounded-md shadow-lg left-ui-area" id="left-ui-area">
                 <div class="w-full h-full flex flex-row justify-center items-end">
                     <div class="h-full flex flex-col justify-center items-center">
-                        <div class="text-white text-shadow text-2xl" id="charge-text">100%</div>
-                        <div class="text-white text-shadow text-4xl" id="health-text">100</div>
+                        <div class="text-white text-shadow text-4xl" id="health">{{ number_format($this->player->health, 0) }}</div>
+                        <div class="text-white text-shadow text-4xl" id="mana">{{ number_format($this->player->mana, 0) }}</div>
                     </div>
                     <div class="h-full flex flex-col justify-center items-center">
                         <div class="bg-[url({{ Storage::url('/projects/game/ui/flash_on_FILL0_wght700_GRAD0_opsz48.svg') }})] bg-contain h-6 w-6 ml-0.5 invert drop-shadow"></div>
                         <div class="bg-[url({{ Storage::url('/projects/game/ui/add_box_FILL0_wght700_GRAD0_opsz48.svg') }})] bg-contain h-6 w-6 ml-0.5 invert drop-shadow"></div>
                     </div>
-                    <div class="h-full flex flex-col justify-center items-center">
+                    <div class="h-full flex flex-col justify-center items-center gap-1">
                         <div class="h-6 w-48 ml-0.5">
-                            <div class="h-full bg-red-500 rounded shadow-md hover:shadow-lg" id="charge-bar"></div>
+                            <div class="h-full bg-red-500 rounded shadow-md hover:shadow-lg"></div>
                         </div>
                         <div class="h-6 w-48 m-0.5">
                             <div class="h-full bg-blue-500 rounded shadow-md hover:shadow-lg"></div>
@@ -39,7 +39,6 @@
                                 👋 {{ $this->player->name }}
                             </div>
                             <livewire:pinger :pingable="$this->player" />
-                            <pre>@json($this->players)</pre>
                         </div>
                         <div class="bg-[url({{ Storage::url('/projects/game/ui/paintball.png') }})] bg-no-repeat bg-contain w-28 h-10">
                         </div>

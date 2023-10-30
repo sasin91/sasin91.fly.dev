@@ -1,19 +1,12 @@
 <?php
 
-namespace Tests\Feature\Livewire;
-
 use App\Livewire\Pinger;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\Player;
 use Livewire\Livewire;
-use Tests\TestCase;
 
-class PingerTest extends TestCase
-{
-    /** @test */
-    public function renders_successfully()
-    {
-        Livewire::test(Pinger::class)
-            ->assertStatus(200);
-    }
-}
+it('renders successfully', function () {
+    $pingable = Player::factory()->create();
+
+    Livewire::test(Pinger::class, ['pingable' => $pingable])
+        ->assertStatus(200);
+});

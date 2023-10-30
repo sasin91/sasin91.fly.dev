@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Request;
 
-trait HasPing
+trait Pingable
 {
     public function scopeWithLatestPingAt($query)
     {

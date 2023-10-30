@@ -2,19 +2,18 @@
 
 namespace App\Livewire;
 
-use App\Models\Player;
-use Illuminate\Database\Eloquent\Model;
-use Livewire\Attributes\Computed;
+use App\Contracts\Pingable;
 use Livewire\Component;
 
 class Pinger extends Component
 {
-    public Player $pingable;
+    public Pingable $pingable;
 
     public int $latency = 0;
 
-    public function mount()
+    public function mount($pingable)
     {
+        $this->pingable = $pingable;
         $this->latency = (int)$this->pingable->latestPing()->value('latency');
     }
 
