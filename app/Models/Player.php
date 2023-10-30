@@ -27,6 +27,27 @@ class Player extends Model implements Authenticatable, Pingable
 
     protected $fillable = ['name', 'email', 'password'];
 
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+
     public function scopeOnline(Builder $query, string $boundaryUnit = 'minute', int $boundaryValue = 10): void
     {
         $query->whereHas('latestPing', static function (Builder $query) use ($boundaryUnit, $boundaryValue): void {

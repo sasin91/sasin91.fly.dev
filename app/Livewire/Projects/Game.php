@@ -26,7 +26,7 @@ class Game extends Component
     {
         return Player::online()
             ->whereKeyNot($this->player)
-            ->get();
+            ->get(['name', 'health', 'mana', 'x', 'y', 'z']);
     }
 
     public function render()
