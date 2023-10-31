@@ -339,10 +339,20 @@
             }
 
             for (const p of players) {
-                p.group = new THREE.Group();
-                p.group.copy(playerGroup);
+                // TODO: figure out how to use the Xbot model instead of a boxDoodad
+                // p.group = new THREE.Group();
+                // p.group.copy(playerGroup, false);
+                // p.group.position.set(p.x, p.y, p.z);
 
-                scene.add(p.group);
+                // scene.add(p.group);
+
+                const boxDoodad = new THREE.Mesh(
+                    new THREE.BoxGeometry(1,1,1),
+                    new THREE.MeshNormalMaterial()
+                );
+
+                boxDoodad.position.set(p.x, p.y, p.z);
+                scene.add(boxDoodad);
             }
         });
 
