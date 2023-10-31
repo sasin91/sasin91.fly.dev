@@ -28,3 +28,19 @@ it('lists the online players', function () {
     assertTrue($results->contains($playerD));
     assertFalse($results->contains($playerE));
 });
+
+
+it('lists the idle players', function () {
+    Carbon::setTestNow('2023-10-29 17:30:00');
+
+    list($playerA, $playerB) = Player::factory()->times(2)->create();
+
+    Ping::factory()->for($playerA)->create(['created_at' => '2023-10-29 17:20:00']); // 10 mins ago
+    Ping::factory()->for($playerB)->create(['created_at' => '2023-10-29 17:19:00']); // 11 mins ago
+
+    $results = Player::idle()->get();
+
+    assertCount(1, $results);
+    assertTrue($results->contains($playerB));
+    assertFalse($results->contains($playerA));
+});

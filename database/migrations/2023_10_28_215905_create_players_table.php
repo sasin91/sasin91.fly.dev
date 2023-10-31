@@ -21,9 +21,9 @@ return new class extends Migration
             $table->string('remember_token')->nullable();
             $table->integer('health')->default(100);
             $table->integer('mana')->default(100);
-            $table->integer('x')->default(0);
-            $table->integer('y')->default(2);
-            $table->integer('z')->default(-1);
+            $table->decimal('x')->default(0);
+            $table->decimal('y')->default(2);
+            $table->decimal('z')->default(-1);
             $table->timestamps();
         });
     }
