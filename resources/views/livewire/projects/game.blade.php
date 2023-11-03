@@ -32,10 +32,10 @@
         const player = @json($player);
 
         const fileLoader = new THREE.FileLoader();
-        fileLoader.setPath('/storage/projects/game/');
+        fileLoader.setPath('/assets/projects/game/');
 
         const gltfLoader = new GLTFLoader();
-        gltfLoader.setPath('/storage/projects/game/');
+        gltfLoader.setPath('/assets/projects/game/');
 
         const clock = new THREE.Clock();
 
@@ -361,7 +361,7 @@
             const skyFragmentShader = await fileLoader.loadAsync('shaders/sky.frag');
 
             const loader = new THREE.CubeTextureLoader();
-            loader.setPath('/storage/projects/game/');
+            loader.setPath('/assets/projects/game/');
 
             const background = loader.load([
                 'sky/Cold_Sunset__Cam_2_Left+X.png',
@@ -821,10 +821,10 @@
                     </div>
                     <div class="h-full flex flex-col justify-center items-center">
                         <div
-                            class="bg-[url({{ Storage::url('/projects/game/ui/flash_on_FILL0_wght700_GRAD0_opsz48.svg') }})] bg-contain h-6 w-6 ml-0.5 invert drop-shadow">
+                            class="bg-[url({{ asset('/assets/projects/game/ui/flash_on_FILL0_wght700_GRAD0_opsz48.svg') }})] bg-contain h-6 w-6 ml-0.5 invert drop-shadow">
                         </div>
                         <div
-                            class="bg-[url({{ Storage::url('/projects/game/ui/add_box_FILL0_wght700_GRAD0_opsz48.svg') }})] bg-contain h-6 w-6 ml-0.5 invert drop-shadow">
+                            class="bg-[url({{ asset('/assets/projects/game/ui/add_box_FILL0_wght700_GRAD0_opsz48.svg') }})] bg-contain h-6 w-6 ml-0.5 invert drop-shadow">
                         </div>
                     </div>
                     <div class="h-full flex flex-col justify-center items-center gap-1">
@@ -848,10 +848,10 @@
                     </div>
                     <div class="h-full flex flex-col justify-center items-center ml-2">
                         <div
-                            class="bg-[url({{ Storage::url('/projects/game/ui/currency_yuan_FILL0_wght700_GRAD0_opsz48.svg') }})] bg-no-repeat bg-cover h-6 w-6 ml-0.5 invert drop-shadow min-h-[30px]">
+                            class="bg-[url({{ asset('/assets/projects/game/ui/currency_yuan_FILL0_wght700_GRAD0_opsz48.svg') }})] bg-no-repeat bg-cover h-6 w-6 ml-0.5 invert drop-shadow min-h-[30px]">
                         </div>
                         <div
-                            class="bg-[url({{ Storage::url('/projects/game/ui/safety_check_FILL0_wght700_GRAD0_opsz48.svg') }})] bg-contain h-8 w-8 ml-0.5 invert drop-shadow">
+                            class="bg-[url({{ asset('/assets/projects/game/ui/safety_check_FILL0_wght700_GRAD0_opsz48.svg') }})] bg-contain h-8 w-8 ml-0.5 invert drop-shadow">
                         </div>
                     </div>
                     <div class="h-full flex flex-col justify-center items-center ml-2">
@@ -863,7 +863,7 @@
                             <pre id="outlet"></pre>
                         </div>
                         <div
-                            class="bg-[url({{ Storage::url('/projects/game/ui/paintball.png') }})] bg-no-repeat bg-contain w-28 h-10">
+                            class="bg-[url({{ asset('/assets/projects/game/ui/paintball.png') }})] bg-no-repeat bg-contain w-28 h-10">
                         </div>
                     </div>
                 </div>
@@ -874,15 +874,15 @@
                 id="top-right-ui-area">
                 <div class="w-full h-full flex flex-row justify-center items-end">
                     <img class="mt-1"
-                        src="{{ Storage::url('/projects/game/ui/ev_shadow_FILL0_wght700_GRAD0_opsz48.svg') }}"></img>
+                        src="{{ asset('/assets/projects/game/ui/ev_shadow_FILL0_wght700_GRAD0_opsz48.svg') }}"></img>
                     <img class="mt-1"
-                        src="{{ Storage::url('/projects/game/ui/tenancy_FILL0_wght700_GRAD0_opsz48.svg') }}"></img>
+                        src="{{ asset('/assets/projects/game/ui/tenancy_FILL0_wght700_GRAD0_opsz48.svg') }}"></img>
                     <img class="mt-1"
-                        src="{{ Storage::url('/projects/game/ui/fluorescent_FILL0_wght700_GRAD0_opsz48.svg') }}"></img>
+                        src="{{ asset('/assets/projects/game/ui/fluorescent_FILL0_wght700_GRAD0_opsz48.svg') }}"></img>
                     <img class="mt-1"
-                        src="{{ Storage::url('/projects/game/ui/database_FILL0_wght700_GRAD0_opsz48.svg') }}"></img>
+                        src="{{ asset('/assets/projects/game/ui/database_FILL0_wght700_GRAD0_opsz48.svg') }}"></img>
                     <img class="mt-1"
-                        src="{{ Storage::url('/projects/game/ui/barcode_scanner_FILL0_wght700_GRAD0_opsz48.svg') }}"></img>
+                        src="{{ asset('/assets/projects/game/ui/barcode_scanner_FILL0_wght700_GRAD0_opsz48.svg') }}"></img>
                 </div>
             </div>
         </div>
@@ -890,13 +890,13 @@
             <div class="text-center" id="top-left-ui-area">
                 <div class="w-full h-full flex flex-row justify-center items-end">
                     <img class="invert drop-shadow"
-                        src="{{ Storage::url('/projects/game/ui/double_arrow_FILL0_wght700_GRAD0_opsz48.svg') }}"></img>
+                        src="{{ asset('/assets/projects/game/ui/double_arrow_FILL0_wght700_GRAD0_opsz48.svg') }}"></img>
                     <div class="pt-2 pr-3 text-base text-white text-shadow-md">Kill'm all</div>
                 </div>
                 <div
                     class="w-full h-full flex flex-row justify-center min-w-[400px] bg-gradient-to-r from-blue-300 via-transparent to-blue-900 items-center">
                     <img class="invert drop-shadow h-8"
-                        src="{{ Storage::url('/projects/game/ui/token_FILL0_wght700_GRAD0_opsz48.svg') }}"></img>
+                        src="{{ asset('/assets/projects/game/ui/token_FILL0_wght700_GRAD0_opsz48.svg') }}"></img>
                     <div class="text-base ml-2 mr-2 text-gray-100 text-shadow">Jump around and stuff</div>
                 </div>
             </div>

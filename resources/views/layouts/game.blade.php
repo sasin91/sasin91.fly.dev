@@ -20,9 +20,9 @@
         }
       </script>
 
-      @vite(['resources/css/app.css', 'resources/js/app.js'])
-      @livewireScripts()
-      @livewireStyles()
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireScripts()
+    @livewireStyles()
 </head>
 
 <body class="w-full h-full absolute bg-black m-0 p-0 overscroll-none">
@@ -30,7 +30,7 @@
         {{ $slot }}
     </main>
 
-    
+
     @stack('scripts')
 
     <script defer>
