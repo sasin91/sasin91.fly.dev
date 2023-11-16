@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Controllers\AppController;
-use App\Http\Middleware\VerifyGamerTag;
-use App\Livewire\Projects\Game;
-use App\Livewire\Projects\GameLogin;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Route;
-use Livewire\Volt\Volt;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,26 +18,37 @@ use Livewire\Volt\Volt;
 |
 */
 
-Volt::route('/', 'welcome')
-    ->name('welcome');
+Route::get('/', function () {
+    return Inertia::render('Welcome');
+})->name('welcome');
 
-Route::view('/projects', 'projects')
-    ->name('projects.index');
+Route::get('/blog', function () {
+    return Inertia::render('Blog');
+})->name('blog');
 
-Route::get('/projects/game/login', GameLogin::class)
-    ->middleware('guest:player')
-    ->name(GameLogin::ROUTE);
+Route::get('/projects', function () {
+    return Inertia::render('Projects/Index');
+})->name('projects');
 
-Route::get('/projects/game', Game::class)
-    ->middleware('auth:player')
-    ->name(Game::ROUTE);
+Route::get('/projects/game', function () {
+    return Inertia::render('Projects/Game');
+})->name('projects.game');
 
-Route::view('/dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::post('/contact-request', [ContactRequestController::class, 'store'])
+    ->middleware([
+        HandlePrecognitiveRequests::class,
+        ThrottleRequests::with(maxAttempts: 15, decayMinutes: 1)
+    ])
+    ->name('contact-request.store');
 
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-require __DIR__ . '/auth.php';
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
