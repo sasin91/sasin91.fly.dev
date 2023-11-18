@@ -44,7 +44,7 @@ class HandleInertiaRequests extends Middleware
                         'name' => $request->user()->name,
                         'email' => $request->user()->email,
                         'email_verified_at' => $request->user()->email_verified_at,
-                        'can_access_filament' => $request->user()->canAccessFilament()
+                        'is_admin' => $request->user()->isAdmin()
                     ]
                     : null
             ],
