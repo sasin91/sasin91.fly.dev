@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Spatie\ResponseCache\Middlewares\CacheResponse;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,19 +21,27 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
-})->name('welcome');
+})
+    ->name('welcome')
+    ->middleware(CacheResponse::class);
 
 Route::get('/blog', function () {
     return Inertia::render('Blog');
-})->name('blog');
+})
+    ->name('blog')
+    ->middleware(CacheResponse::class);
 
 Route::get('/projects', function () {
     return Inertia::render('Projects/Index');
-})->name('projects');
+})
+    ->name('projects')
+    ->middleware(CacheResponse::class);
 
 Route::get('/projects/game', function () {
     return Inertia::render('Projects/Game');
-})->name('projects.game');
+})
+    ->name('projects.game')
+    ->middleware(CacheResponse::class);
 
 Route::post('/contact-request', [ContactRequestController::class, 'store'])
     ->middleware([
@@ -43,7 +52,9 @@ Route::post('/contact-request', [ContactRequestController::class, 'store'])
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})
+    ->name('dashboard')
+    ->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -51,4 +62,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
