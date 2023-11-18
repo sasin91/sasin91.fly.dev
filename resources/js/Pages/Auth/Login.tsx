@@ -1,97 +1,101 @@
-import { useEffect, FormEventHandler } from 'react';
-import Checkbox from '@/Components/ui/Checkbox';
-import GuestLayout from '@/Layouts/GuestLayout';
-import InputError from '@/Components/ui/InputError';
-import InputLabel from '@/Components/ui/InputLabel';
-import PrimaryButton from '@/Components/ui/PrimaryButton';
-import TextInput from '@/Components/ui/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { useEffect, FormEventHandler } from "react";
+import Checkbox from "@/Components/ui/Checkbox";
+import FormField from "@/Components/ui/FormField";
+import PrimaryButton from "@/Components/ui/PrimaryButton";
+import GuestLayout from "@/Layouts/GuestLayout";
+import { useTranslation } from "@/i18n/client";
+import { Head, Link } from "@inertiajs/react";
+import { useForm } from "laravel-precognition-react-inertia";
+import { Loader } from "lucide-react";
 
-export default function Login({ status, canResetPassword }: { status?: string, canResetPassword: boolean }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        email: '',
-        password: '',
+export default function Login({
+    status,
+    canResetPassword,
+}: {
+    status?: string;
+    canResetPassword: boolean;
+}) {
+    const { t } = useTranslation();
+    const form = useForm("post", route("login"), {
+        email: "",
+        password: "",
         remember: false,
     });
 
     useEffect(() => {
         return () => {
-            reset('password');
+            form.reset("password");
         };
     }, []);
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route('login'));
+        return form.submit({
+            preserveScroll: true,
+            onSuccess: () => {
+                form.reset();
+            },
+        });
     };
 
     return (
         <GuestLayout>
-            <Head title="Log in" />
+            <Head title={t("login.title")} />
 
-            {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
-
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
-
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
+            <div className="container mx-auto mt-14">
+                <form onSubmit={submit} className="space-y-4">
+                    <FormField
+                        form={form}
+                        attribute="email"
+                        label={t("login.form.email")}
                         autoComplete="username"
                         isFocused={true}
-                        onChange={(e) => setData('email', e.target.value)}
                     />
 
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
-
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
+                    <FormField
+                        form={form}
+                        attribute="password"
+                        label={t("login.form.password")}
+                        required
                         autoComplete="current-password"
-                        onChange={(e) => setData('password', e.target.value)}
+                        type="password"
                     />
 
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
+                    <div className="block mt-4">
+                        <label className="flex items-center">
+                            <Checkbox
+                                name="remember"
+                                checked={form.remember}
+                                onChange={(e) =>
+                                    form.setData("remember", e.target.checked)
+                                }
+                            />
+                            <span className="text-sm text-gray-600 ms-2">
+                                {t("login.form.remember")}
+                            </span>
+                        </label>
+                    </div>
 
-                <div className="block mt-4">
-                    <label className="flex items-center">
-                        <Checkbox
-                            name="remember"
-                            checked={data.remember}
-                            onChange={(e) => setData('remember', e.target.checked)}
-                        />
-                        <span className="ms-2 text-sm text-gray-600">Remember me</span>
-                    </label>
-                </div>
+                    <div className="flex items-center justify-end mt-4">
+                        {canResetPassword && (
+                            <Link
+                                href={route("password.request")}
+                                className="text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            >
+                                {t("login.reset_password")}
+                            </Link>
+                        )}
 
-                <div className="flex items-center justify-end mt-4">
-                    {canResetPassword && (
-                        <Link
-                            href={route('password.request')}
-                            className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        <PrimaryButton
+                            className="ms-4"
+                            disabled={form.processing}
                         >
-                            Forgot your password?
-                        </Link>
-                    )}
-
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
-                    </PrimaryButton>
-                </div>
-            </form>
+                            {t("login.form.submit")}
+                        </PrimaryButton>
+                    </div>
+                </form>
+            </div>
         </GuestLayout>
     );
 }

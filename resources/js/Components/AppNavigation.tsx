@@ -1,7 +1,6 @@
 import { Disclosure } from "@headlessui/react";
 
 import NavLink from "./ui/NavLink";
-import { Link } from "@inertiajs/react";
 import ResponsiveNavLink from "./ui/ResponsiveNavLink";
 
 export type LinkType = {

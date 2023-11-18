@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContactRequestController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
@@ -42,7 +43,10 @@ Route::get('/projects/game', function () {
     return Inertia::render('Projects/Game');
 })
     ->name('projects.game')
-    ->middleware(CacheResponse::class);
+    ->middleware(['auth', CacheResponse::class]);
+
+Route::any('/locale/{locale?}', LocaleController::class)
+    ->name('locale');
 
 Route::post('/contact-request', [ContactRequestController::class, 'store'])
     ->middleware([

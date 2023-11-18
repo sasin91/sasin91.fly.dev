@@ -32,6 +32,7 @@ export default function FormField({
             ) : (
                 <Input
                     {...rest}
+                    name={attribute}
                     value={form[attribute]}
                     onChange={(e) => form.setData(attribute, e.target.value)}
                     onBlur={() => form.validate(attribute)}
@@ -40,9 +41,7 @@ export default function FormField({
 
             {form.invalid(attribute) && (
                 <InputError
-                    message={t("form.errors.required", {
-                        label,
-                    })}
+                    message={form.errors[attribute]}
                 />
             )}
         </div>

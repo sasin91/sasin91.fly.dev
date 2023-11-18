@@ -123,5 +123,26 @@
     },
     "title": "My projects",
     "description": "Usually something I myself find useful and/or interesting to build"
+  },
+  "register": {
+    "form": {
+      "name": "Name",
+      "email": "Email address",
+      "password": "Password",
+      "password_confirmation": "repeat password"
+    },
+    "login_link": "Log in",
+    "submit": "Create",
+    "title": "Register"
+  },
+  "login": {
+    "title": "Login",
+    "form": {
+      "email": "Email address",
+      "password": "Password",
+      "remember": "Remember me",
+      "submit": "Log in"
+    },
+    "reset_password": "Forgot your password?"
   }
 }

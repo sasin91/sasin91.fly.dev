@@ -71,8 +71,8 @@ export default function Authenticated({
                                         </Dropdown.Link>
                                         <Dropdown.Link
                                             href={route("logout")}
-                                            method="post"
-                                            as="button"
+                                            method="get"
+                                            as="a"
                                         >
                                             Log Out
                                         </Dropdown.Link>
