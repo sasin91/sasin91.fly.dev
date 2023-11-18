@@ -12,7 +12,8 @@
         @vite(['resources/js/app.tsx', "resources/js/Pages/{$page['component']}.tsx"])
         @inertiaHead
     </head>
-    <body class="font-sans antialiased bg-gradient-to-b from-indigo-100/20 via-violet-100/40 to-cyan-100/20">
+    
+    <body class="font-sans antialiased">
         @inertia
     </body>
 </html>
