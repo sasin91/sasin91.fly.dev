@@ -13,11 +13,11 @@ export default function Ball({ radius }: { radius: number }) {
                     polygonOffsetFactor={-5}
                     flatShading
                 />
-                <Decal
+                {/* <Decal
                     position={[0, 0, 1]}
                     rotation={[2 * Math.PI, 0, 6.25]}
                     castShadow={true}
-                />
+                /> */}
             </mesh>
         </Float>
     );

@@ -7,6 +7,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Spatie\ResponseCache\Middlewares\CacheResponse;
 
@@ -36,14 +37,20 @@ Route::get('/blog', function () {
 Route::get('/projects', function () {
     return Inertia::render('Projects/Index');
 })
-    ->name('projects')
-    ->middleware(CacheResponse::class);
+    ->name('projects');
 
 Route::get('/projects/game', function () {
-    return Inertia::render('Projects/Game');
+    $disk = Storage::disk('game_assets');
+
+    return Inertia::render('Projects/Game', [
+        'assets' => [
+            'root' => $disk->url('/'),
+            'map' => $disk->url('maps/scene-transformed.glb'),
+        ]
+    ]);
 })
     ->name('projects.game')
-    ->middleware(['auth', CacheResponse::class]);
+    ->middleware(['auth']);
 
 Route::any('/locale/{locale?}', LocaleController::class)
     ->name('locale');

@@ -39,9 +39,11 @@ export type checkSphereCollisionsFn = (
     velocity: Vector3
 ) => void;
 
-export default function GamePage(props: PageProps) {
+export type GamePageProps = PageProps<{ assets: Record<string, string> }>;
+
+export default function GamePage(props: GamePageProps) {
     const [dpr, setDpr] = useState(0.5);
-    const { nodes, scene } = useGLTF("/assets/maps/scene-transformed.glb");
+    const { nodes, scene } = useGLTF(props.assets.map);
     const octree = useOctree(scene);
 
     const colliders = useRef<Collider[]>([]);
@@ -100,11 +102,9 @@ export default function GamePage(props: PageProps) {
     }
 
     return (
-        <div className="relative w-full h-full" id="container">
-            <Overlay user={props.auth.user} />
-
+        <main className="absolute w-full h-full p-0 m-0 bg-black isolate overscroll-none">
             <Suspense fallback={<h1>Loading...</h1>}>
-                <Canvas shadows dpr={dpr}>
+                <Canvas style={{ height: "100vh", width: "100vw" }} dpr={dpr}>
                     <PerformanceMonitor
                         onIncline={() => setDpr(1)}
                         onDecline={() => setDpr(0.25)}
@@ -133,26 +133,29 @@ export default function GamePage(props: PageProps) {
                                 geometry={nodes.Suzanne007.geometry}
                                 material={nodes.Suzanne007.material}
                                 position={[1.74, 1.04, 24.97]}
-                            />
-                        </group>
-                        {balls.map(({ position }, i) => (
-                            <SphereCollider
-                                key={i}
-                                id={i}
-                                radius={radius}
-                                octree={octree}
-                                position={position}
-                                colliders={colliders.current}
-                                checkSphereCollisions={checkSphereCollisions}
                             >
-                                <Ball radius={radius} />
-                            </SphereCollider>
-                        ))}
+                                {balls.map(({ position }, i) => (
+                                    <SphereCollider
+                                        key={i}
+                                        id={i}
+                                        radius={radius}
+                                        octree={octree}
+                                        position={position}
+                                        colliders={colliders.current}
+                                        checkSphereCollisions={
+                                            checkSphereCollisions
+                                        }
+                                    >
+                                        <Ball radius={radius} />
+                                    </SphereCollider>
+                                ))}
+                            </mesh>
+                        </group>
                         <Player octree={octree} colliders={colliders.current} />
                         <PointerLockControls />
                     </PerformanceMonitor>
                 </Canvas>
             </Suspense>
-        </div>
+        </main>
     );
 }

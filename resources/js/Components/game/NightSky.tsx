@@ -1,39 +1,43 @@
+import { GamePageProps } from "@/Pages/Projects/Game";
+import { usePage } from "@inertiajs/react";
 import { useCubeTexture } from "@react-three/drei";
 import { useLoader } from "@react-three/fiber";
 import { BackSide, FileLoader, ShaderMaterial, SphereGeometry } from "three";
 
 export function NightSky() {
+    const { props } = usePage<GamePageProps>();
+
     const skyVertexShader = useLoader(
         FileLoader,
-        "/assets/shaders/sky.vert"
+        `${props.assets.root}/shaders/sky.vert`
     ) as string;
     const skyFragmentShader = useLoader(
         FileLoader,
-        "/assets/shaders/sky.frag"
+        `${props.assets.root}/shaders/sky.frag`
     ) as string;
 
     const background = useCubeTexture(
         [
-            "sky/Cold_Sunset__Cam_2_Left+X.png",
-            "sky/Cold_Sunset__Cam_3_Right-X.png",
-            "sky/Cold_Sunset__Cam_4_Up+Y.png",
-            "sky/Cold_Sunset__Cam_5_Down-Y.png",
-            "sky/Cold_Sunset__Cam_0_Front+Z.png",
-            "sky/Cold_Sunset__Cam_1_Back-Z.png",
+            "Cold_Sunset__Cam_2_LeftX.png",
+            "Cold_Sunset__Cam_3_Right-X.png",
+            "Cold_Sunset__Cam_4_UpY.png",
+            "Cold_Sunset__Cam_5_Down-Y.png",
+            "Cold_Sunset__Cam_0_FrontZ.png",
+            "Cold_Sunset__Cam_1_Back-Z.png",
         ],
-        { path: "/assets/" }
+        { path: `${props.assets.root}/sky/` }
     );
 
     const stars = useCubeTexture(
         [
-            "sky/space-posx.jpg",
-            "sky/space-negx.jpg",
-            "sky/space-posy.jpg",
-            "sky/space-negy.jpg",
-            "sky/space-posz.jpg",
-            "sky/space-negz.jpg",
+            "space-posx.jpg",
+            "space-negx.jpg",
+            "space-posy.jpg",
+            "space-negy.jpg",
+            "space-posz.jpg",
+            "space-negz.jpg",
         ],
-        { path: "/assets/" }
+        { path: `${props.assets.root}/sky/` }
     );
 
     const skyGeo = new SphereGeometry(1000, 32, 15);

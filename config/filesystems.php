@@ -29,6 +29,13 @@ return [
     */
 
     'disks' => [
+        'game_assets' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/game_assets'),
+            'url' => env('APP_URL').'storage/game_assets',
+            'visibility' => 'public',
+            'throw' => true,
+        ],
 
         'local' => [
             'driver' => 'local',
