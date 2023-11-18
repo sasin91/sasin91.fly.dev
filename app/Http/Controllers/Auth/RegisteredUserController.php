@@ -44,6 +44,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return Redirect::to($request->session()->previousUrl() ?? RouteServiceProvider::HOME);
+        return Redirect::to(RouteServiceProvider::HOME);
     }
 }

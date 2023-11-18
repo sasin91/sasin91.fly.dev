@@ -1,21 +1,29 @@
-import { PageProps } from "@/types";
+import { Character as CharacterType, PageProps } from "@/types";
 import {
     PerformanceMonitor,
     PointerLockControls,
     Stats,
+    Text,
     useGLTF,
 } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useRef, useState } from "react";
-import { Sphere, Vector3 } from "three";
+import { Fragment, Suspense, useEffect, useRef, useState } from "react";
+import { Euler, Sphere, Vector3 } from "three";
 
 import Ball from "@/Components/game/Ball";
 import { NightSky } from "@/Components/game/NightSky";
-import Overlay from "@/Components/game/Overlay";
-import Player from "@/Components/game/Player";
+import Character from "@/Components/game/Character";
 import SphereCollider from "@/Components/game/SphereCollider";
 import useOctree from "@/hooks/useOctree";
+import { BoxGeometry, MeshNormalMaterial } from "three";
 import type { Capsule } from "three/examples/jsm/Addons.js";
+import { Dialog, Transition } from "@headlessui/react";
+import { useTranslation } from "@/i18n/client";
+import { useForm } from "laravel-precognition-react-inertia";
+import { router } from "@inertiajs/react";
+import FormField from "@/Components/ui/FormField";
+import PrimaryButton from "@/Components/ui/PrimaryButton";
+import { Loader } from "lucide-react";
 
 export const Gravity = 30;
 export const ballCount = 10;
@@ -41,63 +49,122 @@ export type checkSphereCollisionsFn = (
 
 export type GamePageProps = PageProps<{ assets: Record<string, string> }>;
 
+function CreateCharacter() {
+    const { t } = useTranslation();
+    const [isOpen, setIsOpen] = useState(true);
+
+    const form = useForm("post", route("character.store"), {
+        name: "",
+    });
+
+    function closeModal() {
+        setIsOpen(false);
+    }
+
+    function openModal() {
+        setIsOpen(true);
+    }
+    return (
+        <Transition appear show={isOpen} as={Fragment}>
+            <Dialog as="div" className="relative z-10" onClose={closeModal}>
+                <Transition.Child
+                    as={Fragment}
+                    enter="ease-out duration-300"
+                    enterFrom="opacity-0"
+                    enterTo="opacity-100"
+                    leave="ease-in duration-200"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                >
+                    <div className="fixed inset-0 bg-black/25" />
+                </Transition.Child>
+
+                <div className="fixed inset-0 overflow-y-auto">
+                    <div className="flex items-center justify-center min-h-full p-4 text-center">
+                        <Transition.Child
+                            as={Fragment}
+                            enter="ease-out duration-300"
+                            enterFrom="opacity-0 scale-95"
+                            enterTo="opacity-100 scale-100"
+                            leave="ease-in duration-200"
+                            leaveFrom="opacity-100 scale-100"
+                            leaveTo="opacity-0 scale-95"
+                        >
+                            <Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                                <Dialog.Title
+                                    as="h3"
+                                    className="text-lg font-medium leading-6 text-gray-900"
+                                >
+                                    {t("character.create")}
+                                </Dialog.Title>
+                                <div className="mt-2">
+                                    <form
+                                        onSubmit={() => {
+                                            return form.submit({
+                                                onSuccess() {
+                                                    router.reload();
+                                                },
+                                            });
+                                        }}
+                                    >
+                                        <FormField
+                                            form={form}
+                                            attribute="name"
+                                            label={t("character.form.name")}
+                                        />
+
+                                        <PrimaryButton
+                                            className="mt-4"
+                                            type="submit"
+                                            disabled={form.processing}
+                                        >
+                                            {form.processing && <Loader />}
+                                            {t("character.form.submit")}
+                                        </PrimaryButton>
+                                    </form>
+                                </div>
+                            </Dialog.Panel>
+                        </Transition.Child>
+                    </div>
+                </div>
+            </Dialog>
+        </Transition>
+    );
+}
+
 export default function GamePage(props: GamePageProps) {
+    if (!props.auth.user.character) {
+        return <CreateCharacter />;
+    }
+
     const [dpr, setDpr] = useState(0.5);
     const { nodes, scene } = useGLTF(props.assets.map);
     const octree = useOctree(scene);
 
     const colliders = useRef<Collider[]>([]);
+    const [characters, setCharacters] = useState<CharacterType[]>([]);
 
-    function checkSphereCollisions(sphere: Sphere, velocity: Vector3) {
-        for (const c of colliders.current) {
-            if (c.sphere) {
-                const d2 = sphere.center.distanceToSquared(c.sphere.center);
-                const r = sphere.radius + c.sphere.radius;
-                const r2 = r * r;
+    useEffect(() => {
+        window.Echo.join(`game`)
+            .here((p: CharacterType[]) => {
+                setCharacters(p);
+            })
+            .joining((character: CharacterType) => {
+                console.log(character.name);
 
-                if (d2 < r2) {
-                    const normal = v1
-                        .subVectors(sphere.center, c.sphere.center)
-                        .normalize();
-                    const impact1 = v2
-                        .copy(normal)
-                        .multiplyScalar(normal.dot(velocity));
-                    const impact2 = v3
-                        .copy(normal)
-                        .multiplyScalar(normal.dot(c.velocity));
-                    velocity.add(impact2).sub(impact1);
-                    c.velocity.add(impact1).sub(impact2);
-                    const d = (r - Math.sqrt(d2)) / 2;
-                    sphere.center.addScaledVector(normal, d);
-                    c.sphere.center.addScaledVector(normal, -d);
-                }
-            } else if (c.capsule) {
-                const center = v1
-                    .addVectors(c.capsule.start, c.capsule.end)
-                    .multiplyScalar(0.5);
-                const r = sphere.radius + c.capsule.radius;
-                const r2 = r * r;
-                for (const point of [c.capsule.start, c.capsule.end, center]) {
-                    const d2 = point.distanceToSquared(sphere.center);
-                    if (d2 < r2) {
-                        const normal = v1
-                            .subVectors(point, sphere.center)
-                            .normalize();
-                        const impact1 = v2
-                            .copy(normal)
-                            .multiplyScalar(normal.dot(c.velocity));
-                        const impact2 = v3
-                            .copy(normal)
-                            .multiplyScalar(normal.dot(velocity));
-                        c.velocity.add(impact2).sub(impact1);
-                        velocity.add(impact1).sub(impact2);
-                        const d = (r - Math.sqrt(d2)) / 2;
-                        sphere.center.addScaledVector(normal, -d);
-                    }
-                }
-            }
-        }
-    }
+                characters.push(character);
+                setCharacters(characters);
+            })
+            .leaving((character: CharacterType) => {
+                console.log(character.name);
+
+                setCharacters(characters.filter((p) => p.id !== character.id));
+            });
+
+        return () => {
+            window.Echo.leave(`game`);
+        };
+    }, []);
 
     return (
         <main className="absolute w-full h-full p-0 m-0 bg-black isolate overscroll-none">
@@ -140,16 +207,35 @@ export default function GamePage(props: GamePageProps) {
                                         octree={octree}
                                         position={position}
                                         colliders={colliders.current}
-                                        checkSphereCollisions={
-                                            checkSphereCollisions
-                                        }
                                     >
                                         <Ball radius={radius} />
                                     </SphereCollider>
                                 ))}
                             </mesh>
                         </group>
-                        <Player octree={octree} colliders={colliders.current} />
+                        <Character
+                            octree={octree}
+                            colliders={colliders.current}
+                        />
+
+                        {characters.map((character) => (
+                            <mesh
+                                key={`character-${character.id}`}
+                                position={new Vector3(character.position[0], character.position[1], character.position[2])}
+                                rotation={new Euler(character.rotation[0], character.rotation[1], character.rotation[2])}
+                                geometry={new BoxGeometry()}
+                                material={new MeshNormalMaterial()}
+                            >
+                                <Text
+                                    position={[0, 1.0, 0]}
+                                    color="black"
+                                    anchorX="center"
+                                    anchorY="middle"
+                                >
+                                    {character.name}
+                                </Text>
+                            </mesh>
+                        ))}
                         <PointerLockControls />
                     </PerformanceMonitor>
                 </Canvas>

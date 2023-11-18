@@ -145,6 +145,14 @@
       "remember": "Husk mig",
       "submit": "Log ind"
     },
-    "reset_password": "Glemt dit kodeord?"
+    "reset_password": "Glemt dit kodeord?",
+    "register": "Opret dig"
+  },
+  "character": {
+    "create": "Opret din karakter",
+    "form": {
+      "name": "Navn",
+      "submit": "Opret"
+    }
   }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CharacterController;
 use App\Http\Controllers\ContactRequestController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\ProfileController;
@@ -51,6 +52,10 @@ Route::get('/projects/game', function () {
 })
     ->name('projects.game')
     ->middleware(['auth']);
+
+Route::post('/character', [CharacterController::class, 'store'])
+    ->middleware(HandlePrecognitiveRequests::class)
+    ->name('character.store');
 
 Route::any('/locale/{locale?}', LocaleController::class)
     ->name('locale');
