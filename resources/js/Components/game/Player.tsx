@@ -16,6 +16,8 @@ const suzi = import("@pmndrs/assets/models/suzi.glb").then(
     (module) => module.default
 );
 
+export const PlayerModel = () => (<Gltf src={suspend(suzi) as string} receiveShadow castShadow />);
+
 function getForwardVector(camera: Camera, playerDirection: Vector3) {
     camera.getWorldDirection(playerDirection);
     playerDirection.y = 0;
@@ -208,5 +210,5 @@ export default function Player({
         teleportPlayerIfOob(camera, capsule, playerVelocity);
     });
 
-    return <Gltf src={suspend(suzi) as string} receiveShadow castShadow />;
+    return <PlayerModel />;
 }

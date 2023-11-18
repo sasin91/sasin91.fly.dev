@@ -49,9 +49,7 @@ export default function GamePage(props: GamePageProps) {
     const colliders = useRef<Collider[]>([]);
 
     function checkSphereCollisions(sphere: Sphere, velocity: Vector3) {
-        for (let i = 0, length = colliders.current.length; i < length; i++) {
-            const c = colliders.current[i]!;
-
+        for (const c of colliders.current) {
             if (c.sphere) {
                 const d2 = sphere.center.distanceToSquared(c.sphere.center);
                 const r = sphere.radius + c.sphere.radius;
@@ -104,7 +102,7 @@ export default function GamePage(props: GamePageProps) {
     return (
         <main className="absolute w-full h-full p-0 m-0 bg-black isolate overscroll-none">
             <Suspense fallback={<h1>Loading...</h1>}>
-                <Canvas style={{ height: "100vh", width: "100vw" }} dpr={dpr}>
+                <Canvas shadows dpr={dpr}>
                     <PerformanceMonitor
                         onIncline={() => setDpr(1)}
                         onDecline={() => setDpr(0.25)}
