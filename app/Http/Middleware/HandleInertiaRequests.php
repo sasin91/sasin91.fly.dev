@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Resources\CharacterResource;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -46,22 +47,7 @@ class HandleInertiaRequests extends Middleware
                         'email_verified_at' => $request->user()->email_verified_at,
                         'is_admin' => $request->user()->isAdmin,
                         'character' => $request->user()->character 
-                            ? [
-                                'id' => $request->user()->character->id,
-                                'name' => $request->user()->character->name,
-                                'health' => $request->user()->character->health,
-                                'mana' => $request->user()->character->mana,
-                                'position' => [
-                                    $request->user()->character->position_x,
-                                    $request->user()->character->position_y,
-                                    $request->user()->character->position_z,
-                                ],
-                                'rotation' => [
-                                    $request->user()->character->rotation_x,
-                                    $request->user()->character->rotation_y,
-                                    $request->user()->character->rotation_z,
-                                ]
-                            ]
+                            ? (new CharacterResource($request->user()->character))->toArray($request)
                             : null 
                     ]
                     : null

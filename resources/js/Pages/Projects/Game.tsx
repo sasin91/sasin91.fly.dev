@@ -2,28 +2,30 @@ import { Character as CharacterType, PageProps } from "@/types";
 import {
     PerformanceMonitor,
     PointerLockControls,
+    Preload,
     Stats,
     Text,
     useGLTF,
 } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Fragment, Suspense, useEffect, useRef, useState } from "react";
-import { Euler, Sphere, Vector3 } from "three";
+import { Sphere, Vector3 } from "three";
 
 import Ball from "@/Components/game/Ball";
+import Character, { CharacterModel } from "@/Components/game/Character";
+import CustomEnvironment from "@/Components/game/CustomEnvironment";
 import { NightSky } from "@/Components/game/NightSky";
-import Character from "@/Components/game/Character";
 import SphereCollider from "@/Components/game/SphereCollider";
-import useOctree from "@/hooks/useOctree";
-import { BoxGeometry, MeshNormalMaterial } from "three";
-import type { Capsule } from "three/examples/jsm/Addons.js";
-import { Dialog, Transition } from "@headlessui/react";
-import { useTranslation } from "@/i18n/client";
-import { useForm } from "laravel-precognition-react-inertia";
-import { router } from "@inertiajs/react";
 import FormField from "@/Components/ui/FormField";
 import PrimaryButton from "@/Components/ui/PrimaryButton";
+import useOctree from "@/hooks/useOctree";
+import { useTranslation } from "@/i18n/client";
+import { Dialog, Transition } from "@headlessui/react";
+import { router } from "@inertiajs/react";
+import { useForm } from "laravel-precognition-react-inertia";
 import { Loader } from "lucide-react";
+import type { Capsule } from "three/examples/jsm/Addons.js";
+import { lerp } from "three/src/math/MathUtils.js";
 
 export const Gravity = 30;
 export const ballCount = 10;
@@ -36,16 +38,13 @@ export const v2 = new Vector3();
 export const v3 = new Vector3();
 export const frameSteps = 5;
 
+export const gameChannel = window.Echo.join(`game`);
+
 export type Collider = {
     sphere?: Sphere;
     velocity: Vector3;
     capsule?: Capsule;
 };
-
-export type checkSphereCollisionsFn = (
-    sphere: Sphere,
-    velocity: Vector3
-) => void;
 
 export type GamePageProps = PageProps<{ assets: Record<string, string> }>;
 
@@ -61,9 +60,6 @@ function CreateCharacter() {
         setIsOpen(false);
     }
 
-    function openModal() {
-        setIsOpen(true);
-    }
     return (
         <Transition appear show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -133,113 +129,194 @@ function CreateCharacter() {
 }
 
 export default function GamePage(props: GamePageProps) {
+    useGLTF.preload(props.assets.map);
+
     if (!props.auth.user.character) {
         return <CreateCharacter />;
     }
 
     const [dpr, setDpr] = useState(0.5);
-    const { nodes, scene } = useGLTF(props.assets.map);
+    const { scene } = useGLTF(props.assets.map);
+
     const octree = useOctree(scene);
 
-    const colliders = useRef<Collider[]>([]);
+    const ballColliders = useRef<Collider[]>([]);
+    const characterColliders = useRef<Collider[]>([]);
+
     const [characters, setCharacters] = useState<CharacterType[]>([]);
 
     useEffect(() => {
-        window.Echo.join(`game`)
-            .here((p: CharacterType[]) => {
-                setCharacters(p);
+        gameChannel
+            .here((cs: CharacterType[]) => {
+                setCharacters(
+                    cs.filter((c) => c.id !== props.auth.user.character!.id)
+                );
             })
             .joining((character: CharacterType) => {
                 console.log(character.name);
 
                 characters.push(character);
                 setCharacters(characters);
+
+                console.log(characters);
             })
             .leaving((character: CharacterType) => {
                 console.log(character.name);
 
                 setCharacters(characters.filter((p) => p.id !== character.id));
-            });
+            })
+            .listenForWhisper(
+                "move",
+                ({
+                    characterId,
+                    x,
+                    y,
+                    z,
+                }: {
+                    characterId: number;
+                    x: number;
+                    y: number;
+                    z: number;
+                }) => {
+                    const idx = characters.findIndex(
+                        (c) => c.id === characterId
+                    );
+
+                    console.log({
+                        idx,
+                        characterId,
+                        characters,
+                        x,y,z
+                    });
+
+                    characters[idx].position.x = lerp(characters[idx].position.x, x, 0.3);
+                    characters[idx].position.y = lerp(characters[idx].position.y, y, 0.3);
+                    characters[idx].position.z = lerp(characters[idx].position.z, z, 0.3);
+
+                    setCharacters(characters);
+                }
+            );
 
         return () => {
             window.Echo.leave(`game`);
         };
     }, []);
 
+    console.log(props.auth.user.character);
+
     return (
         <main className="absolute w-full h-full p-0 m-0 bg-black isolate overscroll-none">
-            <Suspense fallback={<h1>Loading...</h1>}>
-                <Canvas shadows dpr={dpr}>
+            <Canvas shadows dpr={dpr}>
+                <Suspense
+                    fallback={
+                        <Text
+                            color="rgba(79, 70, 229, 1)"
+                            fillOpacity={100}
+                            strokeOpacity={80}
+                        >
+                            Loading...
+                        </Text>
+                    }
+                >
                     <PerformanceMonitor
                         onIncline={() => setDpr(1)}
                         onDecline={() => setDpr(0.25)}
                     >
+                        <Preload all scene={scene} />
                         <Stats />
                         <NightSky />
+
                         <ambientLight />
                         <pointLight position={[10, 10, 10]} />
-                        <directionalLight
-                            intensity={1}
-                            castShadow={true}
-                            shadow-bias={-0.00015}
-                            shadow-radius={4}
-                            shadow-blur={10}
-                            shadow-mapSize={[2048, 2048]}
-                            position={[85.0, 80.0, 70.0]}
-                            shadow-camera-left={-30}
-                            shadow-camera-right={30}
-                            shadow-camera-top={30}
-                            shadow-camera-bottom={-30}
+                        <hemisphereLight
+                            color={0x8dc1de}
+                            groundColor={0x00668d}
+                            intensity={1.5}
+                            position={[2, 1, 1]}
                         />
-                        <group dispose={null}>
-                            <mesh
-                                castShadow
-                                receiveShadow
-                                geometry={nodes.Suzanne007.geometry}
-                                material={nodes.Suzanne007.material}
-                                position={[1.74, 1.04, 24.97]}
+                        <directionalLight
+                            color={0xffffff}
+                            intensity={2.5}
+                            castShadow={true}
+                            shadow-bias={-0.00006}
+                            shadow-radius={4}
+                            position={[-5, 25, -1]}
+                            shadow-mapSize={[1024, 1024]}
+                        >
+                            <orthographicCamera
+                                attach="shadow-camera"
+                                args={[-30, 30, 30, -30, 0.01, 500]}
+                            />
+                        </directionalLight>
+
+                        {balls.map(({ position }, i) => (
+                            <SphereCollider
+                                key={i}
+                                id={i}
+                                radius={radius}
+                                octree={octree}
+                                position={position}
+                                colliders={ballColliders.current}
                             >
-                                {balls.map(({ position }, i) => (
+                                <Ball radius={radius} />
+                            </SphereCollider>
+                        ))}
+                        <Character
+                            id={props.auth.user.character!.id}
+                            octree={octree}
+                            ballColliders={ballColliders.current}
+                        />
+
+                        <group dispose={null}>
+                            {characters.map((character, i) => {
+                                console.log("spawning", character);
+                                return (
                                     <SphereCollider
-                                        key={i}
+                                        key={`character-${character.id}`}
                                         id={i}
                                         radius={radius}
                                         octree={octree}
-                                        position={position}
-                                        colliders={colliders.current}
+                                        position={[
+                                            character.position.x,
+                                            character.position.y,
+                                            character.position.z,
+                                        ]}
+                                        colliders={characterColliders.current}
                                     >
-                                        <Ball radius={radius} />
-                                    </SphereCollider>
-                                ))}
-                            </mesh>
-                        </group>
-                        <Character
-                            octree={octree}
-                            colliders={colliders.current}
-                        />
+                                        <mesh
+                                            castShadow
+                                            receiveShadow
+                                            scale={2.75}
+                                        >
+                                            <icosahedronGeometry
+                                                args={[radius, 5]}
+                                            />
+                                            <meshStandardMaterial
+                                                color={"hotpink"}
+                                                polygonOffset
+                                                polygonOffsetFactor={-5}
+                                                flatShading
+                                            />
 
-                        {characters.map((character) => (
-                            <mesh
-                                key={`character-${character.id}`}
-                                position={new Vector3(character.position[0], character.position[1], character.position[2])}
-                                rotation={new Euler(character.rotation[0], character.rotation[1], character.rotation[2])}
-                                geometry={new BoxGeometry()}
-                                material={new MeshNormalMaterial()}
-                            >
-                                <Text
-                                    position={[0, 1.0, 0]}
-                                    color="black"
-                                    anchorX="center"
-                                    anchorY="middle"
-                                >
-                                    {character.name}
-                                </Text>
-                            </mesh>
-                        ))}
+                                            <Text
+                                                position={[1, 1, 1]}
+                                                color="hotpink"
+                                                anchorX="center"
+                                                anchorY="middle"
+                                            >
+                                                {character.name}
+                                            </Text>
+                                            <CharacterModel />
+                                        </mesh>
+                                    </SphereCollider>
+                                );
+                            })}
+                        </group>
+                        <CustomEnvironment scene={scene} />
                         <PointerLockControls />
                     </PerformanceMonitor>
-                </Canvas>
-            </Suspense>
+                </Suspense>
+            </Canvas>
         </main>
     );
 }

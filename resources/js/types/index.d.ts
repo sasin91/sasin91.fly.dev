@@ -5,8 +5,16 @@ export interface Character {
     name: string;
     health: number;
     mana: number;
-    position: number[];
-    rotation: number[];
+    position: {
+        x: number;
+        y: number;
+        z: number;
+    };
+    rotation: {
+        x: number;
+        y: number;
+        z: number;
+    };
 }
 
 export interface User {

@@ -40,13 +40,16 @@ Route::get('/projects', function () {
 })
     ->name('projects');
 
-Route::get('/projects/game', function () {
+Route::get('/projects/game', function (\Inertia\ResponseFactory $inertia) {
     $disk = Storage::disk('game_assets');
 
-    return Inertia::render('Projects/Game', [
+    $inertia->setRootView('game');
+
+    return $inertia->render('Projects/Game', [
         'assets' => [
             'root' => $disk->url('/'),
-            'map' => $disk->url('maps/scene-transformed.glb'),
+            // 'map' => $disk->url('maps/scene-transformed.glb'),
+            'map' => $disk->url('maps/collision-world.glb')
         ]
     ]);
 })

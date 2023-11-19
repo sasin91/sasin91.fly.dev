@@ -1,4 +1,4 @@
-import { Collider, ballCount } from "@/Pages/Projects/Game";
+import { Collider, ballCount, gameChannel } from "@/Pages/Projects/Game";
 import useKeyboard from "@/hooks/useKeyboard";
 import { Gltf } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
@@ -36,6 +36,7 @@ function getSideVector(camera: Camera, characterDirection: Vector3) {
 }
 
 function controls(
+    id: number,
     keyboard: ReturnType<typeof useKeyboard>,
     camera: Camera,
     delta: number,
@@ -66,6 +67,15 @@ function controls(
         if (keyboard["Space"]) {
             characterVelocity.y = 15;
         }
+    }
+
+    if (keyboard["KeyW"] || keyboard["KeyA"] || keyboard["KeyS"] || keyboard["KeyD"]) {
+        gameChannel.whisper('move', {
+            characterId: id,
+            x: camera.position.x,
+            y: camera.position.y,
+            z: camera.position.z
+        });
     }
 }
 
@@ -155,12 +165,15 @@ function teleportCharacterIfOob(
 }
 
 export default function Character({
+    id,
     octree,
-    colliders,
+    ballColliders: colliders,
 }: {
+    id: number;
     octree: Octree;
-    colliders: Collider[];
+    ballColliders: Collider[];
 }) {
+    console.log({ id });
     const characterOnFloor = useRef(false);
     const characterVelocity = useMemo(() => new Vector3(), []);
     const characterDirection = useMemo(() => new Vector3(), []);
@@ -208,6 +221,7 @@ export default function Character({
 
     useFrame(({ camera }, delta) => {
         controls(
+            id,
             keyboard,
             camera,
             delta,
