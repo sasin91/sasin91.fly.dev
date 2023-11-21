@@ -49,7 +49,8 @@ Route::get('/projects/game', function (\Inertia\ResponseFactory $inertia) {
         'assets' => [
             'root' => $disk->url('/'),
             // 'map' => $disk->url('maps/scene-transformed.glb'),
-            'map' => $disk->url('maps/collision-world.glb')
+            'map' => $disk->url('maps/collision-world.glb'),
+            'character' => $disk->url('models/Xbot.glb')
         ]
     ]);
 })

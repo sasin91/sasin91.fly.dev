@@ -1,24 +1,27 @@
-import { Collider, ballCount, gameChannel } from "@/Pages/Projects/Game";
+import {
+    Collider,
+    GamePageProps,
+    ballCount,
+    gameChannel,
+} from "@/Pages/Projects/Game";
 import useKeyboard from "@/hooks/useKeyboard";
+import { usePage } from "@inertiajs/react";
 import { Gltf } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
-import { suspend } from "suspend-react";
 import { Camera, Vector3 } from "three";
 import { Octree } from "three/examples/jsm/Addons.js";
 import { Capsule } from "three/examples/jsm/math/Capsule.js";
+import { AnimatedWoman } from "./CharactersModels/AnimatedWoman";
 
 const GRAVITY = 30;
 const STEPS_PER_FRAME = 5;
 
-// @ts-expect-error
-const suzi = import("@pmndrs/assets/models/suzi.glb").then(
-    (module) => module.default
-);
+export const CharacterModel = () => {
+    const { props } = usePage<GamePageProps>();
 
-export const CharacterModel = () => (
-    <Gltf src={suspend(suzi) as string} receiveShadow castShadow />
-);
+    return <Gltf src={props.assets.character} receiveShadow castShadow />;
+};
 
 function getForwardVector(camera: Camera, characterDirection: Vector3) {
     camera.getWorldDirection(characterDirection);
@@ -47,7 +50,9 @@ function controls(
     const speedDelta = delta * (characterOnFloor ? 25 : 8);
     keyboard["KeyA"] &&
         characterVelocity.add(
-            getSideVector(camera, characterDirection).multiplyScalar(-speedDelta)
+            getSideVector(camera, characterDirection).multiplyScalar(
+                -speedDelta
+            )
         );
     keyboard["KeyD"] &&
         characterVelocity.add(
@@ -55,7 +60,9 @@ function controls(
         );
     keyboard["KeyW"] &&
         characterVelocity.add(
-            getForwardVector(camera, characterDirection).multiplyScalar(speedDelta)
+            getForwardVector(camera, characterDirection).multiplyScalar(
+                speedDelta
+            )
         );
     keyboard["KeyS"] &&
         characterVelocity.add(
@@ -69,12 +76,17 @@ function controls(
         }
     }
 
-    if (keyboard["KeyW"] || keyboard["KeyA"] || keyboard["KeyS"] || keyboard["KeyD"]) {
-        gameChannel.whisper('move', {
+    if (
+        keyboard["KeyW"] ||
+        keyboard["KeyA"] ||
+        keyboard["KeyS"] ||
+        keyboard["KeyD"]
+    ) {
+        gameChannel.whisper("move", {
             characterId: id,
             x: camera.position.x,
             y: camera.position.y,
-            z: camera.position.z
+            z: camera.position.z,
         });
     }
 }
@@ -173,7 +185,6 @@ export default function Character({
     octree: Octree;
     ballColliders: Collider[];
 }) {
-    console.log({ id });
     const characterOnFloor = useRef(false);
     const characterVelocity = useMemo(() => new Vector3(), []);
     const characterDirection = useMemo(() => new Vector3(), []);
@@ -216,7 +227,10 @@ export default function Character({
 
     useEffect(() => {
         //console.log('adding reference to this capsule collider')
-        colliders[ballCount] = { capsule: capsule, velocity: characterVelocity };
+        colliders[ballCount] = {
+            capsule: capsule,
+            velocity: characterVelocity,
+        };
     }, [colliders, ballCount, capsule, characterVelocity]);
 
     useFrame(({ camera }, delta) => {
@@ -243,5 +257,5 @@ export default function Character({
         teleportCharacterIfOob(camera, capsule, characterVelocity);
     });
 
-    return <CharacterModel />;
+    return <AnimatedWoman position={camera.position} />;
 }

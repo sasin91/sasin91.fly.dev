@@ -43,6 +43,7 @@
     "i18next": "^23.6.0",
     "i18next-browser-languagedetector": "^7.1.0",
     "i18next-resources-to-backend": "^1.1.4",
+    "jotai": "^2.5.1",
     "laravel-precognition-react-inertia": "^0.5.2",
     "maath": "^0.10.4",
     "postprocessing": "^6.33.3",

@@ -26,6 +26,8 @@ import { useForm } from "laravel-precognition-react-inertia";
 import { Loader } from "lucide-react";
 import type { Capsule } from "three/examples/jsm/Addons.js";
 import { lerp } from "three/src/math/MathUtils.js";
+import { atom, useAtom } from "jotai";
+import { AnimatedWoman } from "@/Components/game/CharactersModels/AnimatedWoman";
 
 export const Gravity = 30;
 export const ballCount = 10;
@@ -39,7 +41,9 @@ export const v3 = new Vector3();
 export const frameSteps = 5;
 
 export const gameChannel = window.Echo.join(`game`);
-
+export const charactersAtom = atom<Record<CharacterType["id"], CharacterType>>(
+    {}
+);
 export type Collider = {
     sphere?: Sphere;
     velocity: Vector3;
@@ -143,27 +147,32 @@ export default function GamePage(props: GamePageProps) {
     const ballColliders = useRef<Collider[]>([]);
     const characterColliders = useRef<Collider[]>([]);
 
-    const [characters, setCharacters] = useState<CharacterType[]>([]);
+    const [characters, setCharacters] = useAtom(charactersAtom);
 
     useEffect(() => {
         gameChannel
             .here((cs: CharacterType[]) => {
-                setCharacters(
-                    cs.filter((c) => c.id !== props.auth.user.character!.id)
+                const here = cs.filter(
+                    (c) => c.id !== props.auth.user.character!.id
                 );
+
+                setCharacters(here);
+
+                console.log("here", here);
             })
             .joining((character: CharacterType) => {
-                console.log(character.name);
+                console.log("joining", character.name);
 
-                characters.push(character);
+                characters[character.id] = character;
                 setCharacters(characters);
 
                 console.log(characters);
             })
             .leaving((character: CharacterType) => {
-                console.log(character.name);
+                console.log("leaving", character.name);
 
-                setCharacters(characters.filter((p) => p.id !== character.id));
+                delete characters[character.id];
+                setCharacters(characters);
             })
             .listenForWhisper(
                 "move",
@@ -178,20 +187,40 @@ export default function GamePage(props: GamePageProps) {
                     y: number;
                     z: number;
                 }) => {
-                    const idx = characters.findIndex(
-                        (c) => c.id === characterId
+                    if (!characters[characterId]) {
+                        characters[characterId] = {
+                            id: characterId,
+                            name: "Johny nobody",
+                            health: 0,
+                            mana: 0,
+                            position: {
+                                x,
+                                y,
+                                z,
+                            },
+                            rotation: {
+                                x: 0,
+                                y: 0,
+                                z: 0,
+                            },
+                        };
+                    }
+
+                    characters[characterId].position.x = lerp(
+                        characters[characterId].position.x,
+                        x,
+                        0.3
                     );
-
-                    console.log({
-                        idx,
-                        characterId,
-                        characters,
-                        x,y,z
-                    });
-
-                    characters[idx].position.x = lerp(characters[idx].position.x, x, 0.3);
-                    characters[idx].position.y = lerp(characters[idx].position.y, y, 0.3);
-                    characters[idx].position.z = lerp(characters[idx].position.z, z, 0.3);
+                    characters[characterId].position.y = lerp(
+                        characters[characterId].position.y,
+                        y,
+                        0.3
+                    );
+                    characters[characterId].position.z = lerp(
+                        characters[characterId].position.z,
+                        z,
+                        0.3
+                    );
 
                     setCharacters(characters);
                 }
@@ -201,8 +230,6 @@ export default function GamePage(props: GamePageProps) {
             window.Echo.leave(`game`);
         };
     }, []);
-
-    console.log(props.auth.user.character);
 
     return (
         <main className="absolute w-full h-full p-0 m-0 bg-black isolate overscroll-none">
@@ -267,51 +294,41 @@ export default function GamePage(props: GamePageProps) {
                             ballColliders={ballColliders.current}
                         />
 
-                        <group dispose={null}>
-                            {characters.map((character, i) => {
-                                console.log("spawning", character);
-                                return (
-                                    <SphereCollider
-                                        key={`character-${character.id}`}
-                                        id={i}
-                                        radius={radius}
-                                        octree={octree}
-                                        position={[
-                                            character.position.x,
-                                            character.position.y,
-                                            character.position.z,
-                                        ]}
-                                        colliders={characterColliders.current}
-                                    >
-                                        <mesh
-                                            castShadow
-                                            receiveShadow
-                                            scale={2.75}
+                        {Object.values(characters).map((character, i) => {
+                            console.log("spawning", character, i);
+                            return (
+                                <SphereCollider
+                                    key={`character-${character.id}`}
+                                    id={i}
+                                    radius={radius}
+                                    octree={octree}
+                                    position={[
+                                        character.position.x,
+                                        character.position.y,
+                                        character.position.z,
+                                    ]}
+                                    colliders={characterColliders.current}
+                                >
+                                    <mesh castShadow receiveShadow scale={1}>
+                                        <Text
+                                            position={[1, 1, 1]}
+                                            color="hotpink"
+                                            anchorX="center"
+                                            anchorY="middle"
                                         >
-                                            <icosahedronGeometry
-                                                args={[radius, 5]}
-                                            />
-                                            <meshStandardMaterial
-                                                color={"hotpink"}
-                                                polygonOffset
-                                                polygonOffsetFactor={-5}
-                                                flatShading
-                                            />
-
-                                            <Text
-                                                position={[1, 1, 1]}
-                                                color="hotpink"
-                                                anchorX="center"
-                                                anchorY="middle"
-                                            >
-                                                {character.name}
-                                            </Text>
-                                            <CharacterModel />
-                                        </mesh>
-                                    </SphereCollider>
-                                );
-                            })}
-                        </group>
+                                            {character.name}
+                                        </Text>
+                                        <AnimatedWoman
+                                            position={[
+                                                character.position.x,
+                                                character.position.y,
+                                                character.position.z,
+                                            ]}
+                                        />
+                                    </mesh>
+                                </SphereCollider>
+                            );
+                        })}
                         <CustomEnvironment scene={scene} />
                         <PointerLockControls />
                     </PerformanceMonitor>
