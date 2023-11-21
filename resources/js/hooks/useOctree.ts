@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Group, Object3DEventMap, Scene } from "three";
-import { Octree } from "three/examples/jsm/math/Octree";
+import { Octree } from "three-stdlib";
 
 function useOctree(scene: Group<Object3DEventMap> | Scene) {
   //console.log('in useOctree')
