@@ -4,8 +4,11 @@
         "json"
     ],
     "i18n-ally.enabledFrameworks": [
-        "vue"
+        "react",
+        "react-i18next"
     ],
+    "i18n-ally.dirStructure": "file",
+    "i18n-ally.defaultNamespace": "",
     "i18n-ally.keystyle": "nested",
     "i18n-ally.displayLanguage": "da",
     "i18n-ally.sourceLanguage": "da"
