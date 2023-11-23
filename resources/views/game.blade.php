@@ -7,7 +7,7 @@
     <meta name="description" content="{{ t('app.description') }}">
     <link rel="prefetch" crossorigin="anonymous" href="https://www.gstatic.com/draco/versioned/decoders/1.5.5/draco_wasm_wrapper.js" />
     <link rel="prefetch" crossorigin="anonymous" href="https://www.gstatic.com/draco/versioned/decoders/1.5.5/draco_decoder.wasm" />
-    <title inertia>{{ config('app.name', 'Laravel') }}</title>
+    <title inertia>{{ t('app.title') }}</title>
 
     <!-- Scripts -->
     @routes

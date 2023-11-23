@@ -1,19 +1,20 @@
-import './bootstrap';
-import '../css/app.css';
+import "../css/app.css";
+import "./bootstrap";
 
-import { createRoot } from 'react-dom/client';
-import { createInertiaApp } from '@inertiajs/react';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { flare } from "@flareapp/flare-client";
-import { FlareErrorBoundary } from '@flareapp/flare-react';
+import { FlareErrorBoundary } from "@flareapp/flare-react";
+import { createInertiaApp } from "@inertiajs/react";
+import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
+import { createRoot } from "react-dom/client";
 
 flare.light(import.meta.env.VITE_FLARE_KEY);
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
-
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
-    resolve: (name) => resolvePageComponent(`./Pages/${name}.tsx`, import.meta.glob('./Pages/**/*.tsx')),
+    resolve: (name) =>
+        resolvePageComponent(
+            `./Pages/${name}.tsx`,
+            import.meta.glob("./Pages/**/*.tsx")
+        ),
     setup({ el, App, props }) {
         const root = createRoot(el);
 
@@ -24,6 +25,6 @@ createInertiaApp({
         );
     },
     progress: {
-        color: '#4B5563',
+        color: "#4B5563",
     },
 });

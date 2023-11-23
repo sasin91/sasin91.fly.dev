@@ -20,6 +20,7 @@ console_command = "php /var/www/html/artisan tinker"
   release_command = "php /var/www/html/artisan migrate --force"
 
 [env]
+  APP_NAME = "Jonas Hansen"
   APP_ENV = "production"
   LOG_CHANNEL = "stderr"
   LOG_LEVEL = "info"

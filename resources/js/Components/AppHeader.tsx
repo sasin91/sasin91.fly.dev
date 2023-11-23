@@ -9,13 +9,13 @@ import {
 
 import { useTranslation } from "@/i18n/client";
 import { cn } from "@/utils/tailwind";
-import { Link, usePage } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Fragment } from "react";
 import { DesktopNavigation, MobileNavigation } from "./AppNavigation";
 import Logo from "./ui/Logo";
 
-const localeLink = (locale) => {
+const localeLink = (locale: string) => {
     const url = new URL(window.location.href);
 
     url.searchParams.set("locale", locale);
@@ -43,116 +43,121 @@ export default function AppHeader() {
     ];
 
     return (
-        <Disclosure
-            as="nav"
-            className="sticky top-0 z-40 flex-none w-full transition-colors duration-500 rounded-lg shadow-lg backdrop-blur supports-backdrop-blur:bg-white/95 bg-luminary"
-        >
-            {({ open }) => (
-                <>
-                    <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                        <div className="flex justify-between h-16">
-                            <div className="flex">
-                                <div className="flex items-center mr-2 -ml-2 md:hidden">
-                                    {/* Mobile menu button */}
-                                    <Disclosure.Button className="relative inline-flex items-center justify-center p-2 text-gray-400 rounded-md hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-                                        <span className="absolute -inset-0.5" />
-                                        <span className="sr-only">
-                                            {t("menus.main.open")}
-                                        </span>
-                                        {open ? (
-                                            <XMarkIcon
-                                                className="block w-6 h-6"
-                                                aria-hidden="true"
-                                            />
-                                        ) : (
-                                            <Bars3Icon
-                                                className="block w-6 h-6"
-                                                aria-hidden="true"
-                                            />
-                                        )}
-                                    </Disclosure.Button>
-                                </div>
-                                <div className="flex items-center flex-shrink-0">
-                                    <Logo className="w-auto h-8" />
-                                </div>
-                                <div className="hidden md:ml-6 md:flex md:space-x-8">
-                                    <DesktopNavigation links={links} />
-                                </div>
-                            </div>
-                            <div className="flex items-center">
-                                <div className="flex-shrink-0">
-                                    <Link
-                                        as="a"
-                                        type="button"
-                                        className="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                                        href={route("projects.game")}
-                                    >
-                                        <SparklesIcon
-                                            className="-ml-0.5 h-5 w-5"
-                                            aria-hidden="true"
-                                        />
-                                        {t("navigation.global.game")}
-                                    </Link>
-                                </div>
-                                <Menu as="div" className="relative ml-3">
-                                    <div>
-                                        <Menu.Button className="flex items-center">
-                                            {({ open }) => {
-                                                return (
-                                                    <>
-                                                        <span className="absolute -inset-1.5" />
-                                                        <span className="sr-only">
-                                                            {t(
-                                                                "menus.locale.open"
-                                                            )}
-                                                        </span>
-                                                        {page.props.app.locale}
-                                                        {open ? (
-                                                            <ChevronUp className="ml-2 -mr-0.5 h-4 w-4" />
-                                                        ) : (
-                                                            <ChevronDown className="ml-2 -mr-0.5 h-4 w-4" />
-                                                        )}
-                                                    </>
-                                                );
-                                            }}
-                                        </Menu.Button>
+        <>
+            <Head title={t("app.title")} />
+            <Disclosure
+                as="nav"
+                className="sticky top-0 z-40 flex-none w-full transition-colors duration-500 rounded-lg shadow-lg backdrop-blur supports-backdrop-blur:bg-white/95 bg-luminary"
+            >
+                {({ open }) => (
+                    <>
+                        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                            <div className="flex justify-between h-16">
+                                <div className="flex">
+                                    <div className="flex items-center mr-2 -ml-2 md:hidden">
+                                        {/* Mobile menu button */}
+                                        <Disclosure.Button className="relative inline-flex items-center justify-center p-2 text-gray-400 rounded-md hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                                            <span className="absolute -inset-0.5" />
+                                            <span className="sr-only">
+                                                {t("menus.main.open")}
+                                            </span>
+                                            {open ? (
+                                                <XMarkIcon
+                                                    className="block w-6 h-6"
+                                                    aria-hidden="true"
+                                                />
+                                            ) : (
+                                                <Bars3Icon
+                                                    className="block w-6 h-6"
+                                                    aria-hidden="true"
+                                                />
+                                            )}
+                                        </Disclosure.Button>
                                     </div>
-                                    <Transition
-                                        as={Fragment}
-                                        enter="transition ease-out duration-100"
-                                        enterFrom="transform opacity-0 scale-95"
-                                        enterTo="transform opacity-100 scale-100"
-                                        leave="transition ease-in duration-75"
-                                        leaveFrom="transform opacity-100 scale-100"
-                                        leaveTo="transform opacity-0 scale-95"
-                                    >
-                                        <Menu.Items className="absolute right-0 z-10 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                            {["en", "da"].map((locale) => (
-                                                <Menu.Item
-                                                    key={`locale-${locale}`}
-                                                >
-                                                    {({ active }) => (
-                                                        <a
-                                                            href={localeLink(
-                                                                locale
+                                    <div className="flex items-center flex-shrink-0">
+                                        <Logo className="w-auto h-8" />
+                                    </div>
+                                    <div className="hidden md:ml-6 md:flex md:space-x-8">
+                                        <DesktopNavigation links={links} />
+                                    </div>
+                                </div>
+                                <div className="flex items-center">
+                                    <div className="flex-shrink-0">
+                                        <Link
+                                            as="a"
+                                            type="button"
+                                            className="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                            href={route("projects.game")}
+                                        >
+                                            <SparklesIcon
+                                                className="-ml-0.5 h-5 w-5"
+                                                aria-hidden="true"
+                                            />
+                                            {t("navigation.global.game")}
+                                        </Link>
+                                    </div>
+                                    <Menu as="div" className="relative ml-3">
+                                        <div>
+                                            <Menu.Button className="flex items-center">
+                                                {({ open }) => {
+                                                    return (
+                                                        <>
+                                                            <span className="absolute -inset-1.5" />
+                                                            <span className="sr-only">
+                                                                {t(
+                                                                    "menus.locale.open"
+                                                                )}
+                                                            </span>
+                                                            {
+                                                                page.props.app
+                                                                    .locale
+                                                            }
+                                                            {open ? (
+                                                                <ChevronUp className="ml-2 -mr-0.5 h-4 w-4" />
+                                                            ) : (
+                                                                <ChevronDown className="ml-2 -mr-0.5 h-4 w-4" />
                                                             )}
-                                                            className={cn(
-                                                                active
-                                                                    ? "bg-gray-100"
-                                                                    : "",
-                                                                "block px-4 py-2 text-sm text-gray-700"
-                                                            )}
-                                                        >
-                                                            {locale}
-                                                        </a>
-                                                    )}
-                                                </Menu.Item>
-                                            ))}
-                                        </Menu.Items>
-                                    </Transition>
-                                </Menu>
-                                <div className="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
-                                    {/* <button
+                                                        </>
+                                                    );
+                                                }}
+                                            </Menu.Button>
+                                        </div>
+                                        <Transition
+                                            as={Fragment}
+                                            enter="transition ease-out duration-100"
+                                            enterFrom="transform opacity-0 scale-95"
+                                            enterTo="transform opacity-100 scale-100"
+                                            leave="transition ease-in duration-75"
+                                            leaveFrom="transform opacity-100 scale-100"
+                                            leaveTo="transform opacity-0 scale-95"
+                                        >
+                                            <Menu.Items className="absolute right-0 z-10 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                                {["en", "da"].map((locale) => (
+                                                    <Menu.Item
+                                                        key={`locale-${locale}`}
+                                                    >
+                                                        {({ active }) => (
+                                                            <a
+                                                                href={localeLink(
+                                                                    locale
+                                                                )}
+                                                                className={cn(
+                                                                    active
+                                                                        ? "bg-gray-100"
+                                                                        : "",
+                                                                    "block px-4 py-2 text-sm text-gray-700"
+                                                                )}
+                                                            >
+                                                                {locale}
+                                                            </a>
+                                                        )}
+                                                    </Menu.Item>
+                                                ))}
+                                            </Menu.Items>
+                                        </Transition>
+                                    </Menu>
+                                    <div className="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
+                                        {/* <button
                     type="button"
                     className="relative p-1 text-gray-400 bg-white rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                   >
@@ -160,19 +165,20 @@ export default function AppHeader() {
                     <span className="sr-only">View notifications</span>
                     <BellIcon className="w-6 h-6" aria-hidden="true" />
                   </button> */}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <Disclosure.Panel className="md:hidden">
-                        <div className="pt-2 pb-3 space-y-1">
-                            {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
-                            <MobileNavigation links={links} />
-                        </div>
-                    </Disclosure.Panel>
-                </>
-            )}
-        </Disclosure>
+                        <Disclosure.Panel className="md:hidden">
+                            <div className="pt-2 pb-3 space-y-1">
+                                {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
+                                <MobileNavigation links={links} />
+                            </div>
+                        </Disclosure.Panel>
+                    </>
+                )}
+            </Disclosure>
+        </>
     );
 }
