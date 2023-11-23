@@ -65,6 +65,9 @@
     "main": {
       "open": "Open main menu",
       "close": "Close menu"
+    },
+    "locale": {
+      "open": "select language"
     }
   },
   "navigation": {

@@ -70,6 +70,9 @@
     "main": {
       "open": "Åbn hovedmenu",
       "close": "Luk menu"
+    },
+    "locale": {
+      "open": "Vælg sprog"
     }
   },
   "navigation": {

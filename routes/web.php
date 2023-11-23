@@ -2,9 +2,7 @@
 
 use App\Http\Controllers\CharacterController;
 use App\Http\Controllers\ContactRequestController;
-use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Route;
@@ -60,9 +58,6 @@ Route::get('/projects/game', function (\Inertia\ResponseFactory $inertia) {
 Route::post('/character', [CharacterController::class, 'store'])
     ->middleware(HandlePrecognitiveRequests::class)
     ->name('character.store');
-
-Route::any('/locale/{locale?}', LocaleController::class)
-    ->name('locale');
 
 Route::post('/contact-request', [ContactRequestController::class, 'store'])
     ->middleware([

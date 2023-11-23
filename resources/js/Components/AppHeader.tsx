@@ -1,6 +1,6 @@
 "use client";
 
-import { Disclosure } from "@headlessui/react";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
     Bars3Icon,
     SparklesIcon,
@@ -8,14 +8,24 @@ import {
 } from "@heroicons/react/24/outline";
 
 import { useTranslation } from "@/i18n/client";
+import { cn } from "@/utils/tailwind";
 import { Link, usePage } from "@inertiajs/react";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { Fragment } from "react";
 import { DesktopNavigation, MobileNavigation } from "./AppNavigation";
 import Logo from "./ui/Logo";
-import Dropdown from "./ui/Dropdown";
+
+const localeLink = (locale) => {
+    const url = new URL(window.location.href);
+
+    url.searchParams.set("locale", locale);
+
+    return url.href;
+};
 
 export default function AppHeader() {
     const page = usePage();
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     const links = [
         {
@@ -84,43 +94,64 @@ export default function AppHeader() {
                                         {t("navigation.global.game")}
                                     </Link>
                                 </div>
-                                <div className="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
-                                    <Dropdown>
-                                        <Dropdown.Trigger>
-                                            <span className="inline-flex rounded-md">
-                                                <button
-                                                    type="button"
-                                                    className="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md hover:text-gray-700 focus:outline-none"
-                                                >
-                                                    {page.props.app.locale}
-
-                                                    <svg
-                                                        className="ml-2 -mr-0.5 h-4 w-4"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 20 20"
-                                                        fill="currentColor"
-                                                    >
-                                                        <path
-                                                            fillRule="evenodd"
-                                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                            clipRule="evenodd"
-                                                        />
-                                                    </svg>
-                                                </button>
-                                            </span>
-                                        </Dropdown.Trigger>
-
-                                        <Dropdown.Content>
-                                            {['en', 'da'].map((locale) => (
-                                                <Dropdown.Link
+                                <Menu as="div" className="relative ml-3">
+                                    <div>
+                                        <Menu.Button className="flex items-center">
+                                            {({ open }) => {
+                                                return (
+                                                    <>
+                                                        <span className="absolute -inset-1.5" />
+                                                        <span className="sr-only">
+                                                            {t(
+                                                                "menus.locale.open"
+                                                            )}
+                                                        </span>
+                                                        {page.props.app.locale}
+                                                        {open ? (
+                                                            <ChevronUp className="ml-2 -mr-0.5 h-4 w-4" />
+                                                        ) : (
+                                                            <ChevronDown className="ml-2 -mr-0.5 h-4 w-4" />
+                                                        )}
+                                                    </>
+                                                );
+                                            }}
+                                        </Menu.Button>
+                                    </div>
+                                    <Transition
+                                        as={Fragment}
+                                        enter="transition ease-out duration-100"
+                                        enterFrom="transform opacity-0 scale-95"
+                                        enterTo="transform opacity-100 scale-100"
+                                        leave="transition ease-in duration-75"
+                                        leaveFrom="transform opacity-100 scale-100"
+                                        leaveTo="transform opacity-0 scale-95"
+                                    >
+                                        <Menu.Items className="absolute right-0 z-10 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                            {["en", "da"].map((locale) => (
+                                                <Menu.Item
                                                     key={`locale-${locale}`}
-                                                    href={`/locale/${locale}`}
                                                 >
-                                                    {locale}
-                                                </Dropdown.Link>
+                                                    {({ active }) => (
+                                                        <a
+                                                            href={localeLink(
+                                                                locale
+                                                            )}
+                                                            className={cn(
+                                                                active
+                                                                    ? "bg-gray-100"
+                                                                    : "",
+                                                                "block px-4 py-2 text-sm text-gray-700"
+                                                            )}
+                                                        >
+                                                            {locale}
+                                                        </a>
+                                                    )}
+                                                </Menu.Item>
                                             ))}
-                                        </Dropdown.Content>
-                                    </Dropdown>
+                                        </Menu.Items>
+                                    </Transition>
+                                </Menu>
+                                <div className="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
                                     {/* <button
                     type="button"
                     className="relative p-1 text-gray-400 bg-white rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -138,18 +169,6 @@ export default function AppHeader() {
                         <div className="pt-2 pb-3 space-y-1">
                             {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
                             <MobileNavigation links={links} />
-                        </div>
-                        <div className="pt-4 pb-3 border-t border-gray-200">
-                            <div className="flex items-center px-4 sm:px-6">
-                                {/* <button
-                  type="button"
-                  className="relative flex-shrink-0 p-1 ml-auto text-gray-400 bg-white rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                  <span className="absolute -inset-1.5" />
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="w-6 h-6" aria-hidden="true" />
-                </button> */}
-                            </div>
                         </div>
                     </Disclosure.Panel>
                 </>

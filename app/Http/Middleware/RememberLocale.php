@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class UseSessionLocale
+class RememberLocale
 {
     /**
      * Handle an incoming request.
@@ -15,9 +15,8 @@ class UseSessionLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($locale = session('locale')) {
-            $request->setLocale($locale);
-            app()->setLocale($locale);
+        if ($request->hasSession(skipIfUninitialized: true)) {
+            $request->session()->put('locale', $request->getLocale());
         }
 
         return $next($request);
