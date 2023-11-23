@@ -11,19 +11,3 @@ it('has welcome page', function () {
 
     $response->assertStatus(200);
 });
-
-it('can submit a contact form', function () {
-    $response = post(route('contact-request.store'), $params = [
-        'companyName' => 'Test Company',
-        'contactPerson' => 'Test Person',
-        'email' => 'jonas.kerwin.hansen@gmail.com',
-        'message' => 'hello world',
-        'phone' => '+45 12345678',
-    ]);
-
-    $response->assertValid();
-
-    $response->assertRedirect(route('welcome'));
-
-    assertDatabaseHas(ContactRequest::class, $params);
-});

@@ -10,9 +10,11 @@ use function Pest\Laravel\postJson;
 it('can create a new character', function () {
     be($user = User::factory()->create());
 
-    postJson(route('character.store'), [
+    $response = postJson(route('character.store'), [
         'name' => 'Hubert'
     ]);
+
+    $response->assertValid();
 
     assertDatabaseHas(Character::class, [
         'user_id' => $user->id,
