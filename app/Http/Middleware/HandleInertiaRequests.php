@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use App\Http\Resources\CharacterResource;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
-use Tightenco\Ziggy\Ziggy;
+use Tighten\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -46,14 +46,14 @@ class HandleInertiaRequests extends Middleware
                         'email' => $request->user()->email,
                         'email_verified_at' => $request->user()->email_verified_at,
                         'is_admin' => $request->user()->isAdmin,
-                        'character' => $request->user()->character 
+                        'character' => $request->user()->character
                             ? (new CharacterResource($request->user()->character))->toArray($request)
-                            : null 
+                            : null
                     ]
                     : null
             ],
             'ziggy' => fn () => [
-                ...(new Ziggy)->toArray(),
+                ...(new Ziggy())->toArray(),
                 'location' => $request->url(),
             ],
         ];

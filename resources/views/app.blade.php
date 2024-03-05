@@ -8,12 +8,17 @@
         <title inertia>{{ t('app.title') }}</title>
 
         <!-- Scripts -->
+        <script>
+            if (!window.Ziggy) {
+                window.Ziggy = {}
+            }
+        </script>
         @routes
         @viteReactRefresh
         @vite(['resources/js/app.tsx', "resources/js/Pages/{$page['component']}.tsx"])
         @inertiaHead
     </head>
-    
+
     <body class="font-sans antialiased">
         @inertia
     </body>
