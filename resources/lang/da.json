@@ -157,5 +157,8 @@
       "name": "Navn",
       "submit": "Opret"
     }
+  },
+  "menu": {
+    "color_theme": "Vælg farveskema"
   }
 }

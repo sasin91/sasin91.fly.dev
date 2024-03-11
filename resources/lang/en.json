@@ -155,5 +155,8 @@
       "name": "Name",
       "submit": "Create"
     }
+  },
+  "menu": {
+    "color_theme": "Select color scheme"
   }
 }

@@ -3,7 +3,9 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
     Bars3Icon,
+    MoonIcon,
     SparklesIcon,
+    SunIcon,
     XMarkIcon,
 } from "@heroicons/react/24/outline";
 
@@ -14,6 +16,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { Fragment } from "react";
 import { DesktopNavigation, MobileNavigation } from "./AppNavigation";
 import Logo from "./ui/Logo";
+import ThemeSwitch from "./ui/ThemeSwitch";
 
 const localeLink = (locale: string) => {
     const url = new URL(window.location.href);
@@ -165,6 +168,7 @@ export default function AppHeader() {
                     <span className="sr-only">View notifications</span>
                     <BellIcon className="w-6 h-6" aria-hidden="true" />
                   </button> */}
+                                        <ThemeSwitch />
                                     </div>
                                 </div>
                             </div>
