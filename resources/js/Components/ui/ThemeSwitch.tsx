@@ -20,7 +20,7 @@ export default function ThemeSwitch () {
 
         <button
         type="button"
-        className="relative p-1 text-gray-400 bg-white rounded-full dark:bg-gray-900 dark:text-white hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        className="relative p-1 text-gray-400 bg-transparent rounded-full dark:text-white"
         onClick={() => {
             setTheme(dark ? 'light' : 'dark');
         }}
