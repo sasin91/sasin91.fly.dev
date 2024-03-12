@@ -19,6 +19,8 @@ import FormField from "@/Components/ui/FormField";
 import Logo from "@/Components/ui/Logo";
 import Guest from "@/Layouts/GuestLayout";
 import Headline from "@/Components/ui/Headline";
+import Underline from "@/Components/Underline";
+import { cn } from "@/utils/tailwind";
 
 function HeroSection() {
     const { t } = useTranslation();
@@ -87,9 +89,9 @@ function HeroSection() {
     ];
 
     return (
-        <div className="relative overflow-hidden isolate -z-10 dark:bg-background dark:bg-none bg-gradient-to-b from-indigo-100/20 via-violet-100/40 to-cyan-100/20">
+        <div className="relative overflow-hidden isolate -z-10 dark:bg-background dark:bg-none bg-gradient-to-b from-secondary-100/20 via-violet-100/40 to-primary-100/20">
             <div
-                className="absolute inset-y-0 right-1/2 -z-10 -mr-96 w-[200%] origin-top-right skew-x-[-30deg] bg-background shadow-xl shadow-cyan-500/10 ring-1 ring-background/50 sm:-mr-80 lg:-mr-96"
+                className="absolute inset-y-0 right-1/2 -z-10 -mr-96 w-[200%] origin-top-right skew-x-[-30deg] bg-background shadow-xl shadow-primary-500/10 ring-1 ring-background/50 sm:-mr-80 lg:-mr-96"
                 aria-hidden="true"
             />
             <div className="px-6 py-32 mx-auto max-w-7xl sm:py-40 lg:px-8">
@@ -100,13 +102,13 @@ function HeroSection() {
                         {t("app.description")}
                     </Headline>
                     <div className="max-w-xl mt-6 lg:mt-0 xl:col-end-1 xl:row-start-1">
-                        <p className="text-lg leading-6 text-gray-600">
+                        <p className="text-lg leading-6 text-secondary-foreground">
                             <br />
                         </p>
-                        <p className="text-lg leading-6 text-gray-600">
+                        <p className="text-lg leading-6 text-secondary-foreground">
                             {t("hero.headline1")}
                         </p>
-                        <p className="text-lg leading-6 text-gray-600">
+                        <p className="text-lg leading-6 text-secondary-foreground">
                             {t("hero.headline2")}
                         </p>
                         <div className="flex mt-6 space-x-6 md:order-2">
@@ -118,7 +120,7 @@ function HeroSection() {
                                 >
                                     <span className="sr-only">{item.name}</span>
                                     <i
-                                        className={`h-6 w-6 bg-gradient-to-r from-indigo-200 via-violet-400 to-cyan-200 bg-[length:0%_2px] bg-left-bottom bg-no-repeat text-cyan-500 transition-all duration-500 ease-out group-hover:bg-[length:100%_2px] group-hover:text-indigo-600`}
+                                        className={`h-6 w-6 bg-gradient-to-r from-secondary-200 via-violet-400 to-primary-200 bg-[length:0%_2px] bg-left-bottom bg-no-repeat text-primary-500 transition-all duration-500 ease-out group-hover:bg-[length:100%_2px] group-hover:text-secondary-foreground`}
                                         aria-hidden="true"
                                     />
                                 </a>
@@ -133,7 +135,7 @@ function HeroSection() {
                     />
                 </div>
             </div>
-            <div className="absolute inset-x-0 bottom-0 h-24 -z-10 bg-gradient-to-t from-white sm:h-32" />
+            <div className="absolute inset-x-0 bottom-0 h-24 -z-10 bg-gradient-to-t from-background sm:h-32" />
         </div>
     );
 }
@@ -176,13 +178,11 @@ function TimelineSection() {
                 {timeline.map((item) => (
                     <a
                         key={item.name}
-                        className={`group transition-all duration-300 ease-in-out ${
-                            !item.href ? "text-gray-900" : ""
-                        }`}
+                        className={`group transition-all duration-300 ease-in-out text-secondary-foreground`}
                         target="_blank"
                         href={item.href || "#"}
                     >
-                        <time className="flex items-center text-sm font-semibold leading-6 text-cyan-500">
+                        <time className="flex items-center text-sm font-semibold leading-6 text-primary-500">
                             <svg
                                 viewBox="0 0 4 4"
                                 className="flex-none w-1 h-1 mr-4"
@@ -197,20 +197,20 @@ function TimelineSection() {
                             </svg>
                             {item.date}
                             <div
-                                className="absolute w-screen h-px -ml-2 -translate-x-full bg-gray-900/10 sm:-ml-4 lg:static lg:-mr-6 lg:ml-8 lg:w-auto lg:flex-auto lg:translate-x-0"
+                                className="absolute w-screen h-px -ml-2 -translate-x-full bg-primary/10 sm:-ml-4 lg:static lg:-mr-6 lg:ml-8 lg:w-auto lg:flex-auto lg:translate-x-0"
                                 aria-hidden="true"
                             />
                         </time>
                         <p
-                            className={`mt-6 text-lg font-semibold leading-8 tracking-tight ${
-                                item.href
-                                    ? "bg-gradient-to-r from-indigo-200 via-violet-400 to-cyan-200 bg-[length:0%_2px] bg-left-bottom bg-no-repeat text-cyan-400 transition-all duration-500 ease-out group-hover:bg-[length:100%_2px] group-hover:text-indigo-600"
-                                    : ""
-                            }`}
+                            className={`mt-6 text-lg font-semibold leading-8 tracking-tight group text-primary`}
                         >
-                            {item.name}
+                            {item.href ? (
+                                <Underline>{item.name}</Underline>
+                            ) : (
+                                item.name
+                            )}
                         </p>
-                        <p className="mt-1 text-base leading-7 text-gray-600">
+                        <p className="mt-1 text-base leading-7 text-secondary-foreground">
                             {item.description}
                         </p>
                     </a>
@@ -227,47 +227,47 @@ function FeatureSection() {
         {
             name: t("features.servers.name"),
             description: t("features.servers.description"),
-            icon: <UploadCloudIcon className="w-8 h-8 text-white" />,
+            icon: <UploadCloudIcon className="w-8 h-8 text-primary" />,
         },
         {
             name: t("features.security.name"),
             description: t("features.security.description"),
-            icon: <LockIcon className="w-8 h-8 text-white" />,
+            icon: <LockIcon className="w-8 h-8 text-primary" />,
         },
         {
             name: t("features.backend_development.name"),
             description: t("features.backend_development.description"),
-            icon: <CogIcon className="w-8 h-8 text-white" />,
+            icon: <CogIcon className="w-8 h-8 text-primary" />,
         },
         {
             name: t("features.automated_testing.name"),
             description: t("features.automated_testing.description"),
-            icon: <ShieldCheckIcon className="w-8 h-8 text-white" />,
+            icon: <ShieldCheckIcon className="w-8 h-8 text-primary" />,
         },
         {
             name: t("features.databases.name"),
             description: t("features.databases.description"),
-            icon: <DatabaseIcon className="w-8 h-8 text-white" />,
+            icon: <DatabaseIcon className="w-8 h-8 text-primary" />,
         },
         {
             name: t("features.frontend_development.name"),
             description: t("features.frontend_development.description"),
-            icon: <RefreshCwIcon className="w-8 h-8 text-white" />,
+            icon: <RefreshCwIcon className="w-8 h-8 text-primary" />,
         },
         {
             name: t("features.app_development.name"),
             description: t("features.app_development.description"),
-            icon: <AppWindowIcon className="w-8 h-8 text-white" />,
+            icon: <AppWindowIcon className="w-8 h-8 text-primary" />,
         },
         {
             name: t("features.vcs.name"),
             description: t("features.vcs.description"),
-            icon: <ClipboardCheckIcon className="w-8 h-8 text-white" />,
+            icon: <ClipboardCheckIcon className="w-8 h-8 text-primary" />,
         },
         {
             name: t("features.backups.name"),
             description: t("features.backups.description"),
-            icon: <HistoryIcon className="w-8 h-8 text-white" />,
+            icon: <HistoryIcon className="w-8 h-8 text-primary" />,
         },
     ];
 
@@ -277,24 +277,24 @@ function FeatureSection() {
                 <h2 className="text-lg font-semibold text-sky-400">
                     {t("features.headline")}
                 </h2>
-                <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                <p className="mt-2 text-3xl font-bold tracking-tight text-primary sm:text-4xl">
                     {t("features.tagline")}
                 </p>
                 <div className="mt-20">
                     <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
                         {features.map((feature, index) => (
                             <div key={index} className="pt-6">
-                                <div className="flow-root px-6 pb-8 rounded-lg shadow-lg bg-sky-100/10">
+                                <div className="flow-root px-6 pb-8 rounded-lg shadow-lg shadow-sky-200 dark:shadow-purple-500 dark:bg-purple-50/10 bg-sky-100/10">
                                     <div className="-mt-6">
                                         <div>
-                                            <span className="inline-flex items-center justify-center p-3 bg-indigo-500 shadow-lg rounded-xl">
+                                            <span className="inline-flex items-center justify-center p-3 shadow-lg bg-secondary rounded-xl">
                                                 {feature.icon}
                                             </span>
                                         </div>
-                                        <h3 className="mt-8 text-lg font-semibold leading-8 tracking-tight text-gray-900">
+                                        <h3 className="mt-8 text-lg font-semibold leading-8 tracking-tight text-primary">
                                             {feature.name}
                                         </h3>
-                                        <p className="mt-5 text-base leading-7 text-gray-600">
+                                        <p className="mt-5 text-base leading-7 text-secondary-foreground">
                                             {feature.description}
                                         </p>
                                     </div>
@@ -322,7 +322,7 @@ function ContactSection() {
     });
 
     return (
-        <div className="relative px-6 py-24 mx-auto mt-32 bg-gradient-conic at-top to-magenta-100/20 isolate max-w-7xl from-white via-cyan-100/5 sm:mt-40 sm:py-32 lg:px-8">
+        <div className="relative px-6 py-24 mx-auto mt-32 bg-gradient-conic at-top to-magenta-100/20 isolate max-w-7xl from-background via-primary-100/5 sm:mt-40 sm:py-32 lg:px-8">
             <svg
                 className="absolute inset-0 -z-10 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,skyblue,transparent)]"
                 aria-hidden="true"
@@ -353,10 +353,10 @@ function ContactSection() {
                 />
             </svg>
             <div className="max-w-xl mx-auto lg:max-w-4xl">
-                <h2 className="text-4xl font-bold tracking-tight text-gray-900">
+                <h2 className="text-4xl font-bold tracking-tight text-primary">
                     {t("contactForm.headline")}
                 </h2>
-                <p className="mt-2 text-lg leading-8 text-gray-600">
+                <p className="mt-2 text-lg leading-8 text-secondary-foreground">
                     {t("contactForm.tagline")}
                 </p>
                 <div className="flex flex-col gap-16 mt-16 sm:gap-y-20 lg:flex-row">
@@ -420,7 +420,7 @@ function ContactSection() {
                                         contactForm.validate("message")
                                     }
                                     rows={4}
-                                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    className="block w-full rounded-md border-0 px-3.5 py-2 text-primary shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary-foreground sm:text-sm sm:leading-6"
                                 />
                             </FormField>
                         </div>
@@ -428,7 +428,35 @@ function ContactSection() {
                             <button
                                 type="submit"
                                 disabled={contactForm.submitting}
-                                className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                className={cn(
+                                    "block",
+                                    "w-full",
+                                    "rounded-md",
+                                    "px-3.5",
+                                    "py-2.5",
+                                    "text-center",
+                                    "text-sm",
+                                    "font-semibold",
+                                    "text-primary",
+                                    "shadow-lg",
+                                    "shadow-purple-600",
+                                    "focus-visible:outline",
+                                    "focus-visible:outline-2",
+                                    "focus-visible:outline-offset-2",
+                                    "focus-visible:outline-secondary-foreground",
+                                    "bg-gradient-to-r",
+                                    "from-purple-500",
+                                    "via-violet-400",
+                                    "to-pink-300",
+                                    "bg-no-repeat",
+                                    "text-primary",
+                                    "bg-[length:0%]",
+                                    "transition-all",
+                                    "duration-500",
+                                    "ease-out",
+                                    "hover:bg-[length:100%]",
+                                    "hover:text-white"
+                                )}
                             >
                                 {contactForm.submitting ? (
                                     <Loader />
@@ -468,22 +496,22 @@ function ContactSection() {
                                     leaveFrom="opacity-100 scale-100"
                                     leaveTo="opacity-0 scale-95"
                                 >
-                                    <Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                                    <Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform shadow-xl bg-primary rounded-2xl">
                                         <Dialog.Title
                                             as="h3"
-                                            className="text-lg font-medium leading-6 text-gray-900"
+                                            className="text-lg font-medium leading-6 text-primary"
                                         >
                                             {t(
                                                 "contactFormSuccessModal.headline"
                                             )}
                                         </Dialog.Title>
                                         <div className="mt-2">
-                                            <p className="text-sm text-gray-500">
+                                            <p className="text-sm text-primary">
                                                 {t(
                                                     "contactFormSuccessModal.thanks"
                                                 )}
                                             </p>
-                                            <p className="text-sm text-gray-500">
+                                            <p className="text-sm text-primary">
                                                 {t(
                                                     "contactFormSuccessModal.i_be_back"
                                                 )}
@@ -493,7 +521,7 @@ function ContactSection() {
                                         <div className="mt-4">
                                             <button
                                                 type="button"
-                                                className="inline-flex justify-center w-full px-3 py-2 text-sm font-semibold text-white rounded-lg shadow-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 shadow-purple-400"
+                                                className="inline-flex justify-center w-full px-3 py-2 text-sm font-semibold rounded-lg shadow-2xl text-primary bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 shadow-purple-400"
                                                 onClick={() =>
                                                     setModalOpen(false)
                                                 }

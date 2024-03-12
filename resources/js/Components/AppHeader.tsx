@@ -17,6 +17,7 @@ import { Fragment } from "react";
 import { DesktopNavigation, MobileNavigation } from "./AppNavigation";
 import Logo from "./ui/Logo";
 import ThemeSwitch from "./ui/ThemeSwitch";
+import Underline from "./Underline";
 
 const localeLink = (locale: string) => {
     const url = new URL(window.location.href);
@@ -134,7 +135,7 @@ export default function AppHeader() {
                                             leaveFrom="transform opacity-100 scale-100"
                                             leaveTo="transform opacity-0 scale-95"
                                         >
-                                            <Menu.Items className="absolute right-0 z-10 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                            <Menu.Items className="absolute right-0 z-10 w-48 py-1 mt-2 origin-top-right rounded-md shadow-lg bg-background ring-1 ring-primary ring-opacity-5 focus:outline-none">
                                                 {["en", "da"].map((locale) => (
                                                     <Menu.Item
                                                         key={`locale-${locale}`}
@@ -145,13 +146,24 @@ export default function AppHeader() {
                                                                     locale
                                                                 )}
                                                                 className={cn(
-                                                                    active
-                                                                        ? "bg-gray-100"
-                                                                        : "",
-                                                                    "block px-4 py-2 text-sm text-gray-700"
+                                                                    "block",
+                                                                    "px-4",
+                                                                    "py-2",
+                                                                    "text-sm",
+                                                                    "group"
                                                                 )}
                                                             >
-                                                                {locale}
+                                                                <Underline
+                                                                    active={
+                                                                        page
+                                                                            .props
+                                                                            .app
+                                                                            .locale ===
+                                                                        locale
+                                                                    }
+                                                                >
+                                                                    {locale}
+                                                                </Underline>
                                                             </a>
                                                         )}
                                                     </Menu.Item>
