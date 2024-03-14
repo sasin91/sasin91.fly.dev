@@ -125,7 +125,7 @@ export default function AppHeader({ links }: { links?: LinkType[] }) {
                                                         key={`locale-${locale}`}
                                                     >
                                                         {({ active }) => (
-                                                            <a
+                                                            <Link
                                                                 href={localeLink(
                                                                     locale
                                                                 )}
@@ -145,7 +145,7 @@ export default function AppHeader({ links }: { links?: LinkType[] }) {
                                                                 >
                                                                     {locale}
                                                                 </Underline>
-                                                            </a>
+                                                            </Link>
                                                         )}
                                                     </Menu.Item>
                                                 ))}
