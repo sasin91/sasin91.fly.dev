@@ -1,9 +1,9 @@
 import { Disclosure } from "@headlessui/react";
 
-import NavLink from "./ui/NavLink";
-import ResponsiveNavLink from "./ui/ResponsiveNavLink";
 import { HTMLProps } from "react";
 import NativeLink from "./ui/NativeLink";
+import NavLink from "./ui/NavLink";
+import ResponsiveNavLink from "./ui/ResponsiveNavLink";
 
 export type LinkType = {
     key: string;
@@ -16,8 +16,8 @@ export type LinkType = {
 export const DesktopNavigation = ({ links }: { links: LinkType[] }) => {
     return (
         <>
-            {links.map((link) => {
-                return link.native ? (
+            {links.map(({ native, ...link }) => {
+                return native ? (
                     <NativeLink {...link}>{link.label}</NativeLink>
                 ) : (
                     <NavLink
@@ -36,12 +36,12 @@ export const DesktopNavigation = ({ links }: { links: LinkType[] }) => {
 export const MobileNavigation = ({ links }: { links: LinkType[] }) => {
     return (
         <>
-            {links.map((link) => (
+            {links.map(({ native, ...link }) => (
                 <Disclosure.Button
                     key={link.key}
                     className="block w-full py-2 pl-3 pr-4 text-base font-medium text-indigo-700 border-l-4 border-indigo-500 bg-indigo-50 sm:pl-5 sm:pr-6"
                 >
-                    {link.native ? (
+                    {native ? (
                         <NativeLink {...link}>{link.label}</NativeLink>
                     ) : (
                         <ResponsiveNavLink
