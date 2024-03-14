@@ -67,7 +67,9 @@ export default function AppHeader({ links }: { links?: LinkType[] }) {
                                         <Logo className="w-auto h-8" />
                                     </div>
                                     <div className="hidden md:ml-6 md:flex md:space-x-8">
-                                        <DesktopNavigation links={links || app.links} />
+                                        <DesktopNavigation
+                                            links={links || app.links}
+                                        />
                                     </div>
                                 </div>
                                 <div className="flex items-center">
@@ -137,10 +139,7 @@ export default function AppHeader({ links }: { links?: LinkType[] }) {
                                                             >
                                                                 <Underline
                                                                     active={
-                                                                        page
-                                                                            .props
-                                                                            .app
-                                                                            .locale ===
+                                                                        app.locale ===
                                                                         locale
                                                                     }
                                                                 >
@@ -171,7 +170,7 @@ export default function AppHeader({ links }: { links?: LinkType[] }) {
                         <Disclosure.Panel className="md:hidden">
                             <div className="pt-2 pb-3 space-y-1">
                                 {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
-                                <MobileNavigation links={links} />
+                                <MobileNavigation links={links || app.links} />
                             </div>
                         </Disclosure.Panel>
                     </>
