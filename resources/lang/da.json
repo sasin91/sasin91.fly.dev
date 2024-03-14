@@ -167,5 +167,26 @@
   },
   "menu": {
     "color_theme": "Vælg farveskema"
+  },
+  "faq": {
+    "title": "Ofte stillede spørgsmål",
+    "content": [
+      {
+        "question": "Hvorfor React & Laravel?",
+        "answer": "Popularitet, brugervenlighed og forbedring af mine færdigheder med værktøjer, jeg aktivt bruger på mit job. {0} Især React, fordi jeg kan eksperimentere med pakker og værktøjer, som jeg ellers ikke ville vælge på arbejdet."
+      },
+      {
+        "question": "Er det ikke lidt overkill at bruge React & Laravel til en personlig hjemmeside?",
+        "answer": "Måske, jeg kunne nok slippe afsted med at bruge en statisk hjemmesidegenerator, men jeg finder mere værdi i at bruge værktøjer, jeg aktivt bruger på mit job."
+      },
+      {
+        "question": "Hvordan hoster du denne hjemmeside?",
+        "answer": "I starten brugte jeg fly.io, hvilket var en leg, men jeg tænkte, at jeg kunne reducere omkostningerne ved at hoste den selv. {0} Jeg bruger en selvbygget FreeBSD-boks med Nginx, PHP, Redis og PostgreSQL i separate jails."
+      },
+      {
+        "question": "Hvorfor FreeBSD?",
+        "answer": "Nå, jeg startede med at bygge boksen som en NAS med først FreeNAS, nu TrueNAS. {0} Efter at have eksperimenteret med det og dykket ned i FreeBSD og ZFS, er det hurtigt vokset på mig, og det er en læringsoplevelse at administrere det selv."
+      }
+    ]
   }
 }

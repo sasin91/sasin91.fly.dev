@@ -165,5 +165,26 @@
   },
   "menu": {
     "color_theme": "Select color scheme"
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "content": [
+      {
+        "question": "Why React & Laravel?",
+        "answer": "Popularity, ease of use and honing my skills with tools i actively use at my job. {0} React in particular because i can experiment with packages and tools i wouldn't otherwise choose at work."
+      },
+      {
+        "question": "Isn't it a bit overkill to use React & Laravel for a personal website?",
+        "answer": "Perhaps, i could probably get away with using a static site generator but i find more value in using tools i actively use at my job."
+      },
+      {
+        "question": "How are you hosting this site?",
+        "answer": "Initially i used fly.io which was a breeze but i figured i could reduce costs by hosting it myself. {0} I'm using a self-built FreeBSD box with Nginx, PHP, Redis and PostgreSQL in separate jails."
+      },
+      {
+        "question": "Why FreeBSD?",
+        "answer": "Well, i started off building the box as a NAS with then FreeNAS now TrueNAS. {0} After tinkering with it and diving into FreeBSD and ZFS it has quickly grown on me and it's a learning experience to manage it myself."
+      }
+    ]
   }
 }
