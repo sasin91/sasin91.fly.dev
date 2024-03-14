@@ -153,6 +153,7 @@ export default function AppHeader({ links }: { links?: LinkType[] }) {
                                             </Menu.Items>
                                         </Transition>
                                     </Menu>
+                                    <ThemeSwitch />
                                     <div className="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
                                         {/* <button
                     type="button"
@@ -162,7 +163,6 @@ export default function AppHeader({ links }: { links?: LinkType[] }) {
                     <span className="sr-only">View notifications</span>
                     <BellIcon className="w-6 h-6" aria-hidden="true" />
                   </button> */}
-                                        <ThemeSwitch />
                                     </div>
                                 </div>
                             </div>
