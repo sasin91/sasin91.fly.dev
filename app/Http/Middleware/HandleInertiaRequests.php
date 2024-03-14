@@ -41,19 +41,19 @@ class HandleInertiaRequests extends Middleware
                     [
                         'key' => 'welcome',
                         'href' => route('welcome'),
-                        'label' => __('navigation.global.home'),
+                        'label' => t('navigation.global.home'),
                         'active' => $request->routeIs('welcome'),
                     ],
                     [
                         'key' => 'blog',
                         'href' => route('blog'),
-                        'label' => __('navigation.global.blog'),
+                        'label' => t('navigation.global.blog'),
                         'active' => $request->routeIs('blog.*'),
                     ],
                     [
                         'key' => 'projects',
                         'href' => route('projects'),
-                        'label' => __('navigation.global.projects'),
+                        'label' => t('navigation.global.projects'),
                         'active' => $request->routeIs('projects.*'),
                     ],
                 ]
