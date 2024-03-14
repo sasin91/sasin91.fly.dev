@@ -8,7 +8,7 @@ type Theme = "light" | "dark";
 export default function ThemeSwitch() {
     const { t } = useTranslation();
 
-    const [theme, setTheme] = useLocalStorage<Theme>("theme", "light");
+    const [theme, setTheme] = useLocalStorage<Theme>("theme", "dark");
     const dark = theme !== "light";
 
     useEffect(() => {
