@@ -36,7 +36,27 @@ class HandleInertiaRequests extends Middleware
             'app' => [
                 'name' => config('app.name'),
                 'domain' => parse_url(config('app.url'), PHP_URL_HOST),
-                'locale' => app()->getLocale()
+                'locale' => app()->getLocale(),
+                'links' => [
+                    [
+                        'key' => 'welcome',
+                        'href' => route('welcome'),
+                        'label' => __('navigation.global.home'),
+                        'active' => $request->routeIs('welcome'),
+                    ],
+                    [
+                        'key' => 'blog',
+                        'href' => route('blog'),
+                        'label' => __('navigation.global.blog'),
+                        'active' => $request->routeIs('blog.*'),
+                    ],
+                    [
+                        'key' => 'projects',
+                        'href' => route('projects'),
+                        'label' => __('navigation.global.projects'),
+                        'active' => $request->routeIs('projects.*'),
+                    ],
+                ]
             ],
             'auth' => [
                 'user' => fn () => $request->user()

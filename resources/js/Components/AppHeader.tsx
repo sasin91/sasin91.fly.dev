@@ -14,7 +14,7 @@ import { cn } from "@/utils/tailwind";
 import { Head, Link, usePage } from "@inertiajs/react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Fragment } from "react";
-import { DesktopNavigation, MobileNavigation } from "./AppNavigation";
+import { DesktopNavigation, LinkType, MobileNavigation } from "./AppNavigation";
 import Logo from "./ui/Logo";
 import ThemeSwitch from "./ui/ThemeSwitch";
 import Underline from "./Underline";
@@ -27,24 +27,9 @@ const localeLink = (locale: string) => {
     return url.href;
 };
 
-export default function AppHeader() {
-    const page = usePage();
+export default function AppHeader({ links }: { links?: LinkType[] }) {
+    const { app } = usePage().props;
     const { t } = useTranslation();
-
-    const links = [
-        {
-            key: "blog",
-            href: route("blog"),
-            label: t("navigation.global.blog"),
-            active: route().current("blog"),
-        },
-        {
-            key: "projects",
-            href: route("projects"),
-            label: t("navigation.global.projects"),
-            active: route().current("projects"),
-        },
-    ];
 
     return (
         <>
@@ -82,7 +67,7 @@ export default function AppHeader() {
                                         <Logo className="w-auto h-8" />
                                     </div>
                                     <div className="hidden md:ml-6 md:flex md:space-x-8">
-                                        <DesktopNavigation links={links} />
+                                        <DesktopNavigation links={links || app.links} />
                                     </div>
                                 </div>
                                 <div className="flex items-center">
@@ -112,10 +97,7 @@ export default function AppHeader() {
                                                                     "menus.locale.open"
                                                                 )}
                                                             </span>
-                                                            {
-                                                                page.props.app
-                                                                    .locale
-                                                            }
+                                                            {app.locale}
                                                             {open ? (
                                                                 <ChevronUp className="ml-2 -mr-0.5 h-4 w-4" />
                                                             ) : (

@@ -27,6 +27,12 @@ Route::get('/', function () {
     ->name('welcome')
     ->middleware(CacheResponse::class);
 
+Route::get('/faq', function () {
+    return Inertia::render('Faq');
+})
+    ->name('faq')
+    ->middleware(CacheResponse::class);
+
 Route::get('/blog', function () {
     return Inertia::render('Blog');
 })

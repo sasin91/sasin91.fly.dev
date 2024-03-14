@@ -82,7 +82,8 @@
       "contact": "Kontakt",
       "blog": "Blog",
       "projects": "Projekter",
-      "game": "Spil"
+      "game": "Spil",
+      "faq": "FAQ"
     },
     "authenticated": {
       "dashboard": "Instrumentbræt",
@@ -92,6 +93,12 @@
     },
     "guest": {
       "log_in": "Log ind"
+    },
+    "welcome": {
+      "hero": "Intro",
+      "timeline": "Erfaring",
+      "features": "Færdigheder",
+      "contact": "Kontakt"
     }
   },
   "contactForm": {

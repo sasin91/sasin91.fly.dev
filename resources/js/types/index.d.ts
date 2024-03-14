@@ -1,3 +1,4 @@
+import { LinkType } from "@/Components/AppNavigation";
 import { Lng } from "@/i18n/settings";
 
 export interface Character {
@@ -30,6 +31,7 @@ export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>
 > = T & {
     app: {
+        links: LinkType[];
         name: string;
         domain: string;
         locale: Lng;

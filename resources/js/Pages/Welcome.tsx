@@ -21,8 +21,13 @@ import Guest from "@/Layouts/GuestLayout";
 import Headline from "@/Components/ui/Headline";
 import Underline from "@/Components/Underline";
 import { cn } from "@/utils/tailwind";
+import AppHeader from "@/Components/AppHeader";
+import Status from "@/Components/ui/Status";
+import AppFooter from "@/Components/AppFooter";
+import { LinkType } from "@/Components/AppNavigation";
+import type { HTMLProps } from "react";
 
-function HeroSection() {
+function HeroSection(props: HTMLProps<HTMLDivElement>) {
     const { t } = useTranslation();
     const social = [
         {
@@ -89,7 +94,7 @@ function HeroSection() {
     ];
 
     return (
-        <div className="relative overflow-hidden isolate -z-10 dark:bg-background dark:bg-none bg-gradient-to-b from-secondary-100/20 via-violet-100/40 to-primary-100/20">
+        <div {...props} className="relative overflow-hidden isolate -z-10 dark:bg-background dark:bg-none bg-gradient-to-b from-secondary-100/20 via-violet-100/40 to-primary-100/20">
             <div
                 className="absolute inset-y-0 right-1/2 -z-10 -mr-96 w-[200%] origin-top-right skew-x-[-30deg] bg-background shadow-xl shadow-primary-500/10 ring-1 ring-background/50 sm:-mr-80 lg:-mr-96"
                 aria-hidden="true"
@@ -140,7 +145,7 @@ function HeroSection() {
     );
 }
 
-function TimelineSection() {
+function TimelineSection(props: HTMLProps<HTMLDivElement>) {
     const { t } = useTranslation();
 
     const timeline = [
@@ -173,7 +178,7 @@ function TimelineSection() {
     ];
 
     return (
-        <div className="px-6 mx-auto -mt-8 max-w-7xl lg:px-8">
+        <div {...props} className="px-6 mx-auto -mt-8 max-w-7xl lg:px-8">
             <div className="grid max-w-2xl grid-cols-1 gap-8 mx-auto overflow-hidden lg:mx-0 lg:max-w-none lg:grid-cols-4">
                 {timeline.map((item) => (
                     <a
@@ -220,7 +225,7 @@ function TimelineSection() {
     );
 }
 
-function FeatureSection() {
+function FeatureSection(props: HTMLProps<HTMLDivElement>) {
     const { t } = useTranslation();
 
     const features = [
@@ -272,7 +277,7 @@ function FeatureSection() {
     ];
 
     return (
-        <div className="pb-8 mt-32 overflow-hidden sm:mt-40">
+        <div {...props} className="pb-8 mt-32 overflow-hidden sm:mt-40">
             <div className="max-w-md px-6 mx-auto text-center sm:max-w-3xl lg:max-w-7xl lg:px-8">
                 <h2 className="text-lg font-semibold text-sky-400">
                     {t("features.headline")}
@@ -308,7 +313,7 @@ function FeatureSection() {
     );
 }
 
-function ContactSection() {
+function ContactSection(props: HTMLProps<HTMLDivElement>) {
     const { t } = useTranslation();
 
     const [modalOpen, setModalOpen] = React.useState(false);
@@ -322,7 +327,7 @@ function ContactSection() {
     });
 
     return (
-        <div className="relative px-6 py-24 mx-auto mt-32 bg-gradient-conic at-top to-magenta-100/20 isolate max-w-7xl from-background via-primary-100/5 sm:mt-40 sm:py-32 lg:px-8">
+        <div {...props} className="relative px-6 py-24 mx-auto mt-32 bg-gradient-conic at-top to-magenta-100/20 isolate max-w-7xl from-background via-primary-100/5 sm:mt-40 sm:py-32 lg:px-8">
             <svg
                 className="absolute inset-0 -z-10 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,skyblue,transparent)]"
                 aria-hidden="true"
@@ -543,15 +548,54 @@ function ContactSection() {
 }
 
 export default function Welcome() {
+    const { t } = useTranslation();
+    const links: LinkType[] = [
+        {
+            key: 'hero',
+            href: '#hero',
+            label: t('navigation.welcome.hero'),
+            native: true,
+        },
+        {
+            key: 'timeline',
+            href: '#timeline',
+            label: t('navigation.welcome.timeline'),
+            native: true,
+        },
+        {
+            key: 'features',
+            href: '#features',
+            label: t('navigation.welcome.features'),
+            native: true,
+        },
+        {
+            key: 'contact',
+            href: '#contact',
+            label: t('navigation.welcome.contact'),
+            native: true,
+        },
+        {
+            key: 'faq',
+            href: '/faq',
+            label: t('navigation.global.faq'),
+            active: route().current()?.startsWith('faq')
+        }
+    ];
+
     return (
-        <Guest>
-            <HeroSection />
+        <main className="font-sans antialiased to-magenta-100/20 isolate bg-gradient-to-br from-background via-cyan-100/5">
+            <AppHeader links={links} />
+            <Status />
+            
+            <HeroSection id="hero" />
 
-            <TimelineSection />
+            <TimelineSection id="timeline" />
 
-            <FeatureSection />
+            <FeatureSection id="features" />
 
-            <ContactSection />
-        </Guest>
+            <ContactSection id="contact" />
+
+            <AppFooter />
+        </main>
     );
 }
