@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "40c0c03cd1b16ce3a9e79b40c77a3405",
+    "content-hash": "62579cefe9e81570c691b9bc333154df",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -2269,26 +2269,26 @@
         },
         {
             "name": "inertiajs/inertia-laravel",
-            "version": "dev-master",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inertiajs/inertia-laravel.git",
-                "reference": "36b4473cb99902fcfa8de599801dfcc7f83f437b"
+                "reference": "fcf3d6db1a259a55d8d18cf43fc971202c1f6b0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/36b4473cb99902fcfa8de599801dfcc7f83f437b",
-                "reference": "36b4473cb99902fcfa8de599801dfcc7f83f437b",
+                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/fcf3d6db1a259a55d8d18cf43fc971202c1f6b0d",
+                "reference": "fcf3d6db1a259a55d8d18cf43fc971202c1f6b0d",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "laravel/framework": "^6.0|^7.0|^8.74|^9.0|^10.0|^11.0",
-                "php": "^7.2|~8.0.0|~8.1.0|~8.2.0|~8.3.0"
+                "laravel/framework": "^8.74|^9.0|^10.0|^11.0",
+                "php": "^7.3|~8.0.0|~8.1.0|~8.2.0|~8.3.0"
             },
             "require-dev": {
                 "mockery/mockery": "^1.3.3",
-                "orchestra/testbench": "^4.0|^5.0|^6.4|^7.0|^8.0|^9.0",
+                "orchestra/testbench": "^6.4|^7.0|^8.0|^9.0",
                 "phpunit/phpunit": "^8.0|^9.5.8|^10.4",
                 "roave/security-advisories": "dev-master"
             },
@@ -2332,7 +2332,7 @@
             ],
             "support": {
                 "issues": "https://github.com/inertiajs/inertia-laravel/issues",
-                "source": "https://github.com/inertiajs/inertia-laravel/tree/master"
+                "source": "https://github.com/inertiajs/inertia-laravel/tree/v1.0.0"
             },
             "funding": [
                 {
@@ -2340,7 +2340,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-08T02:03:56+00:00"
+            "time": "2024-03-09T00:30:58+00:00"
         },
         {
             "name": "kirschbaum-development/eloquent-power-joins",
@@ -11983,9 +11983,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "inertiajs/inertia-laravel": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
