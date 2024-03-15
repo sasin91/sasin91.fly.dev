@@ -99,7 +99,7 @@ export default function AppHeader({ links }: { links?: LinkType[] }) {
                                                                     "menus.locale.open"
                                                                 )}
                                                             </span>
-                                                            {app?.locale || 'da'}
+                                                            {app.locale}
                                                             {open ? (
                                                                 <ChevronUp className="ml-2 -mr-0.5 h-4 w-4" />
                                                             ) : (
