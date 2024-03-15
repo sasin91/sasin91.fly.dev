@@ -95,7 +95,7 @@ function HeroSection(props: HTMLProps<HTMLDivElement>) {
     return (
         <div
             {...props}
-            className="relative overflow-hidden isolate -z-10 dark:bg-background dark:bg-none bg-gradient-to-b from-secondary-100/20 via-violet-100/40 to-primary-100/20"
+            className="relative overflow-hidden isolate -z-10 dark:bg-none bg-gradient-to-b from-secondary-100/20 via-violet-100/40 to-primary-100/20"
         >
             <div
                 className="absolute inset-y-0 right-1/2 -z-10 -mr-96 w-[200%] origin-top-right skew-x-[-30deg] bg-background shadow-xl shadow-primary/10 ring-1 ring-background/50 sm:-mr-80 lg:-mr-96"
