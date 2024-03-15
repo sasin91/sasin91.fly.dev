@@ -50,7 +50,7 @@ export function useTranslation<
     if (!lng) {
         const { props } = usePage<PageProps>();
 
-        lng = props.app.locale;
+        lng = props?.app?.locale || 'da';
     }
 
     const [cookies, setCookie] = useCookies([cookieName]);
