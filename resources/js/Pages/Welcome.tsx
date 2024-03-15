@@ -178,12 +178,12 @@ function TimelineSection(props: HTMLProps<HTMLDivElement>) {
             dateTime: "2023-01",
         },
         {
-            name: t('timeline.supeo.name'),
+            name: t("timeline.supeo.name"),
             href: "https://supeo.dk",
-            description: t('timeline.supeo.description'),
+            description: t("timeline.supeo.description"),
             date: "Sept 2023",
             dateTime: "2023-09",
-        }
+        },
     ];
 
     return (
@@ -298,7 +298,7 @@ function FeatureSection(props: HTMLProps<HTMLDivElement>) {
                     <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
                         {features.map((feature, index) => (
                             <div key={index} className="pt-6">
-                                <div className="flow-root px-6 pb-8 rounded-lg shadow-lg shadow-sky-200 dark:shadow-purple-500 dark:bg-purple-50/10 bg-sky-100/10">
+                                <div className="flow-root h-full px-6 pb-8 rounded-lg shadow-lg shadow-sky-200 dark:shadow-purple-500 dark:bg-purple-50/10 bg-sky-100/10">
                                     <div className="-mt-6">
                                         <div>
                                             <span className="inline-flex items-center justify-center p-3 shadow-lg bg-secondary rounded-xl">
@@ -561,7 +561,7 @@ function ContactSection(props: HTMLProps<HTMLDivElement>) {
 
 const isActiveHash = (hash: string) => {
     return () => window.location.hash === hash;
-}
+};
 
 export default function Welcome() {
     const { t } = useTranslation();
