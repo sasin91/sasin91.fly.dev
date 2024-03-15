@@ -177,6 +177,13 @@ function TimelineSection(props: HTMLProps<HTMLDivElement>) {
             date: "Jan 2023",
             dateTime: "2023-01",
         },
+        {
+            name: t('timeline.supeo.name'),
+            href: "https://supeo.dk",
+            description: t('timeline.supeo.description'),
+            date: "Sept 2023",
+            dateTime: "2023-09",
+        }
     ];
 
     return (

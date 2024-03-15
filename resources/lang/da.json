@@ -19,6 +19,10 @@
     "juice": {
       "name": "Webudvikler hos JUICE 👊",
       "description": "I 2023 fik jeg muligheden for at være med til noget nyt og spændende. Jeg fik et job hos JUICE, hvor jeg har været med til at udvikle en platform som vender job markedet på hovedet."
+    },
+    "supeo": {
+      "name": "Udvikler hos Supeo",
+      "description": "Hos Supeo har jeg fået en spændende mulighed for at arbejde med primært Laravel og React, vi arbejder med flere forskellige domæner i en omskiftelig hverdag. Kort fortalt, det er sjældent 2 dage ligner hinanden og der er massere af muligheder for at lære nyt. "
     }
   },
   "features": {

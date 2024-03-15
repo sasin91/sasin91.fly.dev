@@ -19,6 +19,10 @@
     "juice": {
       "name": "Web developer at JUICE 👊",
       "description": "In 2023, I got the opportunity to be part of something new and exciting. \nI got a job at JUICE, where I have helped develop a platform that turns the job market upside down."
+    },
+    "supeo": {
+      "name": "Developer at Supeo",
+      "description": "At Supeo, I have been given an exciting opportunity to work with primarily Laravel and React, we work with several different domains in a changeable everyday life. \nIn short, no two days are alike and there are plenty of opportunities to learn new things."
     }
   },
   "features": {
