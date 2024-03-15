@@ -101,12 +101,12 @@ function HeroSection(props: HTMLProps<HTMLDivElement>) {
             />
             <div className="px-6 py-32 mx-auto max-w-7xl sm:py-40 lg:px-8">
                 <div className="max-w-2xl mx-auto lg:mx-0 lg:grid lg:max-w-none lg:grid-cols-2 lg:gap-x-16 lg:gap-y-6 xl:grid-cols-1 xl:grid-rows-1 xl:gap-x-8">
-                    <Headline className="max-w-2xl lg:col-span-2 xl:col-auto">
-                        {t("app.title")}
-                        <br />
-                        {t("app.description")}
-                    </Headline>
                     <div className="max-w-xl mt-6 lg:mt-0 xl:col-end-1 xl:row-start-1">
+                        <Headline className="max-w-2xl lg:col-span-2 xl:col-auto">
+                            {t("app.title")}
+                            <br />
+                            {t("app.description")}
+                        </Headline>
                         <p className="text-lg leading-6 text-secondary-foreground">
                             <br />
                         </p>
@@ -555,24 +555,28 @@ export default function Welcome() {
             href: '#hero',
             label: t('navigation.welcome.hero'),
             native: true,
+            active: () => window.location.hash === '#hero'
         },
         {
             key: 'timeline',
             href: '#timeline',
             label: t('navigation.welcome.timeline'),
             native: true,
+            active: () => window.location.hash === '#hero'
         },
         {
             key: 'features',
             href: '#features',
             label: t('navigation.welcome.features'),
             native: true,
+            active: () => window.location.hash === '#hero'
         },
         {
             key: 'contact',
             href: '#contact',
             label: t('navigation.welcome.contact'),
             native: true,
+            active: () => window.location.hash === '#hero'
         },
         {
             key: 'faq',
