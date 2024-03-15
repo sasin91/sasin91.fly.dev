@@ -181,7 +181,7 @@ function TimelineSection(props: HTMLProps<HTMLDivElement>) {
 
     return (
         <div {...props} className="px-6 mx-auto -mt-8 max-w-7xl lg:px-8">
-            <div className="grid max-w-2xl grid-cols-1 gap-8 mx-auto overflow-hidden lg:mx-0 lg:max-w-none lg:grid-cols-4">
+            <div className="grid max-w-2xl grid-cols-1 gap-8 mx-auto overflow-hidden lg:mx-0 lg:max-w-none lg:grid-cols-3">
                 {timeline.map((item) => (
                     <a
                         key={item.name}
