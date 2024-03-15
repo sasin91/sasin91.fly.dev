@@ -46,7 +46,7 @@ export const MobileNavigation = ({ links }: { links: LinkType[] }) => {
             {links.map(({ native, active, ...link }) => (
                 <Disclosure.Button
                     key={link.key}
-                    className="block w-full py-2 pl-3 pr-4 text-base font-medium text-indigo-700 border-l-4 border-indigo-500 bg-indigo-50 sm:pl-5 sm:pr-6"
+                    className="block w-full py-2 pl-3 pr-4 text-base font-medium border-l-4 text-primary border-primary bg-primary-50 sm:pl-5 sm:pr-6"
                 >
                     {
                         <ResponsiveNavLink

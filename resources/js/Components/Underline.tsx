@@ -21,7 +21,7 @@ export default function Underline({
                 "bg-[length:0%_2px]",
                 "bg-left-bottom",
                 "bg-no-repeat",
-                "text-indigo-600",
+                "text-primary",
                 "transition-all",
                 "duration-500",
                 "ease-out",

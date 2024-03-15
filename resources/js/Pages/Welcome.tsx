@@ -98,7 +98,7 @@ function HeroSection(props: HTMLProps<HTMLDivElement>) {
             className="relative overflow-hidden isolate -z-10 dark:bg-background dark:bg-none bg-gradient-to-b from-secondary-100/20 via-violet-100/40 to-primary-100/20"
         >
             <div
-                className="absolute inset-y-0 right-1/2 -z-10 -mr-96 w-[200%] origin-top-right skew-x-[-30deg] bg-background shadow-xl shadow-primary-500/10 ring-1 ring-background/50 sm:-mr-80 lg:-mr-96"
+                className="absolute inset-y-0 right-1/2 -z-10 -mr-96 w-[200%] origin-top-right skew-x-[-30deg] bg-background shadow-xl shadow-primary/10 ring-1 ring-background/50 sm:-mr-80 lg:-mr-96"
                 aria-hidden="true"
             />
             <div className="px-6 py-32 mx-auto max-w-7xl sm:py-40 lg:px-8">
@@ -127,7 +127,7 @@ function HeroSection(props: HTMLProps<HTMLDivElement>) {
                                 >
                                     <span className="sr-only">{item.name}</span>
                                     <i
-                                        className={`h-6 w-6 bg-gradient-to-r from-secondary-200 via-violet-400 to-primary-200 bg-[length:0%_2px] bg-left-bottom bg-no-repeat text-primary-500 transition-all duration-500 ease-out group-hover:bg-[length:100%_2px] group-hover:text-secondary-foreground`}
+                                        className={`h-6 w-6 bg-gradient-to-r from-secondary-200 via-violet-400 to-primary-200 bg-[length:0%_2px] bg-left-bottom bg-no-repeat text-primary transition-all duration-500 ease-out group-hover:bg-[length:100%_2px] group-hover:text-secondary-foreground`}
                                         aria-hidden="true"
                                     />
                                 </a>
@@ -196,7 +196,7 @@ function TimelineSection(props: HTMLProps<HTMLDivElement>) {
                         target="_blank"
                         href={item.href || "#"}
                     >
-                        <time className="flex items-center text-sm font-semibold leading-6 text-primary-500">
+                        <time className="flex items-center text-sm font-semibold leading-6 text-primary">
                             <svg
                                 viewBox="0 0 4 4"
                                 className="flex-none w-1 h-1 mr-4"
