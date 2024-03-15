@@ -552,6 +552,10 @@ function ContactSection(props: HTMLProps<HTMLDivElement>) {
     );
 }
 
+const isActiveHash = (hash: string) => {
+    return () => window.location.hash === hash;
+}
+
 export default function Welcome() {
     const { t } = useTranslation();
     const links: LinkType[] = [
@@ -560,28 +564,28 @@ export default function Welcome() {
             href: "#hero",
             label: t("navigation.welcome.hero"),
             native: true,
-            active: () => window.location.hash === "#hero",
+            active: isActiveHash("#hero"),
         },
         {
             key: "timeline",
             href: "#timeline",
             label: t("navigation.welcome.timeline"),
             native: true,
-            active: () => window.location.hash === "#hero",
+            active: isActiveHash("#timeline"),
         },
         {
             key: "features",
             href: "#features",
             label: t("navigation.welcome.features"),
             native: true,
-            active: () => window.location.hash === "#hero",
+            active: isActiveHash("#features"),
         },
         {
             key: "contact",
             href: "#contact",
             label: t("navigation.welcome.contact"),
             native: true,
-            active: () => window.location.hash === "#hero",
+            active: isActiveHash("#contact"),
         },
         {
             key: "faq",
