@@ -18,12 +18,12 @@ return new class extends Migration
             $table->string('name');
             $table->float('health')->default(100);
             $table->float('mana')->default(100);
-            $table->unsignedDecimal('position_x')->default(0);
-            $table->unsignedDecimal('position_y')->default(2);
-            $table->unsignedDecimal('position_z')->default(-1);
-            $table->unsignedDecimal('rotation_x')->default(0);
-            $table->unsignedDecimal('rotation_y')->default(0);
-            $table->unsignedDecimal('rotation_z')->default(0);
+            $table->decimal('position_x')->default(0);
+            $table->decimal('position_y')->default(2);
+            $table->decimal('position_z')->default(-1);
+            $table->decimal('rotation_x')->default(0);
+            $table->decimal('rotation_y')->default(0);
+            $table->decimal('rotation_z')->default(0);
             $table->timestamps();
         });
     }
