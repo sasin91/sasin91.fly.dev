@@ -25,9 +25,31 @@ import Logo from "@/Components/ui/Logo";
 import Status from "@/Components/ui/Status";
 import { cn } from "@/utils/tailwind";
 import type { HTMLProps } from "react";
+import { useIntersectionObserver } from "@uidotdev/usehooks";
+import { useEffect } from "react";
+
+type SectionHash = "hero" | "timeline" | "features" | "contact";
+
+function setHashOnIntersect(hash: SectionHash) {
+    const [ref, entry] = useIntersectionObserver({
+        threshold: 0,
+        rootMargin: "0px",
+    });
+
+    useEffect(() => {
+        if (entry?.isIntersecting) {
+            window.location.hash = hash;
+        }
+    }, [entry]);
+
+
+    return [ref];
+}
 
 function HeroSection(props: HTMLProps<HTMLDivElement>) {
     const { t } = useTranslation();
+    const [ref] = setHashOnIntersect('hero');
+    
     const social = [
         {
             name: "Facebook",
@@ -94,6 +116,7 @@ function HeroSection(props: HTMLProps<HTMLDivElement>) {
 
     return (
         <div
+            ref={ref}
             {...props}
             className="relative overflow-hidden isolate -z-10 dark:bg-none bg-gradient-to-b from-secondary-100/20 via-violet-100/40 to-primary-100/20"
         >
@@ -149,6 +172,7 @@ function HeroSection(props: HTMLProps<HTMLDivElement>) {
 
 function TimelineSection(props: HTMLProps<HTMLDivElement>) {
     const { t } = useTranslation();
+    const [ref] = setHashOnIntersect('timeline');
 
     const timeline = [
         {
@@ -187,7 +211,7 @@ function TimelineSection(props: HTMLProps<HTMLDivElement>) {
     ];
 
     return (
-        <div {...props} className="px-6 mx-auto -mt-8 max-w-7xl lg:px-8">
+        <div ref={ref} {...props} className="px-6 mx-auto -mt-8 max-w-7xl lg:px-8">
             <div className="grid max-w-2xl grid-cols-1 gap-8 mx-auto overflow-hidden lg:mx-0 lg:max-w-none lg:grid-cols-3">
                 {timeline.map((item) => (
                     <a
@@ -236,6 +260,7 @@ function TimelineSection(props: HTMLProps<HTMLDivElement>) {
 
 function FeatureSection(props: HTMLProps<HTMLDivElement>) {
     const { t } = useTranslation();
+    const [ref] = setHashOnIntersect('features');
 
     const features = [
         {
@@ -286,7 +311,7 @@ function FeatureSection(props: HTMLProps<HTMLDivElement>) {
     ];
 
     return (
-        <div {...props} className="pb-8 mt-32 overflow-hidden sm:mt-40">
+        <div ref={ref} {...props} className="pb-8 mt-32 overflow-hidden sm:mt-40">
             <div className="max-w-md px-6 mx-auto text-center sm:max-w-3xl lg:max-w-7xl lg:px-8">
                 <h2 className="text-lg font-semibold text-sky-400">
                     {t("features.headline")}
@@ -324,6 +349,7 @@ function FeatureSection(props: HTMLProps<HTMLDivElement>) {
 
 function ContactSection(props: HTMLProps<HTMLDivElement>) {
     const { t } = useTranslation();
+    const [ref] = setHashOnIntersect('contact');
 
     const [modalOpen, setModalOpen] = React.useState(false);
 
@@ -337,6 +363,7 @@ function ContactSection(props: HTMLProps<HTMLDivElement>) {
 
     return (
         <div
+            ref={ref}
             {...props}
             className="relative px-6 py-24 mx-auto mt-32 bg-gradient-conic at-top to-magenta-100/20 isolate max-w-7xl from-background via-primary-100/5 sm:mt-40 sm:py-32 lg:px-8"
         >
@@ -563,9 +590,12 @@ const isActiveHash = (hash: string) => {
     return () => window.location.hash === hash;
 };
 
+type LinkTypeWithHashPrefix = Omit<LinkType, 'href'> & { href: `#${SectionHash}` };
+
 export default function Welcome() {
     const { t } = useTranslation();
-    const links: LinkType[] = [
+
+    const links: LinkTypeWithHashPrefix[] = [
         {
             key: "hero",
             href: "#hero",
