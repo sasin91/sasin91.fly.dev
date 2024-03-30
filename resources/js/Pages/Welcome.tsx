@@ -32,7 +32,7 @@ type SectionHash = "hero" | "timeline" | "features" | "contact";
 
 function setHashOnIntersect(hash: SectionHash) {
     const [ref, entry] = useIntersectionObserver({
-        threshold: 0,
+        threshold: 0.5,
         rootMargin: "0px",
     });
 
