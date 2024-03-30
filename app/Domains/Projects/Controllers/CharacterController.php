@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Domains\Projects\Controllers;
 
 use App\Http\Requests\CharacterStoreRequest;
 

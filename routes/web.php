@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\CharacterController;
 use App\Http\Controllers\ContactRequestController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Spatie\ResponseCache\Middlewares\CacheResponse;
 
@@ -21,15 +21,11 @@ use Spatie\ResponseCache\Middlewares\CacheResponse;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome');
-})
+Route::get('/', WelcomeController::class)
     ->name('welcome')
     ->middleware(CacheResponse::class);
 
-Route::get('/faq', function () {
-    return Inertia::render('Faq');
-})
+Route::get('/faq', FaqController::class)
     ->name('faq')
     ->middleware(CacheResponse::class);
 
@@ -38,32 +34,6 @@ Route::get('/blog', function () {
 })
     ->name('blog')
     ->middleware(CacheResponse::class);
-
-Route::get('/projects', function () {
-    return Inertia::render('Projects/Index');
-})
-    ->name('projects');
-
-Route::get('/projects/game', function (\Inertia\ResponseFactory $inertia) {
-    $disk = Storage::disk('game_assets');
-
-    $inertia->setRootView('game');
-
-    return $inertia->render('Projects/Game', [
-        'assets' => [
-            'root' => $disk->url('/'),
-            // 'map' => $disk->url('maps/scene-transformed.glb'),
-            'map' => $disk->url('maps/collision-world.glb'),
-            'character' => $disk->url('models/Xbot.glb')
-        ]
-    ]);
-})
-    ->name('projects.game')
-    ->middleware(['auth']);
-
-Route::post('/character', [CharacterController::class, 'store'])
-    ->middleware(HandlePrecognitiveRequests::class)
-    ->name('character.store');
 
 Route::post('/contact-request', [ContactRequestController::class, 'store'])
     ->middleware([
@@ -85,3 +55,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+require __DIR__ . '/domains.php';
