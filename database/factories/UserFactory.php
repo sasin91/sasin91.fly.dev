@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\PermissionEnum;
+use App\Enums\RoleEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -34,5 +36,15 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    public function role(RoleEnum $role): static
+    {
+        return $this->afterCreating(fn ($user) => $user->assignRole($role->value));
+    }
+
+    public function permission(PermissionEnum $permission): static
+    {
+        return $this->afterCreating(fn ($user) => $user->givePermissionTo($permission->value));
     }
 }

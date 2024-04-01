@@ -24,6 +24,7 @@
         "livewire/volt": "^1.6",
         "pusher/pusher-php-server": "^7.2",
         "spatie/laravel-activitylog": "^4.7",
+        "spatie/laravel-permission": "^6.4",
         "spatie/laravel-responsecache": "^7.4",
         "tightenco/ziggy": "^2.0"
     },

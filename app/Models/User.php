@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enums\RoleEnum;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -13,10 +14,12 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable;
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -51,13 +54,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function isAdmin(): Attribute
     {
-        return Attribute::get(fn () => in_array(
-            needle: $this->email,
-            haystack: [
-                'jonas.kerwin.hansen@gmail.com',
-            ],
-            strict: true
-        ));
+        return Attribute::get(fn () => $this->hasRole(RoleEnum::SUPER_ADMIN->value));
     }
 
     public function canAccessPanel(Panel $panel): bool
