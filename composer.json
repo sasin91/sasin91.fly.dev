@@ -14,6 +14,7 @@
         "danharrin/livewire-rate-limiting": "^1.1",
         "filament/filament": "^3.0",
         "guzzlehttp/guzzle": "^7.2",
+        "hirethunk/verbs": "^0.3.0",
         "inertiajs/inertia-laravel": "^1.0",
         "laravel/breeze": "^2.0",
         "laravel/framework": "^11.0",
