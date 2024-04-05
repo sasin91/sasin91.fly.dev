@@ -6,6 +6,8 @@ use Spatie\Permission\Models\Role;
 
 enum RoleEnum: string
 {
+    use HasLabel;
+
     case PLAYER = 'player';
     case SUPER_ADMIN = 'super-admin';
 
@@ -14,16 +16,6 @@ enum RoleEnum: string
         return $create
             ? Role::findOrCreate($this->value)
             : Role::findByName($this->value);
-    }
-
-    public function label(): string
-    {
-        $key = sprintf('enums.%s.%s',
-            static::class,
-            $this->value
-        );
-
-        return __($key);
     }
 
     public function permissions()

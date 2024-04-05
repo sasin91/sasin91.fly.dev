@@ -6,6 +6,8 @@ use Spatie\Permission\Models\Permission;
 
 enum PermissionEnum: string
 {
+    use HasLabel;
+
     case PLAY_GAME = 'play game';
     case CARTE_BLANCHE = 'carte blanche';
 
@@ -16,13 +18,4 @@ enum PermissionEnum: string
             : Permission::findByName($this->value);
     }
 
-    public function label(): string
-    {
-        $key = sprintf('enums.%s.%s',
-            static::class,
-            $this->value
-        );
-
-        return __($key);
-    }
 }
