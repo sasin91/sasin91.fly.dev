@@ -1,23 +1,17 @@
 "use client";
 
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import {
-    Bars3Icon,
-    MoonIcon,
-    SparklesIcon,
-    SunIcon,
-    XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 import { useTranslation } from "@/i18n/client";
 import { cn } from "@/utils/tailwind";
 import { Head, Link, usePage } from "@inertiajs/react";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, LogInIcon } from "lucide-react";
 import { Fragment } from "react";
 import { DesktopNavigation, LinkType, MobileNavigation } from "./AppNavigation";
+import Underline from "./Underline";
 import Logo from "./ui/Logo";
 import ThemeSwitch from "./ui/ThemeSwitch";
-import Underline from "./Underline";
 
 const localeLink = (locale: string) => {
     const url = new URL(window.location.href);
@@ -74,17 +68,12 @@ export default function AppHeader({ links }: { links?: LinkType[] }) {
                                 </div>
                                 <div className="flex items-center">
                                     <div className="flex-shrink-0">
-                                        <Link
-                                            as="a"
-                                            type="button"
-                                            className="relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                                            href={route("projects.game")}
-                                        >
-                                            <SparklesIcon
+                                        <Link as="a" className="inline-flex justify-center items-center" href={route("login")}>
+                                            <LogInIcon
                                                 className="-ml-0.5 h-5 w-5"
                                                 aria-hidden="true"
                                             />
-                                            {t("navigation.global.game")}
+                                            {t(`login.link`)}
                                         </Link>
                                     </div>
                                     <Menu as="div" className="relative ml-3">

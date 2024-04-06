@@ -1,6 +1,5 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
-import textshadow from 'tailwindcss-textshadow';
 import animate from 'tailwindcss-animate';
 
 /** @type {import('tailwindcss').Config} */
@@ -85,5 +84,5 @@ export default {
         },
     },
   },
-  plugins: [textshadow, forms, animate],
+  plugins: [forms, animate],
 }

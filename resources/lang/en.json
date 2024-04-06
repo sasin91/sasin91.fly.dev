@@ -158,7 +158,8 @@
       "submit": "Log in"
     },
     "reset_password": "Forgot your password?",
-    "register": "Create yourself"
+    "register": "Create yourself",
+    "link": "Sign in"
   },
   "character": {
     "create": "Create your character",

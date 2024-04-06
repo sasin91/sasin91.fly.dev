@@ -160,7 +160,8 @@
       "submit": "Log ind"
     },
     "reset_password": "Glemt dit kodeord?",
-    "register": "Opret dig"
+    "register": "Opret dig",
+    "link": "Log ind"
   },
   "character": {
     "create": "Opret din karakter",
