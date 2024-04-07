@@ -1,7 +1,7 @@
 "use client";
 
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, HomeIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 import { useTranslation } from "@/i18n/client";
 import { cn } from "@/utils/tailwind";
@@ -22,7 +22,7 @@ const localeLink = (locale: string) => {
 };
 
 export default function AppHeader({ links }: { links?: LinkType[] }) {
-    const { app } = usePage().props;
+    const { app, user } = usePage().props;
     const { t } = useTranslation();
 
     return (
@@ -68,13 +68,26 @@ export default function AppHeader({ links }: { links?: LinkType[] }) {
                                 </div>
                                 <div className="flex items-center">
                                     <div className="flex-shrink-0">
-                                        <Link as="a" className="inline-flex justify-center items-center" href={route("login")}>
-                                            <LogInIcon
-                                                className="-ml-0.5 h-5 w-5"
-                                                aria-hidden="true"
-                                            />
-                                            {t(`login.link`)}
-                                        </Link>
+                                        {user ? (
+                                            <Link
+                                                as="a"
+                                                href={route("dashboard")}
+                                            >
+                                                <HomeIcon className="h-6 w-6" />
+                                            </Link>
+                                        ) : (
+                                            <Link
+                                                as="a"
+                                                className="flex"
+                                                href={route("login")}
+                                            >
+                                                <LogInIcon
+                                                    className="-ml-0.5 h-5 w-5"
+                                                    aria-hidden="true"
+                                                />
+                                                {t(`login.link`)}
+                                            </Link>
+                                        )}
                                     </div>
                                     <Menu as="div" className="relative ml-3">
                                         <div>
