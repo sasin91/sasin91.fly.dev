@@ -193,5 +193,18 @@
         "answer": "Nå, jeg startede med at bygge boksen som en NAS med først FreeNAS, nu TrueNAS. {0} Efter at have eksperimenteret med det og dykket ned i FreeBSD og ZFS, er det hurtigt vokset på mig, og det er en læringsoplevelse at administrere det selv."
       }
     ]
+  },
+  "profile": {
+    "information": {
+      "header": "Profiloplysninger",
+      "description": "Opdater din kontos profiloplysninger og e-mailadresse.",
+      "resend_verification": "Klik her for at gensende bekræftelses-e-mailen.",
+      "verification_link_sent": "Et nyt bekræftelseslink er blevet sendt til din e-mailadresse.",
+      "form": {
+        "name": "Navn",
+        "email": "E-mail",
+        "submit": "Gem"
+      }
+    }
   }
 }

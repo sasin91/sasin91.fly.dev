@@ -191,5 +191,18 @@
         "answer": "Well, i started off building the box as a NAS with then FreeNAS now TrueNAS. {0} After tinkering with it and diving into FreeBSD and ZFS it has quickly grown on me and it's a learning experience to manage it myself."
       }
     ]
+  },
+  "profile": {
+    "information": {
+      "header": "Profile Information",
+      "description": "Update your account's profile information and email address.",
+      "resend_verification": "Click here to re-send the verification email.",
+      "verification_link_sent": "A new verification link has been sent to your email address.",
+      "form": {
+        "name": "Name",
+        "email": "E-mail",
+        "submit": "Save"
+      }
+    }
   }
 }

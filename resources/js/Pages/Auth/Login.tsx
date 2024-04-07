@@ -1,4 +1,3 @@
-import { useEffect, FormEventHandler } from "react";
 import Checkbox from "@/Components/ui/Checkbox";
 import FormField from "@/Components/ui/FormField";
 import PrimaryButton from "@/Components/ui/PrimaryButton";
@@ -6,7 +5,7 @@ import GuestLayout from "@/Layouts/AppLayout";
 import { useTranslation } from "@/i18n/client";
 import { Head, Link } from "@inertiajs/react";
 import { useForm } from "laravel-precognition-react-inertia";
-import { Loader } from "lucide-react";
+import { FormEventHandler, useEffect } from "react";
 
 export default function Login({
     status,
@@ -50,7 +49,7 @@ export default function Login({
                         attribute="email"
                         label={t("login.form.email")}
                         autoComplete="username"
-                        isFocused={true}
+                        autoFocus={true}
                     />
 
                     <FormField
