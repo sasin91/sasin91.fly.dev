@@ -21,9 +21,7 @@ export default function Authenticated({
                     <div className="flex justify-between h-16">
                         <div className="flex">
                             <div className="flex items-center shrink-0">
-                                <Link href="/">
-                                    <Logo className="block w-auto text-gray-800 fill-current h-9" />
-                                </Link>
+                                <Logo className="block w-auto text-gray-800 fill-current h-9" />
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
