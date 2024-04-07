@@ -22,7 +22,7 @@ const localeLink = (locale: string) => {
 };
 
 export default function AppHeader({ links }: { links?: LinkType[] }) {
-    const { app, user } = usePage().props;
+    const { app, auth } = usePage().props;
     const { t } = useTranslation();
 
     return (
@@ -68,12 +68,23 @@ export default function AppHeader({ links }: { links?: LinkType[] }) {
                                 </div>
                                 <div className="flex items-center">
                                     <div className="flex-shrink-0">
-                                        {user ? (
+                                        {auth.user ? (
                                             <Link
                                                 as="a"
+                                                className="flex"
                                                 href={route("dashboard")}
                                             >
-                                                <HomeIcon className="h-6 w-6" />
+                                                <HomeIcon className="-ml-0.5 h-6 w-6" />
+                                                <Underline
+                                                    active={
+                                                        route().current() ===
+                                                        "dashboard"
+                                                    }
+                                                >
+                                                    {t(
+                                                        `navigation.authenticated.dashboard`
+                                                    )}
+                                                </Underline>
                                             </Link>
                                         ) : (
                                             <Link
@@ -85,7 +96,14 @@ export default function AppHeader({ links }: { links?: LinkType[] }) {
                                                     className="-ml-0.5 h-5 w-5"
                                                     aria-hidden="true"
                                                 />
-                                                {t(`login.link`)}
+                                                <Underline
+                                                    active={
+                                                        route().current() ===
+                                                        "login"
+                                                    }
+                                                >
+                                                    {t(`login.link`)}
+                                                </Underline>
                                             </Link>
                                         )}
                                     </div>

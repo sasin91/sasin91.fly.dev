@@ -1,5 +1,5 @@
 import { useEffect, FormEventHandler } from 'react';
-import GuestLayout from '@/Layouts/GuestLayout';
+import GuestLayout from '@/Layouts/AppLayout';
 import InputError from '@/Components/ui/InputError';
 import InputLabel from '@/Components/ui/InputLabel';
 import PrimaryButton from '@/Components/ui/PrimaryButton';

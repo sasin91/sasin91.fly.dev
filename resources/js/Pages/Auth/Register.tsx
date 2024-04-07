@@ -1,6 +1,6 @@
 import FormField from "@/Components/ui/FormField";
 import PrimaryButton from "@/Components/ui/PrimaryButton";
-import GuestLayout from "@/Layouts/GuestLayout";
+import GuestLayout from "@/Layouts/AppLayout";
 import { useTranslation } from "@/i18n/client";
 import { Head, Link } from "@inertiajs/react";
 import { useForm } from "laravel-precognition-react-inertia";
