@@ -45,6 +45,7 @@
         "@react-three/postprocessing": "^2.16.2",
         "@uidotdev/usehooks": "^2.4.1",
         "class-variance-authority": "^0.7.0",
+        "framer-motion": "^11.0.25",
         "i18next": "^23.10.0",
         "i18next-browser-languagedetector": "^7.2.1",
         "i18next-resources-to-backend": "^1.2.0",

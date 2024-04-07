@@ -1,4 +1,7 @@
 import Stars from "@/Components/three/Stars";
+import { BackgroundBeams } from "@/Components/ui/BackgroundBeams";
+import Headline from "@/Components/ui/Headline";
+import AppLayout from "@/Layouts/AppLayout";
 import ProjectsLayout from "@/Layouts/ProjectLayout";
 import { useTranslation } from "@/i18n/client";
 import { PageProps } from "@/types";
@@ -39,14 +42,14 @@ export default function ProjectsPage(props: PageProps) {
     moonImage.roundCorners(byRadius(25));
 
     return (
-        <ProjectsLayout>
+        <AppLayout>
             <main className="px-6 pt-24 mx-auto max-w-7xl lg:px-8">
                 <article className="container mx-auto">
                     <AnimatedHeadline>{t("projects.title")}</AnimatedHeadline>
 
                     <ul className="grid max-w-2xl grid-cols-1 mx-auto gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
                         <li>
-                            <Link href={route("projects.game")}>
+                            <Link href={route("projects.game")} className="mb-2">
                                 <AdvancedImage
                                     className="relative z-10 aspect-[3/2] w-full rounded-2xl object-cover"
                                     cldImg={moonImage}
@@ -59,17 +62,16 @@ export default function ProjectsPage(props: PageProps) {
                                         lazyload(),
                                     ]}
                                 />
-                                <h3 className="mt-6 text-lg font-semibold leading-8 tracking-tight text-gray-900">
+                                <Headline>
                                     {t("projects.game.title")}
-                                </h3>
-                                <picture className="text-base leading-7 text-gray-600">
-                                    ✨
-                                </picture>
+                                </Headline>
                             </Link>
                         </li>
                     </ul>
                 </article>
+
+                <BackgroundBeams />
             </main>
-        </ProjectsLayout>
+        </AppLayout>
     );
 }
