@@ -25,7 +25,7 @@ export function NightSky() {
             "Cold_Sunset__Cam_0_FrontZ.png",
             "Cold_Sunset__Cam_1_Back-Z.png",
         ],
-        { path: `${props.assets.root}/sky/` }
+        { path: `${props.assets.root}sky/` }
     );
 
     const stars = useCubeTexture(
@@ -37,7 +37,7 @@ export function NightSky() {
             "space-posz.jpg",
             "space-negz.jpg",
         ],
-        { path: `${props.assets.root}/sky/` }
+        { path: `${props.assets.root}sky/` }
     );
 
     const skyGeo = new SphereGeometry(1000, 32, 15);
