@@ -15,16 +15,9 @@ it('handles a slash command', function ($data) {
 
     $response->assertOk();
 
-    $content = $response->json('content');
-    $ephemeral = $response->json('ephemeral');
+    $content = $response->json('data.content');
 
-    expect($content)
-        ->toBeString()
-        ->toContain('http://localhost/test');
-
-    expect($ephemeral)
-        ->toBeBool()
-        ->toEqual(true);
+    expect($content)->toBe('Game command');
 })->with([
     function () {
         $json = file_get_contents(base_path('/tests/__fixtures__/discord.slash-command.json'));
@@ -32,6 +25,13 @@ it('handles a slash command', function ($data) {
         if (\json_last_error() !== \JSON_ERROR_NONE) {
             throw new \InvalidArgumentException('json_decode error: '.\json_last_error_msg());
         }
+
+        $data['data']['name'] = 'game';
+        $data['data']['options'][0] = [
+            'name' => 'about',
+            'type' => 1,
+            'value' => 'game',
+        ];
 
         return $data;
     },

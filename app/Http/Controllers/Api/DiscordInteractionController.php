@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Disord\Commands\VBucks;
+use App\Discord\Commands\VBucks;
+use App\Discord\Discord;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -11,13 +12,11 @@ use Illuminate\Support\Facades\Log;
 
 class DiscordInteractionController
 {
-    public function __invoke(Request $request)
+    public function __invoke(Discord $discord, Request $request)
     {
         //$this->ensureCustomerExists($request);
 
-        return match ($request->json('data.name')) {
-            default => $this->notifyDevsAboutUnexpectedCommand($request)
-        };
+        return $discord->respondWithCommand($request);
     }
 
     private function ensureCustomerExists(Request $request)
@@ -38,14 +37,5 @@ class DiscordInteractionController
                 ),
             ]);
         }
-    }
-
-    private function notifyDevsAboutUnexpectedCommand(Request $request)
-    {
-        Context::add('payload', $request->json()->all());
-
-        Log::info("Received unhandled discord command [{$request->json('data.name')}]");
-
-        return new Response('Command not found.', 404);
     }
 }

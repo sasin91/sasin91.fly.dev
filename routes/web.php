@@ -1,5 +1,6 @@
 <?php
 
+use App\Discord\Discord;
 use App\Http\Controllers\ContactRequestController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ProfileController;
@@ -56,3 +57,7 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/domains.php';
+
+Route::get('discord/register-commands', function(Discord $discord) {
+    $discord->registerCommands();
+});
