@@ -21,19 +21,16 @@ class VerifyDiscordSignature
         $body = $request->getContent();
 
         if (! $signature || ! $timestamp || ! $body) {
-            throw new UnauthorizedHttpException('invalid request signature');
+            logger('missing signature, timestamp, or body', compact('signature', 'timestamp', 'body'));
+            throw new UnauthorizedHttpException('missing signature, timestamp, or body');
         }
 
         $data = sprintf('%s%s', $timestamp, $body);
-        try {
-            $verified = sodium_crypto_sign_verify_detached(
-                hex2bin($signature),
-                $data,
-                hex2bin(config('discord.public_key'))
-            );
-        } catch (\SodiumException $exception) {
-            throw new UnauthorizedHttpException('invalid request signature');
-        }
+        $verified = sodium_crypto_sign_verify_detached(
+            hex2bin($signature),
+            $data,
+            hex2bin(config('discord.public_key'))
+        );
 
         if (! $verified) {
             throw new UnauthorizedHttpException('invalid request signature');
