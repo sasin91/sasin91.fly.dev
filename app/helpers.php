@@ -14,3 +14,15 @@ if (! function_exists('t')) {
         return __('*.'.$path, $params);
     }
 }
+
+if (! function_exists('json')) {
+    function json(string $path) {
+        $file = file_get_contents($path);
+        $data = \json_decode($file, true);
+        if (\json_last_error() !== \JSON_ERROR_NONE) {
+            throw new \InvalidArgumentException('json_decode error: '.\json_last_error_msg());
+        }
+
+        return $data;
+    }
+}

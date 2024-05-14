@@ -3,6 +3,7 @@
 namespace App\Discord;
 
 use App\Domains\Projects\Game\Discord\GameCommand;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use WeakMap;
 
@@ -15,7 +16,7 @@ class Discord
         $this->commands[strtoupper(GameCommand::name())] = new GameCommand();
     }
 
-    public function respondWithCommand(Request $request)
+    public function respondWithCommand(Request $request): JsonResponse
     {
         $commandName = strtoupper($request->json('data.name'));
 

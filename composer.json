@@ -24,6 +24,7 @@
         "livewire/livewire": "^3.4",
         "livewire/volt": "^1.6",
         "pusher/pusher-php-server": "^7.2",
+        "simplito/elliptic-php": "^1.0",
         "spatie/laravel-activitylog": "^4.7",
         "spatie/laravel-permission": "^6.4",
         "spatie/laravel-responsecache": "^7.4",
